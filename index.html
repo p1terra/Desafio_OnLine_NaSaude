@@ -100,7 +100,7 @@
                         </div>
                     </div>
                     <div class="p-4 bg-gray-100 rounded-b-xl flex flex-col sm:flex-row gap-2">
-                        <button id="export-png-btn" class="flex-1 bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700">Exportar Imagem (.png)</button>
+                        <button id="export-png-btn" class="flex-1 bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700">Exportar Imagem</button>
                         <button id="close-summary-btn" class="flex-1 bg-gray-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-600">Fechar</button>
                     </div>
                 </div>
@@ -142,8 +142,10 @@
                          </tbody>
                       </table>
                 </div>
+                <button id="close-thank-you-btn" class="mt-4 bg-teal-700 text-white font-bold py-3 px-8 rounded-lg hover:bg-teal-800 transition-colors duration-200 shadow-lg">Fechar</button>
             </div>
-            <div class="bg-black bg-opacity-50 p-8 rounded-xl">
+            
+            <div class="bg-black bg-opacity-50 p-8 rounded-xl mt-4">
                 <button id="add-another-checkin-btn" class="bg-teal-600 text-white font-bold text-xl py-4 px-8 rounded-lg hover:bg-teal-700 transition-colors duration-200 shadow-lg">Adicionar mais um check-in?</button>
             </div>
         </div>
@@ -165,18 +167,7 @@
         const challengeStartDate = new Date('2026-01-12T00:00:00');
         const challengeEndDate = new Date('2026-12-20T23:59:59');
         const SELFCARE_ACTIVITIES = ['Meditação ou Mindfulness', 'Alongamento ou Mobilidade', 'Contato com a Natureza', 'Leitura por Prazer', 'Autocuidado Essencial'];
-        const MOTIVATIONAL_QUOTES = [
-            "O sucesso é a soma de pequenos esforços repetidos dia após dia.",
-            "Não espere por inspiração, seja a inspiração!",
-            "Seu corpo é seu templo. Cuide bem dele em 2026!",
-            "Disciplina é a ponte entre metas e realizações.",
-            "Cada dia conta. Faça valer a pena!",
-            "Acredite na magia do seu esforço. Os resultados vêm!",
-            "Um passo de cada vez. Você consegue!",
-            "Foco, força e fé na sua melhor versão.",
-            "Descanse, mas não desista. Amanhã é outro dia!",
-            "Sua saúde é o seu maior patrimônio."
-        ];
+        const MOTIVATIONAL_QUOTES = ["O sucesso é a soma de pequenos esforços.", "Não espere por inspiração, seja a inspiração!", "Seu corpo é seu templo. Cuide bem dele!", "Disciplina é a ponte entre metas e realizações.", "Cada dia conta. Faça valer a pena!"];
 
         let state = { selectedParticipant: null, selectedDate: null, allData: {}, db: null, appId: 'desafio-saude-v3' };
 
@@ -380,8 +371,11 @@
             
             participants.forEach(p => {
                 const pData = state.allData[p] || { dailyLogs: {} };
-                Object.keys(pData.dailyLogs).sort().forEach(dKey => {
+                // Ordenar datas
+                const dates = Object.keys(pData.dailyLogs).sort();
+                dates.forEach(dKey => {
                     const date = new Date(dKey+'T12:00:00');
+                    // FILTRO: Apenas se for do mês atual
                     if(getMonthKey(date) === currentMonthKey){
                         const i = pData.dailyLogs[dKey].inputs;
                         const ce = i.cleanEating || {};
@@ -400,7 +394,10 @@
                     }
                 });
             });
-            const ws = XLSX.utils.aoa_to_sheet(dataSheet); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Dados do Mês"); XLSX.writeFile(wb, `dados_mes_${currentMonthKey}.xls`);
+            const ws = XLSX.utils.aoa_to_sheet(dataSheet); 
+            const wb = XLSX.utils.book_new(); 
+            XLSX.utils.book_append_sheet(wb, ws, "Dados do Mês"); 
+            XLSX.writeFile(wb, `dados_mes_${currentMonthKey}.xls`);
         };
 
         const exportFullReport = () => {
@@ -427,6 +424,19 @@
         
         document.getElementById('add-another-checkin-btn').onclick = () => { toggle('thank-you-screen',0); toggle('setup-screen',1); setupDate.value=''; setupParticipant.value=''; toggle('confirmation-details',0); confirmBtn.disabled=true; };
         
+        // --- NOVO LISTENER: Botão Fechar na Tela Final ---
+        document.getElementById('close-thank-you-btn').onclick = () => {
+            // Esconde a tela final
+            toggle('thank-you-screen', 0);
+            // Mostra a tela de configuração (setup)
+            toggle('setup-screen', 1);
+            // Limpa os campos de setup para novo uso
+            setupDate.value = '';
+            setupParticipant.value = '';
+            toggle('confirmation-details', 0);
+            confirmBtn.disabled = true;
+        };
+
         document.getElementById('ranking-btn').onclick = () => { updateRankingModalUI(); toggle('ranking-modal',1); };
         document.getElementById('monthly-ranking-btn').onclick = () => { updateMonthlyRankingUI(); toggle('monthly-ranking-modal',1); };
         document.getElementById('monthly-champions-btn').onclick = () => { updateMonthlyChampionsUI(); toggle('monthly-champions-modal',1); };
