@@ -107,6 +107,34 @@
             </div>
         </div>
         
+         <div id="summary-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 p-4 z-50 overflow-y-auto flex items-center justify-center">
+            <div id="summary-card-frame" class="p-1 bg-gradient-to-br from-teal-400 via-green-400 to-emerald-500 rounded-2xl shadow-2xl w-full max-w-lg">
+                <div class="bg-white rounded-xl">
+                    <div id="summary-content" class="p-6 subtle-bg">
+                        <h2 class="text-2xl font-bold text-center text-teal-600 mb-2">Resumo do Check-in</h2>
+                        <p class="text-center text-gray-600 mb-4">
+                            <strong id="summary-name"></strong> - <span id="summary-date"></span>
+                        </p>
+                        <div class="space-y-3 text-sm">
+                            <div id="summary-details" class="bg-gray-50 p-4 rounded-lg space-y-2"></div>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+                                <div class="bg-teal-100 p-2 rounded"><div class="font-bold text-lg text-teal-800" id="summary-daily-total"></div><div class="text-xs text-teal-700">Pontos do Dia</div></div>
+                                <div class="bg-blue-100 p-2 rounded"><div class="font-bold text-lg text-blue-800" id="summary-weekly-total"></div><div class="text-xs text-blue-700">Total na Semana</div></div>
+                                <div class="bg-indigo-100 p-2 rounded"><div class="font-bold text-lg text-indigo-800" id="summary-monthly-total"></div><div class="text-xs text-indigo-700">Total no Mês</div></div>
+                                <div class="bg-purple-100 p-2 rounded"><div class="font-bold text-lg text-purple-800" id="summary-general-total"></div><div class="text-xs text-purple-700">Pontuação Geral</div></div>
+                            </div>
+                            <div id="summary-progress" class="bg-gray-50 p-4 rounded-lg space-y-2"></div>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-gray-100 rounded-b-xl flex flex-col sm:flex-row gap-2">
+                        <button id="export-png-btn" class="flex-1 bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700">Exportar Imagem (.png)</button>
+                        <button id="export-xls-btn" class="flex-1 bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700">Exportar Planilha (.xls)</button>
+                        <button id="close-summary-btn" class="flex-1 bg-gray-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-600">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="thank-you-screen" class="hidden fixed inset-0 text-center flex flex-col items-center justify-start z-40 p-4 pt-8 pb-8 overflow-y-auto">
              <div id="motivational-card" class="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg p-6 w-full max-w-md mx-auto mb-6">
                  <p id="motivational-quote" class="text-center text-lg italic text-gray-700 mb-4"></p>
