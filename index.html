@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎁🎄🎅Desafio da Saúde 2.0 - Fim de Ano🎁🎄🎅</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .hidden { display: none; }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .custom-select {
+            -webkit-appearance: none; -moz-appearance: none; appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%236B7280%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22/%3E%3C/svg%3E');
+            background-repeat: no-repeat; background-position: right 0.7rem center; background-size: 0.65rem auto;
+        }
+        .subtle-bg {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='hexagons' fill='%23e2f3f1' fill-opacity='0.4' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.99-7.5L26 15v18.5L13 41 0 33.5V15z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        #thank-you-screen {
+            background-image: url('imagens/tela_final.png');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div id="app-container" class="container mx-auto p-4 sm:p-6 max-w-5xl">
+        <div id="loading-screen" class="text-center p-10">
+            <div class="loader mx-auto"></div>
+            <p class="mt-4 text-gray-600">Conectando ao servidor...</p>
+        </div>
+
+        <div id="setup-screen" class="hidden">
+            <header class="text-center mb-6 max-w-md mx-auto">
+                 <img src="imagens/logo_1.png" alt="logo" class="mx-auto w-full max-w-xs rounded-lg mb-4">
+                <h1 class="text-3xl sm:text-4xl font-bold text-teal-600">Desafio da Saúde 2.0</h1>
+                <p class="text-gray-500 mt-1">✨❄️🎄🎁🎅Edição Fim de Ano (01/12 a 20/12)🎅🎁🎄❄️✨</p>
+            </header>
+            <div class="bg-white p-6 rounded-xl shadow-md max-w-md mx-auto space-y-4">
+                <div>
+                    <label for="setup-date" class="block text-sm font-medium text-gray-700 mb-1">Data do Check-in:</label>
+                    <input type="date" id="setup-date" class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500">
+                </div>
+                <div>
+                    <label for="setup-participant" class="block text-sm font-medium text-gray-700 mb-1">Participante:</label>
+                    <select id="setup-participant" class="custom-select w-full p-2 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500">
+                        <option value="">-- Selecione --</option>
+                    </select>
+                </div>
+                <div id="confirmation-details" class="hidden text-center bg-gray-100 p-3 rounded-lg">
+                    <p>Registrando para <strong id="confirm-name"></strong> no dia <strong id="confirm-date"></strong>.</p>
+                </div>
+                <button id="confirm-setup-btn" disabled class="w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200">Confirmar e Continuar</button>
+            </div>
+            <div class="max-w-md mx-auto text-center mt-6 space-y-2">
+                 <button id="score-table-btn" class="w-full bg-gray-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-gray-700 transition-colors duration-200">Tabela de Pontuação: Regras 2.0</button>
+                 <div class="flex gap-2">
+                    <button id="ranking-btn" class="flex-1 bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200">Ranking Geral</button>
+                    <button id="weekly-ranking-btn" class="flex-1 bg-amber-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-amber-600 transition-colors duration-200">Ranking Semanal</button>
+                </div>
+                 <button id="weekly-champions-btn" class="w-full bg-yellow-400 text-black font-bold py-3 px-4 rounded-lg hover:bg-yellow-500 transition-colors duration-200">Ganhadores Semanais</button>
+                <div class="flex gap-2">
+                    <button id="weekly-report-btn" class="flex-1 bg-green-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700 transition-colors duration-200">Pontuação Semana</button>
+                    <button id="full-report-btn" class="flex-1 bg-purple-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-purple-700 transition-colors duration-200">Relatório Geral</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="main-app" class="hidden">
+            <header class="text-center mb-4">
+                 <h1 class="text-3xl sm:text-4xl font-bold text-teal-600">Check-in Diário</h1>
+                 <p class="text-gray-500 mt-1">Participante: <strong id="current-participant-name"></strong> | Data: <strong id="current-checkin-date"></strong></p>
+            </header>
+             <div id="message-box" class="hidden text-center p-3 mb-6 rounded-lg"></div>
+
+            <main class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <form id="checkin-form" class="space-y-6">
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h2 class="text-xl font-bold mb-4 border-b pb-2">1. Atividade Física</h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="aerobic-minutes" class="block text-sm font-medium">1.1 Minutos de atividade aeróbica hoje:</label>
+                                <input type="number" id="aerobic-minutes" min="0" placeholder="Ex: 30" class="mt-1 w-full p-2 border border-gray-300 rounded-lg">
+                            </div>
+                            <div>
+                                <label for="strength-sessions" class="block text-sm font-medium">1.2 Sessões de força hoje:</label>
+                                <input type="number" id="strength-sessions" min="0" max="2" placeholder="Ex: 1" class="mt-1 w-full p-2 border border-gray-300 rounded-lg">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h2 class="text-xl font-bold mb-4 border-b pb-2">2. Nutrição</h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="fruit-portions-input" class="block text-sm font-medium text-teal-800">2.1 Quantas porções de frutas/vegetais?</label>
+                                <div class="flex items-center mt-2 gap-3">
+                                    <input type="number" id="fruit-portions-input" min="0" max="10" class="w-20 p-2 text-center border border-gray-300 rounded-lg font-bold text-lg" placeholder="0">
+                                    <div class="text-xs text-gray-500">
+                                        <p>5+ porções = 20 pts</p>
+                                        <p>4 porções = 12 pts</p>
+                                        <p>3 porções = 6 pts</p>
+                                        <p>2 = 4 pts | 1 = 2 pts</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <hr class="border-gray-200">
+
+                            <div>
+                                <label class="block text-sm font-medium mb-2">2.2 Hidratação:</label>
+                                <div class="flex items-center"><input id="hydration" type="checkbox" class="h-5 w-5 rounded border-gray-300 text-teal-600"><label for="hydration" class="ml-2">Bebi 2 Litros ou mais de água (15 pts)</label></div>
+                            </div>
+
+                            <hr class="border-gray-200">
+
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-teal-800">2.3 Cuidados alimentar (4 pts cada item):</label>
+                                <div class="grid grid-cols-1 gap-2 text-sm bg-teal-50 p-3 rounded-lg border border-teal-100">
+                                    <div class="flex items-center">
+                                        <input id="clean-no-sweets" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-teal-600">
+                                        <label for="clean-no-sweets" class="ml-2">Zero Doces (chocolate, balas, bolos...)</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="clean-no-soda" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-teal-600">
+                                        <label for="clean-no-soda" class="ml-2">Zero Bebidas Açucaradas e Alcólicas (refris, energéticos...)</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="clean-no-fastfood" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-teal-600">
+                                        <label for="clean-no-fastfood" class="ml-2">Zero Fast Food (Mc, BK, Cachorro Quente...)</label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input id="clean-no-fried" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-teal-600">
+                                        <label for="clean-no-fried" class="ml-2">Zero Comidas Gordurosas (salgados, frituras...)</label>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-right text-teal-600 mt-1 font-semibold">Total possível: 16 pontos</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h2 class="text-xl font-bold mb-4 border-b pb-2">3. Bem-Estar</h2>
+                        <div class="space-y-4">
+                             <div class="flex items-center text-sm"><input id="sleep" type="checkbox" class="h-4 w-4 rounded border-gray-300"><label for="sleep" class="ml-2">3.1 Dormi 7h+ de sono (10pts)</label></div>
+                            <div>
+                                <label class="block text-sm font-medium">3.2 Atividades de Cuidado Pessoal (2 pts cada):</label>
+                                <div id="selfcare-checklist" class="mt-2 grid grid-cols-2 gap-2 text-sm"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" id="submit-checkin-btn" class="w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700 transition-colors duration-200">Finalizar Check-in</button>
+                </form>
+
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h2 class="text-xl font-bold mb-4">Ranking Geral - Edição Final do Ano</h2>
+                    <div class="space-y-3" id="leaderboard"></div>
+                </div>
+            </main>
+        </div>
+
+        <div id="summary-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 p-4 z-50 overflow-y-auto">
+            <div id="summary-card-frame" class="p-1 bg-gradient-to-br from-teal-400 via-green-400 to-emerald-500 rounded-2xl shadow-2xl w-full max-w-lg mx-auto my-8">
+                <div class="bg-white rounded-xl">
+                    <div id="summary-content" class="p-6 subtle-bg">
+                        <h2 class="text-2xl font-bold text-center text-teal-600 mb-2">Resumo do Check-in</h2>
+                        <p class="text-center text-gray-600 mb-4">
+                            <strong id="summary-name"></strong> - <span id="summary-date"></span>
+                        </p>
+                        <div class="space-y-3 text-sm">
+                            <div id="summary-details" class="bg-gray-50 p-4 rounded-lg space-y-2"></div>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+                                <div class="bg-teal-100 p-2 rounded"><div class="font-bold text-lg text-teal-800" id="summary-daily-total"></div><div class="text-xs text-teal-700">Pontos do Dia</div></div>
+                                <div class="bg-blue-100 p-2 rounded"><div class="font-bold text-lg text-blue-800" id="summary-weekly-total"></div><div class="text-xs text-blue-700">Total na Semana</div></div>
+                                <div class="bg-indigo-100 p-2 rounded"><div class="font-bold text-lg text-indigo-800" id="summary-monthly-total"></div><div class="text-xs text-indigo-700">Total no Mês</div></div>
+                                <div class="bg-purple-100 p-2 rounded"><div class="font-bold text-lg text-purple-800" id="summary-general-total"></div><div class="text-xs text-purple-700">Pontuação Geral</div></div>
+                            </div>
+                            <div id="summary-progress" class="bg-gray-50 p-4 rounded-lg space-y-2"></div>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-gray-100 rounded-b-xl flex flex-col sm:flex-row gap-2">
+                        <button id="export-png-btn" class="flex-1 bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700">Exportar Imagem (.png)</button>
+                        <button id="export-xls-btn" class="flex-1 bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700">Exportar Planilha (.xls)</button>
+                        <button id="close-summary-btn" class="flex-1 bg-gray-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-600">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="thank-you-screen" class="hidden fixed inset-0 text-center flex flex-col items-center justify-start bg-cover bg-center z-40 p-4 pt-8 pb-8 overflow-y-auto">
+             <div id="motivational-card" class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 w-full max-w-md mx-auto mb-6">
+                 <p id="motivational-quote" class="text-center text-lg italic text-gray-700 mb-4"></p>
+                 <h3 class="font-bold text-center text-teal-600 mb-2 border-t pt-4">Tabela de Pontos 2.0</h3>
+                 <div>
+                     <table class="w-full text-sm text-left text-gray-600">
+                         <thead class="bg-gray-100 sticky top-0">
+                             <tr>
+                                 <th class="p-2 rounded-tl-lg">Categoria</th>
+                                 <th class="p-2 rounded-tr-lg text-right">Pontos</th>
+                             </tr>
+                         </thead>
+                         <tbody>
+                            <tr class="bg-gray-200"><td class="p-2 font-semibold" colspan="2">Meta Aeróbica (Semanal)</td></tr>
+                            <tr class="border-b"><td class="p-2 pl-6 text-xs">150+ min</td><td class="p-2 text-right">175 pts</td></tr>
+                            <tr class="border-b"><td class="p-2 pl-6 text-xs">100 a 129 min</td><td class="p-2 text-right">122.5 pts</td></tr>
+                            <tr class="border-b"><td class="p-2 pl-6 text-xs">80 a 99 min</td><td class="p-2 text-right">105 pts</td></tr>
+                            <tr class="border-b"><td class="p-2 pl-6 text-xs">60 a 79 min</td><td class="p-2 text-right">87.5 pts</td></tr>
+                            <tr class="border-b"><td class="p-2 pl-6 text-xs">40 a 59 min</td><td class="p-2 text-right">70 pts</td></tr>
+                            <tr class="border-b"><td class="p-2 pl-6 text-xs">20 a 39 min</td><td class="p-2 text-right">35 pts</td></tr>
+                            <tr class="border-b"><td class="p-2 pl-6 text-xs">1 a 19 min</td><td class="p-2 text-right">17.5 pts</td></tr>
+                            
+                            <tr class="bg-gray-200"><td class="p-2 font-semibold" colspan="2">Meta de Força (Semanal)</td></tr>
+                            <tr class="border-b"><td class="p-2 pl-6 text-xs">2 sessões</td><td class="p-2 text-right">105 pts</td></tr>
+                            <tr class="border-b"><td class="p-2 pl-6 text-xs">1 sessão</td><td class="p-2 text-right">40 pts</td></tr>
+
+                            <tr class="bg-gray-200"><td class="p-2 font-semibold" colspan="2">Frutas/Vegetais (Diário)</td></tr>
+                            <tr class="border-b"><td class="p-2 pl-6 text-xs">5+ porções</td><td class="p-2 text-right">20 pts</td></tr>
+                            <tr class="border-b"><td class="p-2 pl-6 text-xs">4 porções</td><td class="p-2 text-right">12 pts</td></tr>
+                            <tr class="border-b"><td class="p-2 pl-6 text-xs">3 porções</td><td class="p-2 text-right">6 pts</td></tr>
+                            <tr class="border-b"><td class="p-2 pl-6 text-xs">2 porções</td><td class="p-2 text-right">4 pts</td></tr>
+                            <tr class="border-b"><td class="p-2 pl-6 text-xs">1 porção</td><td class="p-2 text-right">2 pts</td></tr>
+
+                            <tr class="bg-gray-200"><td class="p-2 font-semibold" colspan="2">Outros (Diário)</td></tr>
+                            <tr class="border-b"><td class="p-2 pl-6 text-xs">2L+ Água</td><td class="p-2 text-right">15 pts</td></tr>
+                            <tr class="border-b"><td class="p-2 pl-6 text-xs">Alimentação Limpa (4 itens)</td><td class="p-2 text-right">Até 15 pts</td></tr>
+                            <tr class="border-b"><td class="p-2 pl-6 text-xs">7h+ Sono</td><td class="p-2 text-right">10 pts</td></tr>
+                            <tr><td class="p-2 pl-6 text-xs">Cuidado Pessoal (cada)</td><td class="p-2 text-right">2 pts</td></tr>
+                         </tbody>
+                      </table>
+                </div>
+            </div>
+            <div class="bg-black bg-opacity-50 p-8 rounded-xl">
+                <button id="add-another-checkin-btn" class="bg-teal-600 text-white font-bold text-xl py-4 px-8 rounded-lg hover:bg-teal-700 transition-colors duration-200 shadow-lg">Adicionar mais um check-in?</button>
+            </div>
+        </div>
+
+        <div id="ranking-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 p-4 z-50 overflow-y-auto">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-auto my-8">
+                <div class="p-6">
+                    <h2 class="text-2xl font-bold text-center text-teal-600 mb-4">Ranking Geral Detalhado</h2>
+                    <div id="ranking-modal-list" class="space-y-3"></div>
+                </div>
+                <div class="p-4 bg-gray-100 rounded-b-xl text-center"><button id="close-ranking-btn" class="bg-gray-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-600">Fechar</button></div>
+            </div>
+        </div>
+        
+        <div id="score-table-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 p-4 z-50 overflow-y-auto">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-auto my-8">
+                <div class="p-6">
+                    <h2 class="text-2xl font-bold text-center text-teal-600 mb-4">Tabela de Pontuação</h2>
+                    <div id="score-table-content"></div>
+                </div>
+                <div class="p-4 bg-gray-100 rounded-b-xl text-center"><button id="close-score-table-btn" class="bg-gray-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-600">Fechar</button></div>
+            </div>
+        </div>
+
+        <div id="weekly-ranking-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 p-4 z-50 overflow-y-auto">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-auto my-8">
+                <div class="p-6">
+                    <h2 class="text-2xl font-bold text-center text-teal-600 mb-4">Ranking Semanal</h2>
+                    <div id="weekly-ranking-list" class="space-y-4"></div>
+                </div>
+                <div class="p-4 bg-gray-100 rounded-b-xl text-center"><button id="close-weekly-ranking-btn" class="bg-gray-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-600">Fechar</button></div>
+            </div>
+        </div>
+        
+        <div id="weekly-champions-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 p-4 z-50 overflow-y-auto">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-auto my-8">
+                <div class="p-6">
+                    <h2 class="text-2xl font-bold text-center text-teal-600 mb-4">Ganhadores Semanais</h2>
+                    <div class="bg-gray-50 p-3 rounded-lg border mb-4">
+                        <h4 class="font-bold text-md text-center text-teal-700 mb-2">Placar de Vitórias</h4>
+                        <div id="weekly-champions-summary" class="text-sm space-y-1"></div>
+                    </div>
+                    <div id="weekly-champions-list" class="space-y-2"></div>
+                </div>
+                <div class="p-4 bg-gray-100 rounded-b-xl text-center"><button id="close-weekly-champions-btn" class="bg-gray-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-600">Fechar</button></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        // --- IMPORTAÇÕES DO FIREBASE ---
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, doc, setDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // --- CONFIGURAÇÃO INICIAL ---
+        const participants = ['Carol', 'Iagê', 'Juliana', 'Mariana', 'Radmila'];
+        
+        // --- DATA DE INÍCIO E FIM ATUALIZADAS ---
+        const challengeStartDate = new Date('2025-12-01T00:00:00');
+        const challengeEndDate = new Date('2025-12-20T23:59:59');
+
+        const SELFCARE_ACTIVITIES = ['Meditação ou Mindfulness', 'Alongamento ou Mobilidade', 'Contato com a Natureza', 'Leitura por Prazer', 'Autocuidado Essencial'];
+        const MOTIVATIONAL_QUOTES = [
+            "Cada passo conta. Continue em frente!",
+            "O seu corpo de amanhã agradece o seu esforço de hoje.",
+            "Pequenas escolhas, grandes resultados. Um dia de cada vez.",
+            "Consistência é a chave para o sucesso. Não desista!",
+            "Cuide do seu corpo. É o único lugar que você tem para viver."
+        ];
+
+        let state = {
+            selectedParticipant: null,
+            selectedDate: null,
+            allData: {},
+            db: null,
+            // --- ID ATUALIZADO PARA SEPARAR OS DADOS (V2) ---
+            appId: 'desafio-saude-v2' 
+        };
+
+        // --- ELEMENTOS DO DOM ---
+        const loadingScreen = document.getElementById('loading-screen');
+        const setupScreen = document.getElementById('setup-screen');
+        const mainApp = document.getElementById('main-app');
+        const thankYouScreen = document.getElementById('thank-you-screen');
+        const rankingModal = document.getElementById('ranking-modal');
+        const scoreTableModal = document.getElementById('score-table-modal');
+        const weeklyRankingModal = document.getElementById('weekly-ranking-modal');
+        const weeklyChampionsModal = document.getElementById('weekly-champions-modal');
+        const setupDate = document.getElementById('setup-date');
+        const setupParticipant = document.getElementById('setup-participant');
+        const confirmDetails = document.getElementById('confirmation-details');
+        const confirmName = document.getElementById('confirm-name');
+        const confirmDate = document.getElementById('confirm-date');
+        const confirmBtn = document.getElementById('confirm-setup-btn');
+        const checkinForm = document.getElementById('checkin-form');
+        const leaderboardContainer = document.getElementById('leaderboard');
+        const summaryModal = document.getElementById('summary-modal');
+        const messageBox = document.getElementById('message-box');
+
+        // --- FUNÇÕES DE PONTUAÇÃO ---
+        const getAerobicScore = (minutes) => {
+            if (minutes >= 150) return 175;
+            if (minutes >= 100) return 122.5;
+            if (minutes >= 80) return 105;
+            if (minutes >= 60) return 87.5;
+            if (minutes >= 40) return 70;
+            if (minutes >= 20) return 35;
+            if (minutes > 0) return 17.5;
+            return 0;
+        };
+        const getStrengthScore = (sessions) => {
+            if (sessions >= 2) return 105;
+            if (sessions >= 1) return 40;
+            return 0;
+        };
+        
+        // --- NOVA TABELA DE PONTUAÇÃO DE FRUTAS ---
+        const getFruitScore = (portions) => {
+            if (portions >= 5) return 20;
+            if (portions === 4) return 12;
+            if (portions === 3) return 6;
+            if (portions === 2) return 4;
+            if (portions === 1) return 2;
+            return 0;
+        };
+        
+        const getSelfCareScore = (activities) => {
+            return activities.length * 2;
+        };
+
+        // --- FUNÇÕES DE DATA ---
+        const getFormattedDateKey = (d) => d.toISOString().split('T')[0];
+        const getChallengeWeekKey = (d) => {
+            if (d < challengeStartDate) return null;
+            const diffTime = d - challengeStartDate;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            return `challenge-week-${Math.floor(diffDays / 7)}`;
+        };
+        const getMonthKey = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+
+        // --- FUNÇÕES DE UI ---
+        const showMessage = (message, type = 'success') => {
+            messageBox.textContent = message;
+            messageBox.className = `text-center p-3 mb-6 rounded-lg ${type === 'success' ? 'bg-green-100 text-green-800' : type === 'info' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'}`;
+            setTimeout(() => messageBox.className = 'hidden', 4000);
+        };
+
+        const populateChecklists = () => {
+            const selfcareContainer = document.getElementById('selfcare-checklist');
+            selfcareContainer.innerHTML = SELFCARE_ACTIVITIES.map(activity => `<div class="flex items-center"><input type="checkbox" id="selfcare-${activity.replace(/\s/g, '')}" name="selfcare-activity" value="${activity}" class="h-4 w-4 rounded border-gray-300"><label for="selfcare-${activity.replace(/\s/g, '')}" class="ml-2">${activity}</label></div>`).join('');
+        };
+        
+        const showMotivationalCard = () => {
+            const quoteElement = document.getElementById('motivational-quote');
+            const randomIndex = Math.floor(Math.random() * MOTIVATIONAL_QUOTES.length);
+            quoteElement.textContent = `"${MOTIVATIONAL_QUOTES[randomIndex]}"`;
+        };
+        
+        const prefillForm = (inputs) => {
+            document.getElementById('aerobic-minutes').value = inputs.aerobicMinutes;
+            document.getElementById('strength-sessions').value = inputs.strengthSessions;
+            document.getElementById('hydration').checked = inputs.hydration;
+            document.getElementById('sleep').checked = inputs.sleep;
+
+            // Preencher frutas
+            document.getElementById('fruit-portions-input').value = inputs.fruitPortions;
+
+            // Preencher checkboxes de alimentação limpa
+            if (inputs.cleanEating) {
+                document.getElementById('clean-no-sweets').checked = inputs.cleanEating.noSweets;
+                document.getElementById('clean-no-soda').checked = inputs.cleanEating.noSoda;
+                document.getElementById('clean-no-fastfood').checked = inputs.cleanEating.noFastFood;
+                document.getElementById('clean-no-fried').checked = inputs.cleanEating.noFried;
+            } else {
+                document.getElementById('clean-no-sweets').checked = false;
+                document.getElementById('clean-no-soda').checked = false;
+                document.getElementById('clean-no-fastfood').checked = false;
+                document.getElementById('clean-no-fried').checked = false;
+            }
+
+            document.querySelectorAll('input[name="selfcare-activity"]').forEach(cb => cb.checked = false);
+            inputs.selfCareActivities.forEach(activity => {
+                const cb = document.getElementById(`selfcare-${activity.replace(/\s/g, '')}`);
+                if (cb) cb.checked = true;
+            });
+        };
+
+        const populateScoreTableModal = () => {
+            const scoreTableContainer = document.getElementById('score-table-content');
+            const scoreTableHTML = document.querySelector('#motivational-card table').outerHTML;
+            scoreTableContainer.innerHTML = scoreTableHTML;
+        };
+
+        // --- LÓGICA DE CÁLCULO GERAL ---
+        const calculateAllScores = (participantName) => {
+            const participantData = state.allData[participantName] || { dailyLogs: {} };
+            const scores = { total: 0, weekly: 0, monthly: 0 };
+            const today = new Date();
+            const currentWeekKey = getChallengeWeekKey(today);
+            const currentMonthKey = getMonthKey(today);
+            const weeklyAggregates = {};
+
+            for (const dateKey in participantData.dailyLogs) {
+                const logDate = new Date(dateKey + 'T12:00:00');
+                const weekKey = getChallengeWeekKey(logDate);
+                if (!weekKey) continue;
+                if (!weeklyAggregates[weekKey]) {
+                    weeklyAggregates[weekKey] = { aerobicMinutes: 0, strengthSessions: 0, dailyPoints: 0, month: getMonthKey(logDate) };
+                }
+                const inputs = participantData.dailyLogs[dateKey].inputs;
+                weeklyAggregates[weekKey].aerobicMinutes += inputs.aerobicMinutes;
+                weeklyAggregates[weekKey].strengthSessions += inputs.strengthSessions;
+                
+                // NOVA LÓGICA: 3.75 pontos por item (total 15)
+                let cleanEatingScore = 0;
+                if (inputs.cleanEating) {
+                    cleanEatingScore += inputs.cleanEating.noSweets ? 3.75 : 0;
+                    cleanEatingScore += inputs.cleanEating.noSoda ? 3.75 : 0;
+                    cleanEatingScore += inputs.cleanEating.noFastFood ? 3.75 : 0;
+                    cleanEatingScore += inputs.cleanEating.noFried ? 3.75 : 0;
+                }
+
+                weeklyAggregates[weekKey].dailyPoints += 
+                    getFruitScore(inputs.fruitPortions) + 
+                    (inputs.hydration ? 15 : 0) + 
+                    cleanEatingScore + 
+                    (inputs.sleep ? 10 : 0) +
+                    getSelfCareScore(inputs.selfCareActivities);
+            }
+
+            for (const weekKey in weeklyAggregates) {
+                const weekData = weeklyAggregates[weekKey];
+                const weekScore = getAerobicScore(weekData.aerobicMinutes) + getStrengthScore(weekData.strengthSessions) + weekData.dailyPoints;
+                scores.total += weekScore;
+                if (weekKey === currentWeekKey) scores.weekly = weekScore;
+                if (weekData.month === currentMonthKey) scores.monthly += weekScore;
+            }
+            return { name: participantName, ...scores };
+        };
+
+        const updateLeaderboardUI = () => {
+            const allScores = participants.map(calculateAllScores).sort((a, b) => b.total - a.total);
+            leaderboardContainer.innerHTML = allScores.map((score, index) => {
+                const medal = ['🥇', '🥈', '🥉'][index] || '🔹';
+                return `<div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg border"><div class="flex items-center"><span class="text-xl w-8">${medal}</span><span class="font-bold">${score.name}</span></div><div class="text-right"><div class="text-lg font-bold text-teal-600">${Math.round(score.total)} <span class="text-xs font-normal">Total</span></div></div></div>`;
+            }).join('');
+        };
+        
+        const updateRankingModalUI = () => {
+            const allScores = participants.map(calculateAllScores).sort((a, b) => b.total - a.total);
+            const rankingList = document.getElementById('ranking-modal-list');
+            rankingList.innerHTML = allScores.map((score, index) => {
+                const medal = ['🥇', '🥈', '🥉'][index] || '🔹';
+                return `<div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg border"><div class="flex items-center"><span class="text-xl w-8">${medal}</span><span class="font-bold">${score.name}</span></div><div class="text-right text-xs text-gray-600"><div>Geral: <span class="font-bold">${Math.round(score.total)}</span></div><div>Semana: <span class="font-bold">${Math.round(score.weekly)}</span></div><div>Mês: <span class="font-bold">${Math.round(score.monthly)}</span></div></div></div>`;
+            }).join('');
+        };
+        
+        const calculateWeeklyScores = (includeCurrentWeek = false) => {
+            const allWeeklyData = {};
+            for (const participantName of participants) {
+                const participantData = state.allData[participantName] || { dailyLogs: {} };
+                for (const dateKey in participantData.dailyLogs) {
+                    const logDate = new Date(dateKey + 'T12:00:00');
+                    const weekKey = getChallengeWeekKey(logDate);
+                    if (!weekKey) continue;
+                    if (!allWeeklyData[weekKey]) allWeeklyData[weekKey] = {};
+                    if (!allWeeklyData[weekKey][participantName]) allWeeklyData[weekKey][participantName] = { aerobicMinutes: 0, strengthSessions: 0, dailyPoints: 0 };
+
+                    const inputs = participantData.dailyLogs[dateKey].inputs;
+                    allWeeklyData[weekKey][participantName].aerobicMinutes += inputs.aerobicMinutes;
+                    allWeeklyData[weekKey][participantName].strengthSessions += inputs.strengthSessions;
+                    
+                    let cleanEatingScore = 0;
+                    if (inputs.cleanEating) {
+                        cleanEatingScore += inputs.cleanEating.noSweets ? 3.75 : 0;
+                        cleanEatingScore += inputs.cleanEating.noSoda ? 3.75 : 0;
+                        cleanEatingScore += inputs.cleanEating.noFastFood ? 3.75 : 0;
+                        cleanEatingScore += inputs.cleanEating.noFried ? 3.75 : 0;
+                    }
+
+                    allWeeklyData[weekKey][participantName].dailyPoints += 
+                        getFruitScore(inputs.fruitPortions) + 
+                        (inputs.hydration ? 15 : 0) + 
+                        cleanEatingScore + 
+                        (inputs.sleep ? 10 : 0) +
+                        getSelfCareScore(inputs.selfCareActivities);
+                }
+            }
+
+            const weeklyResults = [];
+            const currentWeekKey = getChallengeWeekKey(new Date());
+
+            for (const weekKey in allWeeklyData) {
+                if (!includeCurrentWeek && weekKey === currentWeekKey) continue;
+                const weekData = allWeeklyData[weekKey];
+                const scoresForThisWeek = [];
+                for (const participant of participants) {
+                    const pData = weekData[participant] || { aerobicMinutes: 0, strengthSessions: 0, dailyPoints: 0 };
+                    const weeklyScore = getAerobicScore(pData.aerobicMinutes) + getStrengthScore(pData.strengthSessions) + pData.dailyPoints;
+                    scoresForThisWeek.push({ name: participant, score: weeklyScore });
+                }
+                scoresForThisWeek.sort((a, b) => b.score - a.score);
+                const weekNumber = parseInt(weekKey.replace('challenge-week-', ''), 10);
+                const weekStartDate = new Date(challengeStartDate);
+                weekStartDate.setDate(challengeStartDate.getDate() + (weekNumber * 7));
+                const weekEndDate = new Date(weekStartDate);
+                weekEndDate.setDate(weekStartDate.getDate() + 6);
+
+                weeklyResults.push({
+                    weekNumber: weekNumber + 1,
+                    period: `${weekStartDate.toLocaleDateString('pt-BR')} - ${weekEndDate.toLocaleDateString('pt-BR')}`,
+                    scores: scoresForThisWeek,
+                    isCurrent: weekKey === currentWeekKey
+                });
+            }
+            weeklyResults.sort((a, b) => b.weekNumber - a.weekNumber);
+            return weeklyResults;
+        };
+
+        const updateWeeklyRankingUI = () => {
+            const weeklyScoresData = calculateWeeklyScores(true);
+            const listContainer = document.getElementById('weekly-ranking-list');
+            if (weeklyScoresData.length === 0) {
+                listContainer.innerHTML = '<p class="text-center text-gray-500">Nenhum dado de check-in foi registrado ainda.</p>';
+                return;
+            }
+            listContainer.innerHTML = weeklyScoresData.map(weekResult => {
+                const scoresHtml = weekResult.scores.map((score, index) => {
+                    const medal = ['🥇', '🥈', '🥉'][index] || `${index + 1}.`;
+                    return `<div class="flex items-center justify-between text-sm py-1"><div class="flex items-center"><span class="w-6">${medal}</span><span>${score.name}</span></div><span class="font-semibold">${Math.round(score.score)} pts</span></div>`;
+                }).join('');
+                const title = weekResult.isCurrent ? `Semana Atual - Pontuação Parcial` : `Semana ${weekResult.weekNumber}`;
+                return `<div class="bg-gray-50 p-3 rounded-lg border"><h4 class="font-bold text-md text-teal-700">${title}</h4><p class="text-xs text-gray-500 mb-2">${weekResult.period}</p><div class="space-y-1">${scoresHtml}</div></div>`;
+            }).join('');
+        };
+        
+        const updateWeeklyChampionsUI = () => {
+            const weeklyScoresData = calculateWeeklyScores(false);
+            const summaryContainer = document.getElementById('weekly-champions-summary');
+            const listContainer = document.getElementById('weekly-champions-list');
+            const winCounts = participants.reduce((acc, p) => ({ ...acc, [p]: 0 }), {});
+            const weeklyWinners = [];
+
+            for (const weekResult of weeklyScoresData) {
+                if (weekResult.scores.length > 0) {
+                    const topScore = weekResult.scores[0].score;
+                    if (topScore > 0) {
+                        const winners = weekResult.scores.filter(s => s.score === topScore).map(s => s.name);
+                        winners.forEach(winner => winCounts[winner]++);
+                        weeklyWinners.push({ weekNumber: weekResult.weekNumber, period: weekResult.period, winners: winners.join(', ') });
+                    }
+                }
+            }
+
+            const sortedWinCounts = Object.entries(winCounts).map(([name, wins]) => ({ name, wins })).sort((a, b) => b.wins - a.wins);
+            summaryContainer.innerHTML = sortedWinCounts.filter(p => p.wins > 0).map(p => `<div class="flex justify-between"><span class="font-semibold">${p.name}:</span><span>${p.wins} vitória(s)</span></div>`).join('');
+            if (summaryContainer.innerHTML === '') summaryContainer.innerHTML = '<p class="text-center text-gray-500">Nenhuma vitória registrada ainda.</p>';
+            if (weeklyWinners.length === 0) { listContainer.innerHTML = '<p class="text-center text-gray-500">Ainda não há resultados de semanas completas.</p>'; return; }
+            listContainer.innerHTML = weeklyWinners.map(week => `<div class="flex justify-between items-center bg-gray-50 p-2 rounded-lg border"><div><h5 class="font-bold text-sm">Semana ${week.weekNumber}</h5><p class="text-xs text-gray-500">${week.period}</p></div><div class="text-right"><span class="font-semibold">${week.winners}</span></div></div>`).join('');
+        };
+
+        // --- LÓGICA DO RESUMO ---
+        const createProgressBar = (label, value, max, color) => {
+            const percentage = max > 0 ? (value / max) * 100 : 0;
+            return `<div><div class="flex justify-between mb-1"><span class="font-semibold text-gray-700">${label}</span><span class="text-gray-600">${value} / ${max}</span></div><div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-${color}-500 h-2.5 rounded-full" style="width: ${percentage}%"></div></div></div>`;
+        };
+
+        const showSummary = () => {
+            const { selectedParticipant, selectedDate } = state;
+            const dateKey = getFormattedDateKey(selectedDate);
+            const weekKey = getChallengeWeekKey(selectedDate);
+            const allScores = calculateAllScores(selectedParticipant);
+            const dailyInputs = state.allData[selectedParticipant].dailyLogs[dateKey].inputs;
+
+            const dailyFruitPts = getFruitScore(dailyInputs.fruitPortions);
+            const dailyHydrationPts = dailyInputs.hydration ? 15 : 0;
+            
+            let cleanEatingPts = 0;
+            if (dailyInputs.cleanEating) {
+                cleanEatingPts += dailyInputs.cleanEating.noSweets ? 3.75 : 0;
+                cleanEatingPts += dailyInputs.cleanEating.noSoda ? 3.75 : 0;
+                cleanEatingPts += dailyInputs.cleanEating.noFastFood ? 3.75 : 0;
+                cleanEatingPts += dailyInputs.cleanEating.noFried ? 3.75 : 0;
+            }
+
+            const dailySleepPts = dailyInputs.sleep ? 10 : 0;
+            const dailySelfCarePts = getSelfCareScore(dailyInputs.selfCareActivities);
+            const dailyTotal = dailyFruitPts + dailyHydrationPts + cleanEatingPts + dailySleepPts + dailySelfCarePts;
+
+            let weekAerobicMinutes = 0, weekStrengthSessions = 0;
+            for (const dKey in state.allData[selectedParticipant].dailyLogs) {
+                if (getChallengeWeekKey(new Date(dKey + 'T12:00:00')) === weekKey) {
+                    const log = state.allData[selectedParticipant].dailyLogs[dKey].inputs;
+                    weekAerobicMinutes += log.aerobicMinutes;
+                    weekStrengthSessions += log.strengthSessions;
+                }
+            }
+
+            document.getElementById('summary-name').textContent = selectedParticipant;
+            document.getElementById('summary-date').textContent = selectedDate.toLocaleDateString('pt-BR');
+            document.getElementById('summary-daily-total').textContent = Math.round(dailyTotal);
+            document.getElementById('summary-weekly-total').textContent = Math.round(allScores.weekly);
+            document.getElementById('summary-monthly-total').textContent = Math.round(allScores.monthly);
+            document.getElementById('summary-general-total').textContent = Math.round(allScores.total);
+
+            document.getElementById('summary-details').innerHTML = `
+                <h3 class="font-bold mb-2 text-gray-700">Pontos do dia (${Math.round(dailyTotal)} pts):</h3>
+                ${createProgressBar('Frutas/Vegetais', dailyFruitPts, 20, 'green')}
+                ${createProgressBar('Hidratação', dailyHydrationPts, 15, 'sky')}
+                ${createProgressBar('Alimentação Limpa', cleanEatingPts, 15, 'red')}
+                ${createProgressBar('Sono', dailySleepPts, 10, 'indigo')}
+                ${createProgressBar('Cuidado Pessoal', dailySelfCarePts, 10, 'pink')}
+            `;
+            
+            document.getElementById('summary-progress').innerHTML = `
+                <h3 class="font-bold mb-2 text-gray-700">Progresso na Semana:</h3>
+                ${createProgressBar('Aeróbico (min)', Math.min(weekAerobicMinutes, 150), 150, 'orange')}
+                ${createProgressBar('Força (sessões)', Math.min(weekStrengthSessions, 2), 2, 'rose')}
+            `;
+
+            summaryModal.classList.remove('hidden');
+        };
+
+        // --- EXPORTAÇÃO ---
+        const exportWeeklyReport = () => {
+             const today = new Date(); today.setHours(0, 0, 0, 0);
+             const dayOfWeek = today.getDay(); 
+             const lastSunday = new Date(today); lastSunday.setDate(today.getDate() - (dayOfWeek === 0 ? 7 : dayOfWeek));
+             const lastMonday = new Date(lastSunday); lastMonday.setDate(lastSunday.getDate() - 6);
+             if (lastMonday < challengeStartDate) { alert("Ainda não há dados de uma semana completa."); return; }
+             const reportStartDate = getFormattedDateKey(lastMonday);
+             const reportEndDate = getFormattedDateKey(lastSunday);
+             const dataForSheet = [["Relatório Semanal"], [`${lastMonday.toLocaleDateString('pt-BR')} a ${lastSunday.toLocaleDateString('pt-BR')}`], [], ["Nome", "Data", "Min Aeróbico", "Força", "Frutas(Qtd)", "Hidratação", "Sem Doces", "Sem Refri", "Sem FastFood", "Sem Fritura", "Sono", "Cuidado Pessoal"]];
+
+             participants.forEach(participant => {
+                const participantData = state.allData[participant] || { dailyLogs: {} };
+                const sortedDateKeys = Object.keys(participantData.dailyLogs).sort();
+                for (const dateKey of sortedDateKeys) {
+                    if (dateKey >= reportStartDate && dateKey <= reportEndDate) {
+                        const inputs = participantData.dailyLogs[dateKey].inputs;
+                        const ce = inputs.cleanEating || {noSweets: false, noSoda: false, noFastFood: false, noFried: false};
+                        dataForSheet.push([
+                            participant, new Date(dateKey + 'T12:00:00').toLocaleDateString('pt-BR'),
+                            inputs.aerobicMinutes, inputs.strengthSessions, inputs.fruitPortions,
+                            inputs.hydration ? 'Sim' : 'Não',
+                            ce.noSweets ? 'Sim' : 'Não', ce.noSoda ? 'Sim' : 'Não', ce.noFastFood ? 'Sim' : 'Não', ce.noFried ? 'Sim' : 'Não',
+                            inputs.sleep ? 'Sim' : 'Não', inputs.selfCareActivities.join(', ')
+                        ]);
+                    }
+                }
+             });
+             const ws = XLSX.utils.aoa_to_sheet(dataForSheet); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Relatório"); XLSX.writeFile(wb, `relatorio_semanal.xls`);
+        };
+        
+        const exportFullReport = () => {
+            const today = new Date(); today.setHours(0, 0, 0, 0);
+            const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
+            const dataForSheet = [["Relatório Geral"], [], ["Nome", "Data", "Min Aeróbico", "Força", "Frutas(Qtd)", "Hidratação", "Sem Doces", "Sem Refri", "Sem FastFood", "Sem Fritura", "Sono", "Cuidado Pessoal"]];
+            
+            participants.forEach(participant => {
+                const participantData = state.allData[participant] || { dailyLogs: {} };
+                const sortedDateKeys = Object.keys(participantData.dailyLogs).sort();
+                for (const dateKey of sortedDateKeys) {
+                    const inputs = participantData.dailyLogs[dateKey].inputs;
+                    const ce = inputs.cleanEating || {noSweets: false, noSoda: false, noFastFood: false, noFried: false};
+                    dataForSheet.push([
+                        participant, new Date(dateKey + 'T12:00:00').toLocaleDateString('pt-BR'),
+                        inputs.aerobicMinutes, inputs.strengthSessions, inputs.fruitPortions,
+                        inputs.hydration ? 'Sim' : 'Não',
+                        ce.noSweets ? 'Sim' : 'Não', ce.noSoda ? 'Sim' : 'Não', ce.noFastFood ? 'Sim' : 'Não', ce.noFried ? 'Sim' : 'Não',
+                        inputs.sleep ? 'Sim' : 'Não', inputs.selfCareActivities.join(', ')
+                    ]);
+                }
+             });
+             const ws = XLSX.utils.aoa_to_sheet(dataForSheet); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Geral"); XLSX.writeFile(wb, `relatorio_geral.xls`);
+        };
+
+        document.getElementById('export-png-btn').addEventListener('click', () => {
+            html2canvas(document.getElementById('summary-content'), { scale: 2 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `resumo_v2.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        });
+
+        document.getElementById('export-xls-btn').addEventListener('click', () => {
+             alert("Utilize os botões de relatório completo na tela inicial para dados detalhados em Excel.");
+        });
+
+        document.getElementById('close-summary-btn').addEventListener('click', () => {
+            summaryModal.classList.add('hidden');
+            mainApp.classList.add('hidden');
+            showMotivationalCard();
+            thankYouScreen.classList.remove('hidden');
+        });
+
+        document.getElementById('add-another-checkin-btn').addEventListener('click', () => {
+            thankYouScreen.classList.add('hidden');
+            setupScreen.classList.remove('hidden');
+            setupDate.value = '';
+            setupParticipant.value = '';
+            confirmDetails.classList.add('hidden');
+            confirmBtn.disabled = true;
+        });
+
+        document.getElementById('ranking-btn').addEventListener('click', () => { updateRankingModalUI(); rankingModal.classList.remove('hidden'); });
+        document.getElementById('weekly-ranking-btn').addEventListener('click', () => { updateWeeklyRankingUI(); weeklyRankingModal.classList.remove('hidden'); });
+        document.getElementById('weekly-champions-btn').addEventListener('click', () => { updateWeeklyChampionsUI(); weeklyChampionsModal.classList.remove('hidden'); });
+        document.getElementById('weekly-report-btn').addEventListener('click', exportWeeklyReport);
+        document.getElementById('full-report-btn').addEventListener('click', exportFullReport);
+        document.getElementById('score-table-btn').addEventListener('click', () => { scoreTableModal.classList.remove('hidden'); });
+        document.getElementById('close-ranking-btn').addEventListener('click', () => { rankingModal.classList.add('hidden'); });
+        document.getElementById('close-score-table-btn').addEventListener('click', () => { scoreTableModal.classList.add('hidden'); });
+        document.getElementById('close-weekly-ranking-btn').addEventListener('click', () => { weeklyRankingModal.classList.add('hidden'); });
+        document.getElementById('close-weekly-champions-btn').addEventListener('click', () => { weeklyChampionsModal.classList.add('hidden'); });
+
+
+        // --- LÓGICA DE SETUP E EVENTOS ---
+        const checkSetupValidity = () => {
+            const dateVal = setupDate.value;
+            const participantVal = setupParticipant.value;
+            if (dateVal && participantVal) {
+                const selectedDate = new Date(dateVal + 'T12:00:00');
+                if (selectedDate < challengeStartDate) {
+                    confirmBtn.disabled = true;
+                    showMessage('A data não pode ser anterior ao início do desafio (28/11/2025).', 'error');
+                    confirmDetails.classList.add('hidden'); return;
+                }
+                if (selectedDate > challengeEndDate) {
+                    showMessage('Atenção: A data é posterior ao fim do desafio.', 'info');
+                }
+                state.selectedDate = selectedDate;
+                state.selectedParticipant = participantVal;
+                confirmName.textContent = participantVal;
+                confirmDate.textContent = selectedDate.toLocaleDateString('pt-BR');
+                confirmDetails.classList.remove('hidden');
+                confirmBtn.disabled = false;
+            } else {
+                confirmBtn.disabled = true;
+                confirmDetails.classList.add('hidden');
+            }
+        };
+
+        setupDate.addEventListener('change', checkSetupValidity);
+        setupParticipant.addEventListener('change', checkSetupValidity);
+
+        confirmBtn.addEventListener('click', () => {
+            setupScreen.classList.add('hidden');
+            mainApp.classList.remove('hidden');
+            document.getElementById('current-participant-name').textContent = state.selectedParticipant;
+            document.getElementById('current-checkin-date').textContent = state.selectedDate.toLocaleDateString('pt-BR');
+            const dateKey = getFormattedDateKey(state.selectedDate);
+            const participantLogs = state.allData[state.selectedParticipant]?.dailyLogs || {};
+            
+            checkinForm.classList.remove('hidden');
+            checkinForm.reset();
+
+            if (participantLogs[dateKey]) {
+                showMessage('Editando registro existente.', 'info');
+                prefillForm(participantLogs[dateKey].inputs);
+            }
+            updateLeaderboardUI();
+        });
+
+        checkinForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitButton = document.getElementById('submit-checkin-btn');
+            submitButton.disabled = true;
+            submitButton.textContent = "Salvando...";
+            
+            const dateKey = getFormattedDateKey(state.selectedDate);
+            
+            // COLETANDO OS NOVOS DADOS
+            const inputs = {
+                aerobicMinutes: Number(document.getElementById('aerobic-minutes').value) || 0,
+                strengthSessions: Number(document.getElementById('strength-sessions').value) || 0,
+                fruitPortions: Number(document.getElementById('fruit-portions-input').value) || 0,
+                hydration: document.getElementById('hydration').checked,
+                cleanEating: {
+                    noSweets: document.getElementById('clean-no-sweets').checked,
+                    noSoda: document.getElementById('clean-no-soda').checked,
+                    noFastFood: document.getElementById('clean-no-fastfood').checked,
+                    noFried: document.getElementById('clean-no-fried').checked
+                },
+                sleep: document.getElementById('sleep').checked,
+                selfCareActivities: Array.from(document.querySelectorAll('input[name="selfcare-activity"]:checked')).map(el => el.value)
+            };
+
+            try {
+                // Caminho dinâmico baseado no appId
+                const participantRef = doc(state.db, `artifacts/${state.appId}/public/data/healthChallenge`, state.selectedParticipant);
+                const currentData = state.allData[state.selectedParticipant] || { dailyLogs: {} };
+                currentData.dailyLogs[dateKey] = { inputs };
+                await setDoc(participantRef, currentData);
+                showMessage('Check-in salvo com sucesso!', 'success');
+                showSummary();
+            } catch (error) {
+                console.error("Erro ao salvar:", error);
+                showMessage('Erro ao salvar. Tente novamente.', 'error');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = "Finalizar Check-in";
+            }
+        });
+
+        // --- INICIALIZAÇÃO ---
+        const init = async () => {
+            try {
+                const firebaseConfig = {
+                    apiKey: "AIzaSyCzVuw8VwY2e0qr1DngYQdp4En5je4HmyI",
+                    authDomain: "desafio-explorar-vizinhanca.firebaseapp.com",
+                    projectId: "desafio-explorar-vizinhanca",
+                    storageBucket: "desafio-explorar-vizinhanca.firebasestorage.app",
+                    messagingSenderId: "535102451702",
+                    appId: "1:535102451702:web:b626d741c44952c78da1d7"
+                };
+
+                const app = initializeApp(firebaseConfig);
+                const auth = getAuth(app);
+                state.db = getFirestore(app);
+                
+                await signInAnonymously(auth);
+
+                // Conectando à NOVA coleção (v2)
+                const collectionRef = collection(state.db, `artifacts/${state.appId}/public/data/healthChallenge`);
+                
+                const initialDataPromise = new Promise((resolve, reject) => {
+                    let firstLoad = true;
+                    onSnapshot(collectionRef, (snapshot) => {
+                        snapshot.docs.forEach(doc => {
+                            state.allData[doc.id] = doc.data();
+                        });
+                        
+                        if (!firstLoad) {
+                            if (document.getElementById('main-app').classList.contains('hidden') === false) updateLeaderboardUI();
+                            if (rankingModal.classList.contains('hidden') === false) updateRankingModalUI();
+                        }
+
+                        if (firstLoad) {
+                            firstLoad = false;
+                            resolve();
+                        }
+                    }, (error) => {
+                        console.error("Erro:", error);
+                        reject(error);
+                    });
+                });
+
+                await initialDataPromise;
+
+                setupParticipant.innerHTML = '<option value="">-- Selecione --</option>' + participants.map(p => `<option value="${p}">${p}</option>`).join('');
+                populateChecklists();
+                populateScoreTableModal();
+                loadingScreen.classList.add('hidden');
+                setupScreen.classList.remove('hidden');
+
+            } catch (error) {
+                console.error("Erro na inicialização:", error);
+                loadingScreen.innerHTML = `<p class="text-red-500">Erro de conexão.</p>`;
+            }
+        };
+
+        init();
+    </script>
+</body>
+</html>
