@@ -52,7 +52,6 @@
         <div id="setup-screen" class="hidden">
             <header class="text-center mb-6 max-w-md mx-auto">
                 <img src="imagens/logo_desafio.png" alt="Logo Desafio" class="mx-auto w-32 md:w-40 mb-4 rounded-lg shadow-sm">
-                
                 <h1 class="text-3xl sm:text-4xl font-bold text-teal-600">Desafio da Saúde 3.0</h1>
                 <p class="text-gray-600 font-medium mt-1">🍴 Edição 2026 (12/01 a 20/12) 💪🏼</p>
                 <div id="day-counter-badge" class="inline-block bg-teal-100 text-teal-800 text-sm font-bold px-3 py-1 rounded-full mt-2">
@@ -87,7 +86,7 @@
                     <button id="ranking-btn" class="flex-1 bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200">Ranking Geral</button>
                     <button id="monthly-ranking-btn" class="flex-1 bg-amber-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-amber-600 transition-colors duration-200">Ranking Mensal</button>
                 </div>
-                 <button id="monthly-champions-btn" class="w-full bg-yellow-400 text-black font-bold py-3 px-4 rounded-lg hover:bg-yellow-500 transition-colors duration-200">Campeões do Mês</button>
+                 <button id="monthly-champions-btn" class="w-full bg-yellow-400 text-black font-bold py-3 px-4 rounded-lg hover:bg-yellow-500 transition-colors duration-200">Campeões Mensais</button>
                 <div class="flex gap-2">
                     <button id="month-report-btn" class="flex-1 bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700 transition-colors duration-200">Dados do Mês</button>
                     <button id="full-report-btn" class="flex-1 bg-purple-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-purple-700 transition-colors duration-200">Relatório Geral</button>
@@ -193,21 +192,40 @@
         </div>
         
         <div id="thank-you-screen" class="hidden fixed inset-0 text-center flex flex-col items-center justify-start bg-cover bg-center z-40 p-4 pt-8 pb-8 overflow-y-auto">
-             <div id="motivational-card" class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 w-full max-w-md mx-auto mb-6">
+             <div id="motivational-card" class="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg p-6 w-full max-w-md mx-auto mb-6">
                  <p id="motivational-quote" class="text-center text-lg italic text-gray-700 mb-4"></p>
-                 <h3 class="font-bold text-center text-teal-600 mb-2 border-t pt-4">Tabela de Pontos 3.0</h3>
-                 <div>
+                 <h3 class="font-bold text-center text-teal-700 text-xl mb-4 border-t pt-4">Tabela de Pontuação</h3>
+                 <div class="overflow-hidden rounded-lg border border-gray-200">
                      <table class="w-full text-sm text-left text-gray-600">
-                         <tbody>
-                            <tr class="bg-gray-200"><td class="p-2 font-semibold" colspan="2">Meta Aeróbica (Semanal)</td></tr>
-                            <tr class="border-b"><td class="p-2 pl-6 text-xs">150+ min = 175 pts | 100-149 = 122.5 pts</td></tr>
-                            <tr class="bg-gray-200"><td class="p-2 font-semibold" colspan="2">Meta de Força (Semanal)</td></tr>
-                            <tr class="border-b"><td class="p-2 pl-6 text-xs">2 sessões = 105 pts | 1 sessão = 40 pts</td></tr>
-                            <tr class="bg-gray-200"><td class="p-2 font-semibold" colspan="2">Frutas/Vegetais (Diário)</td></tr>
-                            <tr class="border-b"><td class="p-2 pl-6 text-xs">5+ = 20 pts | 4 = 12 pts | 3 = 6 pts</td></tr>
-                            <tr class="bg-gray-200"><td class="p-2 font-semibold" colspan="2">Outros (Diário)</td></tr>
-                            <tr class="border-b"><td class="p-2 pl-6 text-xs">2L+ Água = 15 pts | Sono 7h+ = 10 pts</td></tr>
-                            <tr class="border-b"><td class="p-2 pl-6 text-xs">Alimentação Limpa (4 itens) = Até 16 pts</td></tr>
+                         <thead class="bg-gray-50">
+                             <tr><th class="p-3 font-bold text-gray-800">Categoria</th><th class="p-3 font-bold text-gray-800 text-right">Pontos</th></tr>
+                         </thead>
+                         <tbody class="divide-y divide-gray-100">
+                            <tr class="bg-gray-200"><td class="p-2 font-bold text-gray-700 pl-3" colspan="2">Meta Aeróbica (Semanal)</td></tr>
+                            <tr><td class="p-2 pl-6">150+ min</td><td class="p-2 text-right font-medium">175 pts</td></tr>
+                            <tr><td class="p-2 pl-6">100 a 129 min</td><td class="p-2 text-right font-medium">122.5 pts</td></tr>
+                            <tr><td class="p-2 pl-6">80 a 99 min</td><td class="p-2 text-right font-medium">105 pts</td></tr>
+                            <tr><td class="p-2 pl-6">60 a 79 min</td><td class="p-2 text-right font-medium">87.5 pts</td></tr>
+                            <tr><td class="p-2 pl-6">40 a 59 min</td><td class="p-2 text-right font-medium">70 pts</td></tr>
+                            <tr><td class="p-2 pl-6">20 a 39 min</td><td class="p-2 text-right font-medium">35 pts</td></tr>
+                            <tr><td class="p-2 pl-6">1 a 19 min</td><td class="p-2 text-right font-medium">17.5 pts</td></tr>
+                            
+                            <tr class="bg-gray-200"><td class="p-2 font-bold text-gray-700 pl-3" colspan="2">Meta de Força (Semanal)</td></tr>
+                            <tr><td class="p-2 pl-6">2 sessões</td><td class="p-2 text-right font-medium">105 pts</td></tr>
+                            <tr><td class="p-2 pl-6">1 sessão</td><td class="p-2 text-right font-medium">40 pts</td></tr>
+
+                            <tr class="bg-gray-200"><td class="p-2 font-bold text-gray-700 pl-3" colspan="2">Frutas/Vegetais (Diário)</td></tr>
+                            <tr><td class="p-2 pl-6">5+ porções</td><td class="p-2 text-right font-medium">20 pts</td></tr>
+                            <tr><td class="p-2 pl-6">4 porções</td><td class="p-2 text-right font-medium">12 pts</td></tr>
+                            <tr><td class="p-2 pl-6">3 porções</td><td class="p-2 text-right font-medium">6 pts</td></tr>
+                            <tr><td class="p-2 pl-6">2 porções</td><td class="p-2 text-right font-medium">4 pts</td></tr>
+                            <tr><td class="p-2 pl-6">1 porção</td><td class="p-2 text-right font-medium">2 pts</td></tr>
+
+                            <tr class="bg-gray-200"><td class="p-2 font-bold text-gray-700 pl-3" colspan="2">Outros (Diário)</td></tr>
+                            <tr><td class="p-2 pl-6">2L+ Água</td><td class="p-2 text-right font-medium">15 pts</td></tr>
+                            <tr><td class="p-2 pl-6">Cuidado Alimentar</td><td class="p-2 text-right font-medium">16 pts</td></tr>
+                            <tr><td class="p-2 pl-6">7h+ Sono</td><td class="p-2 text-right font-medium">10 pts</td></tr>
+                            <tr><td class="p-2 pl-6">Cuidado Pessoal (cada)</td><td class="p-2 text-right font-medium">2 pts</td></tr>
                          </tbody>
                       </table>
                 </div>
@@ -225,14 +243,14 @@
                         <div class="border-l-4 border-teal-500 pl-3">
                             <h3 class="font-bold text-teal-700">Botões da Tela Inicial</h3>
                             <ul class="list-disc pl-4 mt-1">
-                                <li><strong>Dados do Mês:</strong> Baixa planilha com os seus lançamentos do mês atual.</li>
-                                <li><strong>Ranking Mensal:</strong> Pontuação apenas do mês vigente.</li>
-                                <li><strong>Campeões do Mês:</strong> Histórico de vencedores.</li>
+                                <li><strong>Dados do Mês:</strong> Baixa planilha com os lançamentos apenas do mês atual.</li>
+                                <li><strong>Ranking Mensal:</strong> Pontuação acumulada no mês vigente.</li>
+                                <li><strong>Campeões Mensais:</strong> Histórico de quem venceu cada mês.</li>
                             </ul>
                         </div>
                         <div class="border-l-4 border-orange-500 pl-3">
                             <h3 class="font-bold text-orange-700">Regras Básicas</h3>
-                            <p class="mt-1">Preencha o check-in todo dia. Se esquecer, você pode selecionar uma data anterior, mas seja honesto!</p>
+                            <p class="mt-1">As metas semanais (Aeróbico e Força) somam pontos ao atingir o alvo na semana (seg-dom). As diárias somam a cada dia.</p>
                         </div>
                     </div>
                 </div>
@@ -273,7 +291,7 @@
         <div id="monthly-champions-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 p-4 z-50 overflow-y-auto">
             <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-auto my-8">
                 <div class="p-6">
-                    <h2 class="text-2xl font-bold text-center text-teal-600 mb-4">Campeões do Mês</h2>
+                    <h2 class="text-2xl font-bold text-center text-teal-600 mb-4">Campeões Mensais</h2>
                     <div class="bg-gray-50 p-3 rounded-lg border mb-4">
                         <h4 class="font-bold text-md text-center text-teal-700 mb-2">Placar de Vitórias</h4>
                         <div id="monthly-champions-summary" class="text-sm space-y-1"></div>
@@ -291,31 +309,24 @@
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import { getFirestore, doc, setDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        // CONFIGURAÇÕES
         const participants = ['Carol', 'Iagê', 'Juliana', 'Mariana', 'Radmila', 'Pedro', 'Lia'];
         const challengeStartDate = new Date('2026-01-12T00:00:00');
         const challengeEndDate = new Date('2026-12-20T23:59:59');
         const SELFCARE_ACTIVITIES = ['Meditação ou Mindfulness', 'Alongamento ou Mobilidade', 'Contato com a Natureza', 'Leitura por Prazer', 'Autocuidado Essencial'];
         const MOTIVATIONAL_QUOTES = ["O sucesso é a soma de pequenos esforços.", "Não espere por inspiração, seja a inspiração!", "Seu corpo é seu templo. Cuide bem dele!", "Disciplina é a ponte entre metas e realizações.", "Cada dia conta. Faça valer a pena!"];
 
-        let state = {
-            selectedParticipant: null,
-            selectedDate: null,
-            allData: {},
-            db: null,
-            appId: 'desafio-saude-v3' 
-        };
+        let state = { selectedParticipant: null, selectedDate: null, allData: {}, db: null, appId: 'desafio-saude-v3' };
 
-        // ELEMENTOS DOM
-        const loadingScreen = document.getElementById('loading-screen'), setupScreen = document.getElementById('setup-screen'), mainApp = document.getElementById('main-app');
-        const thankYouScreen = document.getElementById('thank-you-screen'), rankingModal = document.getElementById('ranking-modal'), scoreTableModal = document.getElementById('score-table-modal');
-        const monthlyRankingModal = document.getElementById('monthly-ranking-modal'), monthlyChampionsModal = document.getElementById('monthly-champions-modal'), helpModal = document.getElementById('help-modal');
-        const setupDate = document.getElementById('setup-date'), setupParticipant = document.getElementById('setup-participant'), confirmDetails = document.getElementById('confirmation-details');
-        const confirmName = document.getElementById('confirm-name'), confirmDate = document.getElementById('confirm-date'), confirmBtn = document.getElementById('confirm-setup-btn');
-        const checkinForm = document.getElementById('checkin-form'), leaderboardContainer = document.getElementById('leaderboard'), summaryModal = document.getElementById('summary-modal');
-        const messageBox = document.getElementById('message-box'), dayCounterBadge = document.getElementById('day-counter-badge');
+        // Elements
+        const loadingScreen=document.getElementById('loading-screen'), setupScreen=document.getElementById('setup-screen'), mainApp=document.getElementById('main-app');
+        const thankYouScreen=document.getElementById('thank-you-screen'), rankingModal=document.getElementById('ranking-modal'), scoreTableModal=document.getElementById('score-table-modal');
+        const monthlyRankingModal=document.getElementById('monthly-ranking-modal'), monthlyChampionsModal=document.getElementById('monthly-champions-modal'), helpModal=document.getElementById('help-modal');
+        const setupDate=document.getElementById('setup-date'), setupParticipant=document.getElementById('setup-participant'), confirmDetails=document.getElementById('confirmation-details');
+        const confirmName=document.getElementById('confirm-name'), confirmDate=document.getElementById('confirm-date'), confirmBtn=document.getElementById('confirm-setup-btn');
+        const checkinForm=document.getElementById('checkin-form'), leaderboardContainer=document.getElementById('leaderboard'), summaryModal=document.getElementById('summary-modal');
+        const messageBox=document.getElementById('message-box'), dayCounterBadge=document.getElementById('day-counter-badge');
 
-        // HELPERS
+        // Helpers
         const getAerobicScore = m => m>=150?175:m>=100?122.5:m>=80?105:m>=60?87.5:m>=40?70:m>=20?35:m>0?17.5:0;
         const getStrengthScore = s => s>=2?105:s>=1?40:0;
         const getFruitScore = p => p>=5?20:p===4?12:p===3?6:p===2?4:p===1?2:0;
@@ -366,7 +377,7 @@
             });
         };
 
-        // SCORE LOGIC
+        // Score Calculation
         const calculateAllScores = (name) => {
             const data = state.allData[name] || { dailyLogs: {} };
             const scores = { total: 0, weekly: 0, monthly: 0 };
@@ -405,7 +416,6 @@
             return { name, ...scores };
         };
 
-        // MONTHLY LOGIC
         const calculateMonthlyScores = (includeCurr) => {
             const monthlyData = {};
             participants.forEach(name => {
@@ -447,7 +457,7 @@
             return res.sort((a,b)=>b.monthKey.localeCompare(a.monthKey));
         };
 
-        // UI UPDATES
+        // UI Updates
         const updateLeaderboardUI = () => {
             const scores = participants.map(calculateAllScores).sort((a,b)=>b.total-a.total);
             leaderboardContainer.innerHTML = scores.map((s,i) => {
@@ -480,7 +490,6 @@
             const elSum = document.getElementById('monthly-champions-summary');
             const wins = {};
             const winnersList = [];
-
             data.forEach(d => {
                 if(d.scores.length && d.scores[0].score > 0){
                     const top = d.scores[0].score;
@@ -489,31 +498,52 @@
                     winnersList.push({m:d.monthName, w:w.join(', ')});
                 }
             });
-
             const sortedWins = Object.entries(wins).sort((a,b)=>b[1]-a[1]);
             elSum.innerHTML = sortedWins.length ? sortedWins.map(([n,c]) => `<div class="flex justify-between"><span>${n}</span><span>${c} vitórias</span></div>`).join('') : '<p class="text-center text-gray-500">Sem vitórias ainda.</p>';
             elList.innerHTML = winnersList.length ? winnersList.map(x => `<div class="flex justify-between bg-gray-50 p-2 rounded border mb-1"><span class="capitalize font-bold">${x.m}</span><span>${x.w}</span></div>`).join('') : '<p class="text-center text-gray-500">Nenhum mês finalizado.</p>';
         };
 
-        // EXPORTS
+        // EXPORT FUNCTIONS
         const exportMonthReport = () => {
             const today = new Date();
             const currentMonthKey = getMonthKey(today);
-            const dataSheet = [["Relatório Mensal - " + getMonthName(currentMonthKey)], [], ["Nome", "Data", "Aeróbico", "Força", "Frutas", "Hidratação", "Alimentação Limpa (Itens)", "Sono", "Cuidado"]];
+            const currentMonthName = getMonthName(currentMonthKey);
+            const dataSheet = [
+                ["Relatório Mensal - " + currentMonthName], 
+                ["Gerado em: " + today.toLocaleDateString('pt-BR')],
+                [], 
+                ["Nome", "Data", "Aeróbico", "Força", "Frutas", "Hidratação", "Alim. Limpa (Itens)", "Sono", "Cuidado"]
+            ];
             
             participants.forEach(p => {
                 const pData = state.allData[p] || { dailyLogs: {} };
-                Object.keys(pData.dailyLogs).sort().forEach(dKey => {
+                // Ordenar datas
+                const dates = Object.keys(pData.dailyLogs).sort();
+                dates.forEach(dKey => {
                     const date = new Date(dKey+'T12:00:00');
+                    // FILTRO: Apenas se for do mês atual
                     if(getMonthKey(date) === currentMonthKey){
                         const i = pData.dailyLogs[dKey].inputs;
                         const ce = i.cleanEating || {};
                         const ceCount = (ce.noSweets?1:0)+(ce.noSoda?1:0)+(ce.noFastFood?1:0)+(ce.noFried?1:0);
-                        dataSheet.push([p, date.toLocaleDateString('pt-BR'), i.aerobicMinutes, i.strengthSessions, i.fruitPortions, i.hydration?'Sim':'Não', ceCount+'/4', i.sleep?'Sim':'Não', i.selfCareActivities.join(', ')]);
+                        dataSheet.push([
+                            p, 
+                            date.toLocaleDateString('pt-BR'), 
+                            i.aerobicMinutes, 
+                            i.strengthSessions, 
+                            i.fruitPortions, 
+                            i.hydration?'Sim':'Não', 
+                            ceCount+'/4', 
+                            i.sleep?'Sim':'Não', 
+                            i.selfCareActivities.join(', ')
+                        ]);
                     }
                 });
             });
-            const ws = XLSX.utils.aoa_to_sheet(dataSheet); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "MesAtual"); XLSX.writeFile(wb, `relatorio_${currentMonthKey}.xls`);
+            const ws = XLSX.utils.aoa_to_sheet(dataSheet); 
+            const wb = XLSX.utils.book_new(); 
+            XLSX.utils.book_append_sheet(wb, ws, "Dados do Mês"); 
+            XLSX.writeFile(wb, `dados_mes_${currentMonthKey}.xls`);
         };
 
         const exportFullReport = () => {
@@ -530,17 +560,11 @@
             const ws = XLSX.utils.aoa_to_sheet(dataSheet); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Geral"); XLSX.writeFile(wb, `relatorio_geral.xls`);
         };
 
-        // SETUP & EVENT LISTENERS
-        document.getElementById('month-report-btn').onclick = exportMonthReport;
-        document.getElementById('full-report-btn').onclick = exportFullReport;
-        document.getElementById('export-xls-btn').onclick = () => alert("Use os botões da tela inicial para relatórios completos.");
-        
-        document.getElementById('export-png-btn').onclick = () => {
-            html2canvas(document.getElementById('summary-content'), {scale:2}).then(c => { const l=document.createElement('a'); l.download='resumo.png'; l.href=c.toDataURL(); l.click(); });
-        };
-
-        // Navigation
+        // UI Helpers
         const toggle = (id, show) => document.getElementById(id).classList[show?'remove':'add']('hidden');
+        document.getElementById('export-png-btn').onclick = () => { html2canvas(document.getElementById('summary-content'), {scale:2}).then(c => { const l=document.createElement('a'); l.download='resumo.png'; l.href=c.toDataURL(); l.click(); }); };
+        
+        // Navigation Logic
         document.getElementById('close-summary-btn').onclick = () => { toggle('summary-modal',0); toggle('main-app',0); document.getElementById('motivational-quote').textContent=`"${MOTIVATIONAL_QUOTES[Math.floor(Math.random()*MOTIVATIONAL_QUOTES.length)]}"`; toggle('thank-you-screen',1); };
         document.getElementById('add-another-checkin-btn').onclick = () => { toggle('thank-you-screen',0); toggle('setup-screen',1); setupDate.value=''; setupParticipant.value=''; toggle('confirmation-details',0); confirmBtn.disabled=true; };
         
@@ -549,6 +573,9 @@
         document.getElementById('monthly-champions-btn').onclick = () => { updateMonthlyChampionsUI(); toggle('monthly-champions-modal',1); };
         document.getElementById('score-table-btn').onclick = () => { document.querySelector('#score-table-content').innerHTML = document.querySelector('#motivational-card table').outerHTML; toggle('score-table-modal',1); };
         document.getElementById('help-btn').onclick = () => toggle('help-modal',1);
+        
+        document.getElementById('month-report-btn').onclick = exportMonthReport;
+        document.getElementById('full-report-btn').onclick = exportFullReport;
 
         ['ranking','score-table','monthly-ranking','monthly-champions','help'].forEach(n => document.getElementById(`close-${n}-btn`).onclick = () => toggle(`${n}-modal`,0));
 
@@ -600,27 +627,24 @@
                 const currentData = state.allData[state.selectedParticipant] || { dailyLogs: {} };
                 currentData.dailyLogs[key] = { inputs };
                 
-                await setDoc(doc(state.db, `artifacts/${state.appId}/public/data/healthChallenge`, state.selectedParticipant), currentData);
+                // MUDANÇA: Salvamento mais robusto
+                const docRef = doc(state.db, `artifacts/${state.appId}/public/data/healthChallenge`, state.selectedParticipant);
+                await setDoc(docRef, currentData, { merge: true });
                 
-                // Força atualização local imediata para o resumo
+                // Atualiza estado local imediatamente
                 state.allData[state.selectedParticipant] = currentData;
                 
                 showMessage('Salvo com sucesso!');
-                // Pequeno delay para garantir que o modal de resumo tenha os dados frescos
-                setTimeout(() => {
-                    const daily = document.getElementById('summary-daily-total'); // Check if exists
-                    if(daily) showSummary(); // Only show if DOM is ready
-                }, 100);
+                setTimeout(() => { if(document.getElementById('summary-daily-total')) showSummary(); }, 200);
 
             } catch (err) {
                 console.error(err);
-                showMessage('Erro ao salvar: ' + err.message, 'error');
+                showMessage('Erro ao salvar. Verifique sua conexão.', 'error');
             } finally {
                 btn.disabled=false; btn.textContent="Finalizar Check-in";
             }
         };
 
-        // INIT
         const init = async () => {
             try {
                 const app = initializeApp({
@@ -647,7 +671,7 @@
                 toggle('loading-screen',0); toggle('setup-screen',1);
             } catch (e) {
                 console.error(e);
-                loadingScreen.innerHTML = `<p class="text-red-500 font-bold">Erro de conexão com o banco de dados.</p><p class="text-sm mt-2 text-gray-600">Verifique sua internet ou tente recarregar.</p>`;
+                loadingScreen.innerHTML = `<p class="text-red-500 font-bold">Erro de conexão.</p>`;
             }
         };
         init();
