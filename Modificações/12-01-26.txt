@@ -1,0 +1,15 @@
+12/01/2026
+
+Mudanças a serem feitas:
+
+1. Adicionar participantes:
+- Pedro
+- Lia
+
+2. Mudar de Semanal para Mensal.
+
+3. Acrescentar um botão na tela inicial com "Ajuda", em que direciona para uma pagina explicando cada botão e também cada item do desafio.
+
+4. mudar a pagina no github.
+
+5. mudar o banco de dado no firebase (me mostrar o passo a passo).
