@@ -76,10 +76,8 @@
             </header>
 
             <div class="bg-white p-6 rounded-xl shadow-md max-w-md mx-auto space-y-4 relative">
-                <button id="help-btn" class="absolute top-2 right-2 text-gray-400 hover:text-teal-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
-                    </svg>
+                <button id="help-btn" class="absolute -top-4 -right-4 hover:scale-105 transition-transform duration-200" title="Precisa de ajuda?">
+                    <img src="help.png" alt="Botão de Ajuda" class="w-24 h-auto drop-shadow-lg">
                 </button>
 
                 <div>
@@ -107,7 +105,7 @@
                 <button id="monthly-report-btn" class="w-full bg-green-700 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 transition-colors duration-200">📂 Baixar Dados do Mês (Excel)</button>
                 
                 <div class="flex gap-2">
-                    <button id="full-report-btn" class="w-full bg-red-100 text-white font-bold py-3 px-4 rounded-lg hover:bg-purple-700 transition-colors duration-200">Relatório Geral</button>
+                    <button id="full-report-btn" class="w-full bg-sky-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-purple-700 transition-colors duration-200">📂 Baixar Dados do Desafio (Excel)</button>
                 </div>
             </div>
         </div>
@@ -243,18 +241,22 @@
                             <ul class="list-disc pl-5 space-y-1">
                                 <li><strong>Ranking Geral:</strong> Soma de todos os pontos desde o início do desafio.</li>
                                 <li><strong>Ranking Mensal:</strong> Pontuação acumulada apenas no mês vigente.</li>
-                                <li><strong>Dados do Mês:</strong> Baixa uma planilha Excel com todos os detalhes do mês atual.</li>
-                                <li><strong>Relatório Geral:</strong> Baixa todos os dados desde o início do desafio.</li>
+                                <li><strong>Baixar Dados do Mês (Excel):</strong> Baixa uma planilha Excel com todos os detalhes do mês atual.</li>
+                                <li><strong>Baixar Dados do Desafio (Excel)</strong> Baixa todos os dados desde o início do desafio.</li>
                             </ul>
                         </div>
                         <div>
                             <h3 class="font-bold text-teal-700">3. Pontuação (Resumo)</h3>
                             <ul class="list-disc pl-5 space-y-1">
-                                <li><strong>Aeróbico:</strong> Meta semanal de 150min (até 175pts).</li>
-                                <li><strong>Força:</strong> Meta semanal de 2 sessões (até 105pts).</li>
+                                <li><strong>Pontuação Semanal:</strong> (Aquelas que renovam a cada semana).</li>
+                                <li><strong>Aeróbico:</strong> Meta semanal de 150min (até 175pts). Semana é contada de Segunda a Domingo.</li>
+                                <li><strong>Força:</strong> Meta semanal de 2 sessões (até 105pts). Semana é contada de Segunda a Domingo.</li>
+                                <li></li>
+                                <li><strong>Pontuações Diárias:</strong> (Aquelas que renovam a cada dia).</li>
                                 <li><strong>Frutas/Veg:</strong> 5 porções diárias = 20pts.</li>
                                 <li><strong>Água:</strong> 2L+ = 15pts.</li>
-                                <li><strong>Alimentação Limpa:</strong> Evitar doces, refri, fast-food e frituras (4pts cada).</li>
+                                <li><strong>Qualidade Alimentar:</strong> Evitar doces, refri, fast-food e frituras (4pts cada).</li>
+                                <li><strong>Bem-Estar:</strong> Atividades que considerem o bem-estar como: meditação, alongamento, contato com a natureza, leitura por prazer (estudo não conta), Autocuidade essencial (ex: ir a um show, fazer uma massagem fora, ter um tempo para você mesma (o), etc). Cada item vale 4pts por dia).</li>
                                 <li><strong>Sono:</strong> 7h+ = 10pts.</li>
                             </ul>
                         </div>
