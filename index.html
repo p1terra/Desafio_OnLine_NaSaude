@@ -735,8 +735,8 @@
 
         // --- SETUP LOGIC ---
         const checkSetupValidity = () => {
-            const dateVal = setupDate.value;
-            const participantVal = setupParticipant.value;
+            const dateVal = setupDate?.value;
+            const participantVal = setupParticipant?.value;
             if (dateVal && participantVal) {
                 const selectedDate = new Date(dateVal + 'T12:00:00');
                 
@@ -760,10 +760,10 @@
             }
         };
 
-        setupDate.addEventListener('change', checkSetupValidity);
-        setupParticipant.addEventListener('change', checkSetupValidity);
+        setupDate?.addEventListener('change', checkSetupValidity);
+        setupParticipant?.addEventListener('change', checkSetupValidity);
 
-        confirmBtn.addEventListener('click', () => {
+        confirmBtn?.addEventListener('click', () => {
             setupScreen.classList.add('hidden');
             mainApp.classList.remove('hidden');
             document.getElementById('current-participant-name').textContent = state.selectedParticipant;
@@ -896,42 +896,47 @@
         // --- EXPORT & NAVIGATION & HELP LOGIC ---
         
         // Ajuda
-        helpBtn.addEventListener('click', () => helpModal.classList.remove('hidden'));
-        closeHelpBtn.addEventListener('click', () => helpModal.classList.add('hidden'));
+        helpBtn?.addEventListener('click', () => helpModal.classList.remove('hidden'));
+        closeHelpBtn?.addEventListener('click', () => helpModal.classList.add('hidden'));
 
-        document.getElementById('export-png-btn').addEventListener('click', () => {
-            html2canvas(document.getElementById('summary-content'), { scale: 2 }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `resumo_v3.png`;
-                link.href = canvas.toDataURL();
-                link.click();
-            });
+       document.getElementById('export-png-btn')?.addEventListener('click', () => {
+            const content = document.getElementById('summary-content');
+            if(content) {
+                html2canvas(content, { scale: 2 }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = `resumo_v3.png`;
+                    link.href = canvas.toDataURL();
+                    link.click();
+                });
+            }
         });
-        document.getElementById('close-summary-btn').addEventListener('click', () => {
+
+        document.getElementById('close-summary-btn')?.addEventListener('click', () => {
             summaryModal.classList.add('hidden');
             mainApp.classList.add('hidden');
             showMotivationalCard();
             thankYouScreen.classList.remove('hidden');
         });
-        document.getElementById('add-another-checkin-btn').addEventListener('click', () => {
+
+        document.getElementById('add-another-checkin-btn')?.addEventListener('click', () => {
             thankYouScreen.classList.add('hidden');
             setupScreen.classList.remove('hidden');
-            setupDate.value = '';
-            setupParticipant.value = '';
+            if(setupDate) setupDate.value = '';
+            if(setupParticipant) setupParticipant.value = '';
             confirmDetails.classList.add('hidden');
-            confirmBtn.disabled = true;
+            if(confirmBtn) confirmBtn.disabled = true;
         });
 
-        // Listeners Dash
-        document.getElementById('ranking-btn').addEventListener('click', () => { updateRankingModalUI(); rankingModal.classList.remove('hidden'); });
-        document.getElementById('monthly-ranking-btn').addEventListener('click', () => { updateMonthlyRankingUI(); monthlyRankingModal.classList.remove('hidden'); });
-        document.getElementById('monthly-report-btn').addEventListener('click', exportMonthlyReport);
-        document.getElementById('full-report-btn').addEventListener('click', exportFullReport);
-        document.getElementById('score-table-btn').addEventListener('click', () => { scoreTableModal.classList.remove('hidden'); });
+        // Listeners Dash (Botões da tela inicial e modais)
+        document.getElementById('ranking-btn')?.addEventListener('click', () => { updateRankingModalUI(); rankingModal.classList.remove('hidden'); });
+        document.getElementById('monthly-ranking-btn')?.addEventListener('click', () => { updateMonthlyRankingUI(); monthlyRankingModal.classList.remove('hidden'); });
+        document.getElementById('monthly-report-btn')?.addEventListener('click', exportMonthlyReport);
+        document.getElementById('full-report-btn')?.addEventListener('click', exportFullReport);
+        document.getElementById('score-table-btn')?.addEventListener('click', () => { scoreTableModal.classList.remove('hidden'); });
         
-        document.getElementById('close-ranking-btn').addEventListener('click', () => { rankingModal.classList.add('hidden'); });
-        document.getElementById('close-score-table-btn').addEventListener('click', () => { scoreTableModal.classList.add('hidden'); });
-        document.getElementById('close-monthly-ranking-btn').addEventListener('click', () => { monthlyRankingModal.classList.add('hidden'); });
+        document.getElementById('close-ranking-btn')?.addEventListener('click', () => { rankingModal.classList.add('hidden'); });
+        document.getElementById('close-score-table-btn')?.addEventListener('click', () => { scoreTableModal.classList.add('hidden'); });
+        document.getElementById('close-monthly-ranking-btn')?.addEventListener('click', () => { monthlyRankingModal.classList.add('hidden'); });
 
         // Initialize Firebase
         const init = async () => {
