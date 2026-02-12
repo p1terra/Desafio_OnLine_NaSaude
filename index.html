@@ -56,6 +56,44 @@
             transform: scale(1.05);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 300px;
+        }
+        th, td {
+            border: 1px solid #e2e8f0;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f8fafc;
+            font-weight: bold;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 50;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 85vh;
+            overflow-y: auto;
+            border-radius: 12px;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -100,7 +138,7 @@
                         <img src="imagens/help.png" alt="Botão de Ajuda" class="w-24 h-auto drop-shadow-xl">
                     </button>
                 </div>
-                <button id="score-table-btn" class="w-full bg-gray-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-gray-700 transition-colors duration-200">Ver Regras e Pontuação</button>
+                <button id="score-table-btn" class="w-full bg-gray-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-gray-700 transition-colors duration-200">Tabela de Pontuação</button>
                 <div class="flex gap-2">
                     <button id="ranking-btn" class="flex-1 bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200">Ranking Geral</button>
                     <button id="monthly-ranking-btn" class="flex-1 bg-amber-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-amber-600 transition-colors duration-200">Ranking Mensal</button>
@@ -229,46 +267,117 @@
                 </div>
             </main>
         </div>
-
-        <div id="help-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 p-4 z-50 overflow-y-auto flex items-center justify-center">
-            <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg relative">
-                <div class="p-6">
-                    <h2 class="text-2xl font-bold text-center text-teal-600 mb-4">Central de Ajuda</h2>
-                    <div class="space-y-4 text-sm text-gray-700 h-96 overflow-y-auto pr-2">
-                        <div>
-                            <h3 class="font-bold text-teal-700">1. Como funciona o Check-in?</h3>
-                            <p>Preencha diariamente suas atividades. Os pontos são somados automaticamente.</p>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-teal-700">2. Botões da Tela Inicial</h3>
-                            <ul class="list-disc pl-5 space-y-1">
-                                <li><strong>Ranking Geral:</strong> Soma de todos os pontos desde o início do desafio.</li>
-                                <li><strong>Ranking Mensal:</strong> Pontuação acumulada apenas no mês vigente.</li>
-                                <li><strong>Baixar Dados do Mês (Excel):</strong> Baixa uma planilha Excel com todos os detalhes do mês atual.</li>
-                                <li><strong>Baixar Dados do Desafio (Excel)</strong> Baixa todos os dados desde o início do desafio.</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-teal-700">3. Pontuação (Resumo)</h3>
-                            <ul class="list-disc pl-5 space-y-1">
-                                <li><strong>Pontuação Semanal:</strong> (Aquelas que renovam a cada semana).</li>
-                                <li><strong>Aeróbico:</strong> Meta semanal de 150min (até 175pts). Semana é contada de Segunda a Domingo.</li>
-                                <li><strong>Força:</strong> Meta semanal de 2 sessões (até 105pts). Semana é contada de Segunda a Domingo.</li>
-                                <li></li>
-                                <li><strong>Pontuações Diárias:</strong> (Aquelas que renovam a cada dia).</li>
-                                <li><strong>Frutas/Veg:</strong> 5 porções diárias = 20pts.</li>
-                                <li><strong>Água:</strong> 2L+ = 15pts.</li>
-                                <li><strong>Qualidade Alimentar:</strong> Evitar doces, refri, fast-food e frituras (4pts cada).</li>
-                                <li><strong>Bem-Estar:</strong> Atividades que considerem o bem-estar como: meditação, alongamento, contato com a natureza, leitura por prazer (estudo não conta), Autocuidade essencial (ex: ir a um show, fazer uma massagem fora, ter um tempo para você mesma (o), etc). Cada item vale 4pts por dia).</li>
-                                <li><strong>Sono:</strong> 7h+ = 10pts.</li>
-                            </ul>
-                        </div>
-                    </div>
+        
+        <!-- SESSÃO DE AJUDA/REGRAS - INÍCIO -->
+        
+        <div id="rules-modal" class="modal">
+            <div class="modal-content shadow-2xl">
+                <div class="flex justify-between items-center border-b pb-4 mb-4">
+                    <h1 class="text-2xl font-bold text-gray-800">REGRAS DO DESAFIO</h1>
+                    <button id="close-modal" class="text-gray-500 hover:text-red-500 text-2xl">&times;</button>
                 </div>
-                <div class="p-4 bg-gray-100 rounded-b-xl text-center"><button id="close-help-btn" class="bg-gray-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-600">Entendi</button></div>
-            </div>
-        </div>
 
+            <div class="text-gray-700 space-y-6">
+                <section>
+                    <h2 class="text-xl font-semibold text-blue-600">🎯 Objetivo</h2>
+                    <p class="mt-2 text-sm">Incentivar hábitos básicos e eficazes para melhorar a saúde, como alimentação equilibrada e movimento regular, de acordo com as recomendações da OMS (modificado)[cite: 3].</p>
+                    <ul class="list-disc ml-5 mt-2 text-sm">
+                        <li>Cada ação vale pontos, e vence quem acumular mais pontos no mês[cite: 4].</li>
+                        <li>O vencedor recebe um PIX de R$ 60,00, proveniente da contribuição de R$ 10,00 de cada participante não vencedor[cite: 5].</li>
+                        <li>Grupo composto por 7 participantes[cite: 6].</li>
+                    </ul>
+                </section>
+
+                <hr>
+
+                <section>
+                    <h2 class="text-xl font-semibold text-green-600 uppercase">Exercício Físico</h2>
+                    <p class="text-xs italic text-gray-500 mt-1">Diferença: Atividade física é qualquer movimento cotidiano[cite: 9, 10]; Exercício físico é planejado e repetitivo com objetivo de saúde[cite: 12].</p>
+                    
+                    <h3 class="font-bold mt-4">Meta Aeróbica (150 min/semana) [cite: 17]</h3>
+                    <p class="text-sm">Ex: Caminhada, corrida, natação, dança[cite: 16].</p>
+                    <div class="table-container mt-2">
+                        <table>
+                            <thead>
+                                <tr><th>Tempo Semanal</th><th>Pontos</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>150+ min</td><td>175 pts</td></tr>
+                                <tr><td>100 a 149 min</td><td>122.5 pts</td></tr>
+                                <tr><td>80 a 99 min</td><td>105 pts</td></tr>
+                                <tr><td>60 a 79 min</td><td>87.5 pts</td></tr>
+                                <tr><td>40 a 59 min</td><td>70 pts</td></tr>
+                                <tr><td>20 a 39 min</td><td>35 pts</td></tr>
+                                <tr><td>1 a 19 min</td><td>17.5 pts</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="font-bold mt-4">Meta de Força (2 sessões/semana) [cite: 37]</h3>
+                    <p class="text-sm">Ex: Musculação, pilates, exercícios com peso do corpo[cite: 25].</p>
+                    <div class="table-container mt-2">
+                        <table>
+                            <thead>
+                                <tr><th>Sessões Semanais</th><th>Pontos</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>1 sessão</td><td>40 pts</td></tr>
+                                <tr><td>2 sessões</td><td>105 pts</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <hr>
+
+                <section>
+                    <h2 class="text-xl font-semibold text-orange-600 uppercase">Alimentação</h2>
+                    <h3 class="font-bold">Meta: 5 porções diárias de frutas/vegetais [cite: 47]</h3>
+                    <div class="table-container mt-2">
+                        <table>
+                            <thead>
+                                <tr><th>Porções Diárias</th><th>Pontos</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>5+ porções</td><td>20 pts</td></tr>
+                                <tr><td>4 porções</td><td>12 pts</td></tr>
+                                <tr><td>3 porções</td><td>6 pts</td></tr>
+                                <tr><td>2 porções</td><td>4 pts</td></tr>
+                                <tr><td>1 porção</td><td>2 pts</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <hr>
+
+                <section>
+                    <h2 class="text-xl font-semibold text-teal-600 uppercase">Hidratação e Bem-Estar</h2>
+                    <div class="table-container mt-2">
+                        <table>
+                            <thead>
+                                <tr><th>Categoria</th><th>Meta / Item</th><th>Pontos</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Hidratação</td><td>Mínimo 2L de água/dia [cite: 56]</td><td>15 pts</td></tr>
+                                <tr><td rowspan="4">Alimentação Limpa [cite: 60]</td><td>Sem doces [cite: 63]</td><td>4 pts</td></tr>
+                                <tr><td>Sem fast food [cite: 64]</td><td>4 pts</td></tr>
+                                <tr><td>Sem bebidas industrializadas [cite: 65]</td><td>4 pts</td></tr>
+                                <tr><td>Sem comidas gordurosas [cite: 66]</td><td>4 pts</td></tr>
+                                <tr><td>Sono</td><td>Mínimo 7h contínuas [cite: 68]</td><td>10 pts</td></tr>
+                                <tr><td rowspan="4">Cuidado Pessoal [cite: 71]</td><td>Meditação (min 15 min) [cite: 74]</td><td>2 pts</td></tr>
+                                <tr><td>Alongamento (min 15 min) [cite: 75]</td><td>2 pts</td></tr>
+                                <tr><td>Contato com a natureza [cite: 76]</td><td>2 pts</td></tr>
+                                <tr><td>Leitura por prazer [cite: 77]</td><td>2 pts</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+            <!-- SESSÃO DE AJUDA/REGRAS - FIM -->
+            <button id="close-modal-footer" class="mt-6 w-full bg-gray-200 text-gray-800 py-2 rounded-md hover:bg-gray-300">Fechar</button>
+        </div>
+    </div>
         <div id="summary-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 p-4 z-50 overflow-y-auto flex items-center justify-center">
             <div id="summary-card-frame" class="p-1 bg-gradient-to-br from-teal-400 via-green-400 to-emerald-500 rounded-2xl shadow-2xl w-full max-w-lg">
                 <div class="bg-white rounded-xl">
@@ -300,7 +409,7 @@
         <div id="thank-you-screen" class="hidden fixed inset-0 text-center flex flex-col items-center justify-start bg-cover bg-center z-40 p-4 pt-8 pb-8 overflow-y-auto">
              <div id="motivational-card" class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 w-full max-w-md mx-auto mb-6">
                  <p id="motivational-quote" class="text-center text-lg italic text-gray-700 mb-4"></p>
-                 <h3 class="font-bold text-center text-teal-600 mb-2 border-t pt-4">Tabela de Pontos 2.0</h3>
+                 <h3 class="font-bold text-center text-teal-600 mb-2 border-t pt-4">Tabela de Pontos 3.0</h3>
                  <div>
                      <table class="w-full text-sm text-left text-gray-600">
                          <thead class="bg-gray-100 sticky top-0">
@@ -676,6 +785,35 @@
                 return `<div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg border"><div class="flex items-center"><span class="text-xl w-8">${medal}</span><span class="font-bold">${score.name}</span></div><div class="text-right"><span class="font-bold text-amber-600 text-lg">${Math.round(score.monthly)} pts</span></div></div>`;
             }).join('');
         };
+        
+        // SESSÃO DE AJUDA/REGRAS - INÍCIO
+        const modal = document.getElementById("rules-modal");
+        const btn = document.getElementById("score-table-btn");
+        const closeBtn = document.getElementById("close-modal");
+        const closeBtnFooter = document.getElementById("close-modal-footer");
+
+        // Abre o modal
+        btn.onclick = function() {
+            modal.style.display = "block";
+            document.body.style.overflow = "hidden"; // Trava o scroll da página ao fundo
+        }
+
+        // Fecha o modal no X ou no botão fechar
+        const closeModal = () => {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+
+        closeBtn.onclick = closeModal;
+        closeBtnFooter.onclick = closeModal;
+
+        // Fecha se clicar fora do conteúdo
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+        // SESSÃO DE AJUDA/REGRAS - FIM 
 
         // 8. Relatório do Mês (Excel)
         const exportMonthlyReport = () => {
