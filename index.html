@@ -36,7 +36,7 @@
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='hexagons' fill='%23e2f3f1' fill-opacity='0.4' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.99-7.5L26 15v18.5L13 41 0 33.5V15z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
         #thank-you-screen {
-            background-image: url('imagens/tela_final.png'); /* Certifique-se que esta imagem existe ou remova */
+            background-image: url('imagens/tela_final.png'); 
             background-size: cover;
             background-position: center;
         }
@@ -85,16 +85,6 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0,0,0,0.5);
-        }
-        .modal-content {
-            background-color: white;
-            margin: 5% auto;
-            padding: 20px;
-            width: 90%;
-            max-width: 800px;
-            max-height: 85vh;
-            overflow-y: auto;
-            border-radius: 12px;
         }
     </style>
 </head>
@@ -145,11 +135,110 @@
                 </div>
             </div>
 
-            <div class="max-w-md mx-auto mt-10 p-4 border-t border-gray-300">
-                <h2 class="text-xl font-bold text-center text-gray-700 mb-4">Regras e Ajuda</h2>
-                <div id="static-rules-content"></div>
+            <div id="regras-ajuda-container" class="max-w-2xl mx-auto mt-12 p-6 bg-white rounded-xl shadow-md border border-gray-200">
+                <div class="border-b pb-4 mb-4 text-center">
+                    <h1 class="text-2xl font-bold text-gray-800">REGRAS DO DESAFIO</h1>
+                </div>
+
+                <div class="text-gray-700 space-y-6 text-left">
+                    <section>
+                        <h2 class="text-xl font-semibold text-blue-600">🎯 Objetivo</h2>
+                        <p class="mt-2 text-sm">Incentivar hábitos básicos e eficazes para melhorar a saúde, como alimentação equilibrada e movimento regular, de acordo com as recomendações da OMS (modificado).</p>
+                        <ul class="list-disc ml-5 mt-2 text-sm">
+                            <li>Cada ação vale pontos, e vence quem acumular mais pontos no mês.</li>
+                            <li>O vencedor recebe um PIX de R$ 60,00, proveniente da contribuição de R$ 10,00 de cada participante não vencedor.</li>
+                            <li>Grupo composto por 7 participantes.</li>
+                        </ul>
+                    </section>
+
+                    <hr>
+
+                    <section>
+                        <h2 class="text-xl font-semibold text-green-600 uppercase">Exercício Físico</h2>
+                        <p class="text-xs italic text-gray-500 mt-1">Diferença: Atividade física é qualquer movimento cotidiano; Exercício físico é planejado e repetitivo com objetivo de saúde.</p>
+                        
+                        <h3 class="font-bold mt-4">Meta Aeróbica (150 min/semana)</h3>
+                        <p class="text-sm">Ex: Caminhada, corrida, natação, dança.</p>
+                        <div class="table-container mt-2">
+                            <table>
+                                <thead>
+                                    <tr><th>Tempo Semanal</th><th>Pontos</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>150+ min</td><td>175 pts</td></tr>
+                                    <tr><td>100 a 149 min</td><td>122.5 pts</td></tr>
+                                    <tr><td>80 a 99 min</td><td>105 pts</td></tr>
+                                    <tr><td>60 a 79 min</td><td>87.5 pts</td></tr>
+                                    <tr><td>40 a 59 min</td><td>70 pts</td></tr>
+                                    <tr><td>20 a 39 min</td><td>35 pts</td></tr>
+                                    <tr><td>1 a 19 min</td><td>17.5 pts</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3 class="font-bold mt-4">Meta de Força (2 sessões/semana)</h3>
+                        <p class="text-sm">Ex: Musculação, pilates, exercícios com peso do corpo.</p>
+                        <div class="table-container mt-2">
+                            <table>
+                                <thead>
+                                    <tr><th>Sessões Semanais</th><th>Pontos</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>1 sessão</td><td>40 pts</td></tr>
+                                    <tr><td>2 sessões</td><td>105 pts</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <hr>
+
+                    <section>
+                        <h2 class="text-xl font-semibold text-orange-600 uppercase">Alimentação</h2>
+                        <h3 class="font-bold">Meta: 5 porções diárias de frutas/vegetais</h3>
+                        <div class="table-container mt-2">
+                            <table>
+                                <thead>
+                                    <tr><th>Porções Diárias</th><th>Pontos</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>5+ porções</td><td>20 pts</td></tr>
+                                    <tr><td>4 porções</td><td>12 pts</td></tr>
+                                    <tr><td>3 porções</td><td>6 pts</td></tr>
+                                    <tr><td>2 porções</td><td>4 pts</td></tr>
+                                    <tr><td>1 porção</td><td>2 pts</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <hr>
+
+                    <section>
+                        <h2 class="text-xl font-semibold text-teal-600 uppercase">Hidratação e Bem-Estar</h2>
+                        <div class="table-container mt-2">
+                            <table>
+                                <thead>
+                                    <tr><th>Categoria</th><th>Meta / Item</th><th>Pontos</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Hidratação</td><td>Mínimo 2L de água/dia</td><td>15 pts</td></tr>
+                                    <tr><td rowspan="4">Alimentação Limpa</td><td>Sem doces</td><td>4 pts</td></tr>
+                                    <tr><td>Sem fast food</td><td>4 pts</td></tr>
+                                    <tr><td>Sem bebidas industrializadas</td><td>4 pts</td></tr>
+                                    <tr><td>Sem comidas gordurosas</td><td>4 pts</td></tr>
+                                    <tr><td>Sono</td><td>Mínimo 7h contínuas</td><td>10 pts</td></tr>
+                                    <tr><td rowspan="4">Cuidado Pessoal</td><td>Meditação (min 15 min)</td><td>2 pts</td></tr>
+                                    <tr><td>Alongamento (min 15 min)</td><td>2 pts</td></tr>
+                                    <tr><td>Contato com a natureza</td><td>2 pts</td></tr>
+                                    <tr><td>Leitura por prazer</td><td>2 pts</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
             </div>
-        </div>
+            <div class="h-10"></div> </div>
 
         <div id="main-app" class="hidden">
             <header class="text-center mb-4">
@@ -269,53 +358,6 @@
                 </div>
             </main>
         </div>
-        
-        <div id="rules-content-source" class="hidden">
-            <div class="text-gray-700 space-y-6">
-                <section>
-                    <h2 class="text-xl font-semibold text-blue-600">🎯 Objetivo</h2>
-                    <p class="mt-2 text-sm">Incentivar hábitos básicos e eficazes para melhorar a saúde.</p>
-                </section>
-                <hr>
-                <section>
-                    <h2 class="text-xl font-semibold text-green-600 uppercase">Exercício Físico</h2>
-                    <h3 class="font-bold mt-4">Meta Aeróbica (150 min/semana)</h3>
-                    <p class="text-sm">Ex: Caminhada, corrida, natação, dança.</p>
-                    <div class="table-container mt-2">
-                        <table>
-                            <thead><tr><th>Tempo Semanal</th><th>Pontos</th></tr></thead>
-                            <tbody>
-                                <tr><td>150+ min</td><td>175 pts</td></tr>
-                                <tr><td>100 a 149 min</td><td>122.5 pts</td></tr>
-                                <tr><td>80 a 99 min</td><td>105 pts</td></tr>
-                                <tr><td>1 a 79 min</td><td>Proporcional</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <h3 class="font-bold mt-4">Meta de Força (2 sessões/semana)</h3>
-                    <div class="table-container mt-2">
-                        <table>
-                            <thead><tr><th>Sessões Semanais</th><th>Pontos</th></tr></thead>
-                            <tbody>
-                                <tr><td>1 sessão</td><td>40 pts</td></tr>
-                                <tr><td>2 sessões</td><td>105 pts</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
-                <hr>
-                <section>
-                    <h2 class="text-xl font-semibold text-teal-600 uppercase">Hábitos Diários</h2>
-                    <ul class="list-disc ml-5 text-sm">
-                        <li><strong>Frutas/Vegetais:</strong> 5+ porções = 20 pts.</li>
-                        <li><strong>Hidratação:</strong> 2L+ água = 15 pts.</li>
-                        <li><strong>Sono:</strong> 7h+ = 10 pts.</li>
-                        <li><strong>Alimentação Limpa:</strong> 4 pts por categoria evitada (Doces, Refri, FastFood, Fritura).</li>
-                        <li><strong>Cuidado Pessoal:</strong> 2 pts cada (Exceto Autocuidado Essencial).</li>
-                    </ul>
-                </section>
-            </div>
-        </div>
 
         <div id="summary-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 p-4 z-50 overflow-y-auto flex items-center justify-center">
             <div id="summary-card-frame" class="p-1 bg-gradient-to-br from-teal-400 via-green-400 to-emerald-500 rounded-2xl shadow-2xl w-full max-w-lg">
@@ -396,7 +438,6 @@
 
         // --- CONFIGURAÇÃO 3.0 ---
         const participants = ['Carol', 'Iagê', 'Juliana', 'Mariana', 'Radmila', 'Pedro', 'Lia'];
-        // Paleta segura para daltônicos para o gráfico
         const participantColors = [
             '#377eb8', '#ff7f00', '#4daf4a', '#f781bf', '#a65628', '#984ea3', '#999999'
         ];
@@ -458,7 +499,6 @@
             if (minutes > 0) return 17.5;
             return 0;
         };
-        // Lógica de força mantida (Base semanal), mas a entrada agora é diária (0 ou 1)
         const getStrengthScore = (sessions) => {
             if (sessions >= 2) return 105;
             if (sessions >= 1) return 40; 
@@ -472,7 +512,6 @@
             if (portions === 1) return 2;
             return 0;
         };
-        // AUTOCUIDADO: Filtrando "Autocuidado Essencial" (Item 3 da lista de alterações)
         const getSelfCareScore = (activities) => {
             const validActivities = activities.filter(a => a !== 'Autocuidado Essencial');
             return validActivities.length * 2;
@@ -480,7 +519,6 @@
 
         const getFormattedDateKey = (d) => d.toISOString().split('T')[0];
         
-        // Retorna o índice da semana (0, 1, 2...)
         const getChallengeWeekIndex = (d) => {
              if (d < challengeStartDate) return -1;
              const diffTime = d - challengeStartDate;
@@ -488,7 +526,6 @@
              return Math.floor(diffDays / 7);
         };
 
-        // Retorna a chave do mês "2026-01"
         const getMonthKey = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
 
         // 7. Contador de Dias
@@ -515,10 +552,6 @@
         const populateChecklists = () => {
             const selfcareContainer = document.getElementById('selfcare-checklist');
             selfcareContainer.innerHTML = SELFCARE_ACTIVITIES.map(activity => `<div class="flex items-center"><input type="checkbox" id="selfcare-${activity.replace(/\s/g, '')}" name="selfcare-activity" value="${activity}" class="h-5 w-5 rounded border-gray-300 text-teal-600 focus:ring-teal-500"><label for="selfcare-${activity.replace(/\s/g, '')}" class="ml-2">${activity}</label></div>`).join('');
-            
-            // Inserir as regras estáticas
-            const rulesSource = document.getElementById('rules-content-source').innerHTML;
-            document.getElementById('static-rules-content').innerHTML = rulesSource;
         };
 
         const showMotivationalCard = () => {
@@ -528,11 +561,9 @@
         };
         
         const populateScoreTableModal = () => {
-            // Cria a tabela baseada no HTML source
             const scoreTableContainer = document.getElementById('score-table-content');
             const finalScoreTableContainer = document.getElementById('final-score-table-container');
             
-            // Tabela Manual Simplificada para exibição
             const tableHTML = `
             <table class="w-full text-sm text-left text-gray-600 border">
               <thead class="bg-gray-100"><tr><th class="p-2">Meta</th><th class="p-2 text-right">Pts</th></tr></thead>
@@ -583,9 +614,7 @@
         const prefillForm = (inputs) => {
             document.getElementById('aerobic-minutes').value = inputs.aerobicMinutes;
             
-            // Checkbox de Força
             const strengthCheck = document.getElementById('strength-check');
-            // Se input for > 0 (formato antigo ou novo), marca a caixa
             strengthCheck.checked = (inputs.strengthSessions > 0);
 
             document.getElementById('fruit-portions-input').value = inputs.fruitPortions;
@@ -618,10 +647,10 @@
         // --- CALCULATION LOGIC (Monthly Fix) ---
         const calculateScoresByMonth = (participantName) => {
             const participantData = state.allData[participantName] || { dailyLogs: {} };
-            const monthlyScores = {}; // { '2026-01': 1500, '2026-02': 1200 }
+            const monthlyScores = {}; 
             const weeklyAggregates = {};
 
-            // 1. Calcular pontos DIÁRIOS (estritamente pelo mês do dia)
+            // 1. Calcular pontos DIÁRIOS
             for (const dateKey in participantData.dailyLogs) {
                 const logDate = new Date(dateKey + 'T12:00:00');
                 const monthKey = getMonthKey(logDate);
@@ -629,7 +658,6 @@
 
                 if (!monthlyScores[monthKey]) monthlyScores[monthKey] = 0;
 
-                // Frutas, Hidratação, Sono, Alimentação, Autocuidado
                 let dailyPoints = getFruitScore(inputs.fruitPortions) + 
                                   (inputs.hydration ? 15 : 0) + 
                                   (inputs.sleep ? 10 : 0) +
@@ -651,8 +679,6 @@
                     weeklyAggregates[weekIndex].aerobic += inputs.aerobicMinutes;
                     weeklyAggregates[weekIndex].strength += inputs.strengthSessions;
                     
-                    // Determinar a data fim da semana para atribuir a pontuação ao mês correto
-                    // A semana começa no ChallengeStart + (weekIndex * 7). Fim = Inicio + 6 dias.
                     const weekStart = new Date(challengeStartDate);
                     weekStart.setDate(weekStart.getDate() + (weekIndex * 7));
                     const weekEnd = new Date(weekStart);
@@ -666,7 +692,6 @@
                 const weekData = weeklyAggregates[wIndex];
                 const weekPoints = getAerobicScore(weekData.aerobic) + getStrengthScore(weekData.strength);
                 
-                // A pontuação da semana vai para o mês do Domingo daquela semana (evita split)
                 const targetMonthKey = getMonthKey(weekData.endDate);
                 
                 if (!monthlyScores[targetMonthKey]) monthlyScores[targetMonthKey] = 0;
@@ -685,24 +710,19 @@
         
         // --- UI UPDATES ---
         
-        // Gráfico de Linha (Chart.js)
         const updateChart = () => {
             const ctx = document.getElementById('evolutionChart').getContext('2d');
             
-            // Destruir gráfico anterior se existir
             if (state.chartInstance) {
                 state.chartInstance.destroy();
             }
 
-            // Preparar dados
             const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
             const datasets = participants.map((p, index) => {
                 const scores = calculateScoresByMonth(p);
                 const data = [];
-                // Para cada mês de 2026
                 for (let m = 1; m <= 12; m++) {
                     const key = `2026-${String(m).padStart(2, '0')}`;
-                    // Acumulado ou Mensal? "Ranking dos meses" geralmente compara o desempenho EM CADA mês.
                     data.push(Math.round(scores[key] || 0));
                 }
                 return {
@@ -739,7 +759,6 @@
         };
 
         const updateMonthlyRankingUI = () => {
-            // Ranking APENAS do Mês Atual
             const rankingData = participants.map(p => ({
                 name: p,
                 score: getCurrentMonthScore(p)
@@ -756,7 +775,6 @@
                 </div>`;
             }).join('');
 
-            // Atualiza tanto o modal quanto a lista da tela de check-in (agora mostra mensal)
             if(rankingList) rankingList.innerHTML = htmlContent;
             if(leaderboardMain) leaderboardMain.innerHTML = htmlContent;
         };
@@ -800,7 +818,6 @@
         
         const exportFullReport = () => {
             const dataForSheet = [["Relatório Geral 2026"], [], ["Nome", "Data", "Min Aeróbico", "Força", "Frutas", "Hidratação", "Sono"]];
-            // Simplificado para brevidade, mas mantendo a lógica de exportação completa
              participants.forEach(participant => {
                 const participantData = state.allData[participant] || { dailyLogs: {} };
                 for (const dateKey in participantData.dailyLogs) {
@@ -856,7 +873,7 @@
                 showMessage('Editando registro existente.', 'info');
                 prefillForm(participantLogs[dateKey].inputs);
             }
-            updateMonthlyRankingUI(); // Atualiza a tabela lateral
+            updateMonthlyRankingUI(); 
         });
 
         // --- SUBMIT LOGIC ---
@@ -868,10 +885,8 @@
             
             const dateKey = getFormattedDateKey(state.selectedDate);
             
-            // Lógica ajustada para os novos inputs
             const inputs = {
                 aerobicMinutes: Number(document.getElementById('aerobic-minutes').value) || 0,
-                // Checkbox marcado = 1 sessão, desmarcado = 0
                 strengthSessions: document.getElementById('strength-check').checked ? 1 : 0,
                 fruitPortions: Number(document.getElementById('fruit-portions-input').value) || 0,
                 hydration: document.getElementById('hydration').checked,
@@ -890,7 +905,6 @@
                 const currentData = state.allData[state.selectedParticipant] || { dailyLogs: {} };
                 currentData.dailyLogs[dateKey] = { inputs };
                 
-                // Atualiza localmente antes de enviar para refletir no UI imediato
                 state.allData[state.selectedParticipant] = currentData;
                 
                 await setDoc(participantRef, currentData);
@@ -910,13 +924,12 @@
              const dailyTotal = getFruitScore(inputs.fruitPortions) + 
                                 (inputs.hydration ? 15 : 0) + 
                                 (inputs.sleep ? 10 : 0) +
-                                getSelfCareScore(inputs.selfCareActivities) + // Usa função ajustada (0 pts para autocuidado essencial)
+                                getSelfCareScore(inputs.selfCareActivities) + 
                                 (inputs.cleanEating.noSweets ? 4 : 0) +
                                 (inputs.cleanEating.noSoda ? 4 : 0) +
                                 (inputs.cleanEating.noFastFood ? 4 : 0) +
                                 (inputs.cleanEating.noFried ? 4 : 0);
 
-            // Pontuação Mensal atualizada
             const monthlyScore = getCurrentMonthScore(selectedParticipant);
 
             document.getElementById('summary-name').textContent = selectedParticipant;
@@ -934,7 +947,6 @@
         };
 
         // --- LISTENERS ---
-        // Botão Gráfico
         document.getElementById('chart-btn')?.addEventListener('click', () => { 
             updateChart(); 
             chartModal.classList.remove('hidden'); 
@@ -952,7 +964,6 @@
         document.getElementById('close-score-table-btn')?.addEventListener('click', () => { scoreTableModal.classList.add('hidden'); });
         document.getElementById('close-monthly-ranking-btn')?.addEventListener('click', () => { monthlyRankingModal.classList.add('hidden'); });
 
-        // Botões Voltar
         const goHome = () => {
             mainApp.classList.add('hidden');
             thankYouScreen.classList.add('hidden');
@@ -976,7 +987,6 @@
 
         document.getElementById('add-another-checkin-btn')?.addEventListener('click', goHome);
 
-        // Export Imagem
         document.getElementById('export-png-btn')?.addEventListener('click', () => {
             const content = document.getElementById('summary-content');
             if(content) {
@@ -1009,12 +1019,10 @@
 
                 const collectionRef = collection(state.db, `artifacts/${state.appId}/public/data/healthChallenge`);
                 
-                // Listener em tempo real
                 onSnapshot(collectionRef, (snapshot) => {
                     snapshot.docs.forEach(doc => {
                         state.allData[doc.id] = doc.data();
                     });
-                    // Se estivermos na tela de setup, atualize o gráfico/ranking se abertos
                     updateMonthlyRankingUI();
                 });
 
