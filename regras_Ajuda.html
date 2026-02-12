@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regras do Desafio de Saúde - 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        .accent-green { color: #16a34a; }
+        .bg-gradient-header {
+            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <header class="bg-gradient-header rounded-3xl p-8 mb-8 text-white shadow-xl text-center md:text-left">
+            <h1 class="text-3xl md:text-4xl font-extrabold mb-2 uppercase tracking-tight">Regras do Desafio</h1>
+            <p class="text-green-100 text-lg opacity-90">Saúde, Movimento e Disciplina • 2026</p>
+        </header>
+
+        <!-- Objetivo -->
+        <section class="glass-card rounded-2xl p-6 mb-8 shadow-sm border-l-8 border-green-500">
+            <h2 class="text-xl font-bold flex items-center mb-4">
+                <span class="mr-2">🎯</span> Objetivo
+            </h2>
+            <p class="leading-relaxed mb-4">
+                Incentivar hábitos básicos e eficazes para melhorar a saúde, como alimentação equilibrada e movimento regular, de acordo com as recomendações da OMS (modificado).
+            </p>
+            <div class="bg-green-50 p-4 rounded-xl border border-green-100">
+                <p class="font-semibold text-green-800">
+                    🏆 Premiação: Cada ação vale pontos. O vencedor recebe um PIX de <span class="text-2xl font-bold">R$ 60,00</span> (contribuição de R$ 10,00 dos demais).
+                </p>
+                <p class="text-sm text-green-700 mt-1">Grupo composto por 7 participantes.</p>
+            </div>
+        </section>
+
+        <!-- 1. Exercício Físico -->
+        <section class="glass-card rounded-2xl p-6 mb-8 shadow-sm">
+            <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-green-100 flex items-center">
+                <span class="mr-3">👟</span> 1. Exercício Físico
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-blue-50 p-4 rounded-xl">
+                    <h3 class="font-bold text-blue-800 mb-2">Atividade Física</h3>
+                    <p class="text-sm text-blue-700">Atividade física é qualquer movimento do corpo que gere gasto de energia.
+                                                     Ela faz parte da rotina diária e não precisa ser planejada. 
+                                                     Exemplos: Caminhar até o trabalho ou ao mercado, limpar a casa, brincar com crianças,
+                                                     trabalhar em pé ou se deslocar ao longo do dia.</p>
+                </div>
+                <div class="bg-indigo-50 p-4 rounded-xl">
+                    <h3 class="font-bold text-indigo-800 mb-2">Exercício Físico</h3>
+                    <p class="text-sm text-indigo-700">Já o exercício físico é um tipo de atividade física, porém planejada, organizada e repetitiva,
+                                                       realizada com um objetivo específico, como melhorar a saúde, o condicionamento físico ou a força muscular.
+                                                       Exemplos: Caminhadas ou corridas com tempo definido, treinos de musculação, aulas de dança, pilates ou funcional, e 
+                                                       treinos em casa seguindo uma rotina são considerados exercícios físicos.</p>
+                </div>
+            </div>
+
+            <!-- 1.1 Meta Aeróbica -->
+            <div class="mb-10">
+                <h3 class="text-lg font-bold mb-3 flex items-center text-green-700">
+                    <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span> 1.1 Meta Aeróbica
+                </h3>
+                <p class="text-gray-600 mb-4 italic">Regra prática da atividade aeróbica: "Se dá para conversar com dificuldade, mas sem ficar totalmente sem ar, é aeróbico."</p>
+                <p class="text-gray-600 mb-4 italic">Exemplos:caminhada, corrida, pedalada (em casa, academia ou rua), natação, aula de step, subir escadas, dançar, pular corda…</p>
+                <p class="mb-4"><strong>Meta semanal (Segunda a Domingo):</strong> 150 minutos.</p>
+                
+                <div class="table-container bg-white rounded-xl shadow-sm border border-gray-100">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-50 text-gray-500 text-xs uppercase">
+                                <th class="p-4 border-b">Meta Semanal (Segunda a Domingo)</th>
+                                <th class="p-4 border-b">Pontuação</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm">
+                            <tr><td class="p-4 border-b">150+ min</td><td class="p-4 border-b font-bold text-green-600">175 pts</td></tr>
+                            <tr class="bg-gray-50/50"><td class="p-4 border-b">100 a 149 min</td><td class="p-4 border-b font-semibold">122.5 pts</td></tr>
+                            <tr><td class="p-4 border-b">80 a 99 min</td><td class="p-4 border-b font-semibold">105 pts</td></tr>
+                            <tr class="bg-gray-50/50"><td class="p-4 border-b">60 a 79 min</td><td class="p-4 border-b font-semibold">87.5 pts</td></tr>
+                            <tr><td class="p-4 border-b">40 a 59 min</td><td class="p-4 border-b font-semibold">70 pts</td></tr>
+                            <tr class="bg-gray-50/50"><td class="p-4 border-b">20 a 39 min</td><td class="p-4 border-b font-semibold">35 pts</td></tr>
+                            <tr><td class="p-4 border-b">1 a 19 min</td><td class="p-4 border-b font-semibold text-gray-400">17.5 pts</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 1.2 Meta de Força -->
+            <div>
+                <h3 class="text-lg font-bold mb-3 flex items-center text-green-700">
+                    <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span> 1.2 Meta de Força  - Meta semanal (Segunda a Domingo):
+                </h3>
+                <p class="text-gray-600 mb-4 italic">Regra prática da atividade de força: "Se o exercício gera fadiga muscular e não dá para sustentar por muito tempo seguido, é força."</p>
+                <p class="text-gray-600 mb-4 italic">Exemplos: musculação em academia, pilates, exercícios em casa com peso do corpo ou carga improvisada (agachamento, flexão de braço, prancha, afundo, elevação pélvica, abdominais).</p>
+                <div class="bg-gray-50 p-4 rounded-xl mb-4 text-sm space-y-2 border border-gray-100">
+                    <p>• Duração média: 25 a 30 minutos.</p>
+                    <p>• Limite: 1 sessão por dia.</p>
+                    <p>• Meta semanal: 2 sessões.</p>
+                </div>
+
+                <div class="table-container bg-white rounded-xl shadow-sm border border-gray-100 max-w-sm">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-50 text-gray-500 text-xs uppercase">
+                                <th class="p-4 border-b">Meta Semanal (Segunda a Domingo)</th>
+                                <th class="p-4 border-b">Pontos</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm">
+                            <tr><td class="p-4 border-b font-semibold">2 sessões</td><td class="p-4 border-b font-bold text-green-600">105 pts</td></tr>
+                            <tr><td class="p-4 border-b font-semibold text-gray-500">1 sessão</td><td class="p-4 border-b">40 pts</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-xl mb-4 text-sm space-y-2 border border-gray-100">
+                    <p>Obs1:Uma sessão de força equivale a um treino de força realizado no dia. Geralmente, um treino de força é composto por cerca de 6 exercícios,
+                        com estímulos para diferentes grupos musculares. Os exercícios podem ser realizados por repetições ou por tempo, dependendo da metodologia 
+                        adotada. Ex.: um treino com agachamento, flexão, remada, avanço, prancha e elevação de quadril realizado no mesmo dia corresponde a 1 sessão de força.
+                    </p>
+                    <p>Obs2: Não confundir sessão com  série. Esta última  é uma parte do exercício, não o treino inteiro. Ela corresponde ao número de vezes que um mesmo exercício
+                         é repetido antes de passar para outro, normalmente separada por intervalos de descanso. Ex.: agachamento: 3 séries de 12 repetições; supino: 3 séries 
+                         de 10 repetições. Nesse caso, cada exercício possui várias séries, mas todos juntos fazem parte de uma única sessão de força.
+                    </p>
+                    <p>Obs3: A duração média do treino é de 25 a 30 minutos. É permitido registrar apenas uma sessão de força por dia. A proposta é que sejam realizados dois treinos de força por semana.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Alimentação -->
+        <section class="glass-card rounded-2xl p-6 mb-8 shadow-sm">
+            <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-orange-100 flex items-center">
+                <span class="mr-3">🍎</span> 2. Alimentação
+            </h2>
+            
+            <h3 class="text-lg font-bold mb-3 flex items-center text-orange-700">
+                <span class="w-2 h-2 bg-orange-500 rounded-full mr-2"></span> 2.1 Meta de Frutas e Vegetais
+            </h3>
+            <p class="mb-4"><strong>Meta diária:</strong> 5 porções ou mais.</p>
+            <p class="text-xs text-gray-500 mb-4">1 porção = 1 fruta média / 1 fatia grande / 1 concha de legumes.</p>
+
+            <div class="table-container bg-white rounded-xl shadow-sm border border-orange-50 max-w-md">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-orange-50 text-orange-700 text-xs uppercase">
+                            <th class="p-4 border-b">Porções Diárias</th>
+                            <th class="p-4 border-b">Pontos</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr><td class="p-4 border-b font-bold">5+ porções</td><td class="p-4 border-b font-bold text-green-600">20 pts</td></tr>
+                        <tr><td class="p-4 border-b">4 porções</td><td class="p-4 border-b">12 pts</td></tr>
+                        <tr><td class="p-4 border-b">3 porções</td><td class="p-4 border-b">6 pts</td></tr>
+                        <tr><td class="p-4 border-b text-gray-400">2 porções</td><td class="p-4 border-b text-gray-400">4 pts</td></tr>
+                        <tr><td class="p-4 border-b text-gray-400">1 porção</td><td class="p-4 border-b text-gray-400">2 pts</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 3. Hidratação e Bem-estar -->
+        <section class="glass-card rounded-2xl p-6 mb-8 shadow-sm">
+            <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-blue-100 flex items-center">
+                <span class="mr-3">💧</span> 3. Hidratação e Bem-estar
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Hidratação -->
+                <div class="bg-blue-50/50 p-5 rounded-2xl border border-blue-100">
+                    <h3 class="font-bold text-blue-800 mb-3 flex items-center">
+                        <span class="mr-2">🌊</span> 3.1 Hidratação
+                    </h3>
+                    <p class="text-sm mb-3"><strong>Meta:</strong> 2 Litros (Mínimo).</p>
+                    <div class="text-xs bg-white p-3 rounded-lg border border-blue-100 leading-relaxed">
+                        <span class="text-blue-800 font-bold">Aqui é sim (pontua) ou não (não pontua).</span><br>
+                        <span class="text-green-600 font-bold">CONTA!</span> Água, água de coco, chás/sucos integrais (100% fruta).<br>
+                        <span class="text-red-500 font-bold">NÃO CONTA!</span> Refris e bebidas adoçadas.
+                    </div>
+                    <p class="mt-3 font-bold text-blue-700 text-right">15 pts</p>
+                </div>
+
+                <!-- Sono -->
+                <div class="bg-indigo-50/50 p-5 rounded-2xl border border-indigo-100">
+                    <h3 class="font-bold text-indigo-800 mb-3 flex items-center">
+                        <span class="mr-2">🌙</span> 3.3 Sono
+                    </h3>
+                    <p class="text-sm mb-3"><strong>Meta:</strong> 7h Contínuas (Mínimo).</p>
+                    <div class="text-xs bg-white p-3 rounded-lg border border-indigo-100 leading-relaxed">
+                        <span class="text-green-600 font-bold">VALE!</span> Pode acordar a noite e voltar a dormir.<br>
+                        <span class="text-red-500 font-bold">NÃO VALE!</span> Dormir por um tempo, acordar e fazer atividades diversas e dormir as horas restantes; contar as horas dos cochilos.<br>
+                    </div>
+                    <p class="mt-3 font-bold text-indigo-700 text-right">10 pts</p>
+                </div>
+            </div>
+
+            <!-- Junk Food -->
+            <div class="mt-8 bg-red-50 p-6 rounded-2xl border border-red-100">
+                <h3 class="font-bold text-red-800 mb-4 flex items-center">
+                    <span class="mr-2">🚫</span> 3.2 Alimentação Limpa (No Junk Food)
+                </h3>
+                <p class="text-sm mb-4 font-semibold text-red-700">A meta é evitar totalmente os itens abaixo. Cada item não consumido gera 4 pontos. Alguns itens podem não estar citados,
+                                                                     mas seguem exemplos para se basear. </p>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs font-medium uppercase tracking-wider text-center">
+                    <span class="text-green-600 font-bold">DOCE - </span> Chocolates, balas, bolos, açaí, sorvetes e sobremesas em geral (inclusive zero).<br>
+                    <span class="text-purple-800 font-bold">FAST FOOD - </span> McDonald’s, Burger King, Habib’s, Cachorro-quente, pizza, ultraprocessados em geral.<br>
+                    <span class="text-red-700 font-bold">Bebidas industrializadas e/ou Sugar Drinks - </span> Refrigerantes e bebidas alcoólicas e energéticos (inclusive zero).<br>
+                    <span class="text-orange-600 font-bold">COMIDAS GORDUROSAS - </span> Frituras, salgadinhos, sushis.<br>
+                </div>
+            </div>
+
+            <!-- Bem Estar -->
+            <div class="mt-8">
+                <h3 class="font-bold text-green-800 mb-4 flex items-center">
+                    <span class="mr-2">🧘</span> 3.4 Atividade de Bem-estar (Extras)
+                </h3>
+                <span class="text-red-700 font-bold">PONTUAÇÂO EXTRA!</span> A meta é ganhar pontos extras com atividades de bem-estar. Senão der naquele dia, tenta no outro sem problema.<br>
+                
+                <p class="text-sm mb-4 italic">Mínimo de 15 minutos para pontuar.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100 shadow-sm">
+                        <span class="text-sm">Meditação ou Mindfulness</span>
+                        <span class="text-xs font-bold bg-green-100 text-green-700 px-2 py-1 rounded">2 pts</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100 shadow-sm">
+                        <span class="text-sm">Alongamento ou Mobilidade</span>
+                        <span class="text-xs font-bold bg-green-100 text-green-700 px-2 py-1 rounded">2 pts</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100 shadow-sm">
+                        <span class="text-sm">Contato com a Natureza</span>
+                        <span class="text-xs font-bold bg-green-100 text-green-700 px-2 py-1 rounded">2 pts</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100 shadow-sm">
+                        <span class="text-sm">Leitura por prazer (não acadêmica, nem profissional, nem utiliratista)</span>
+                        <span class="text-xs font-bold bg-green-100 text-green-700 px-2 py-1 rounded">2 pts</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center text-gray-400 text-sm mt-12 mb-8">
+            <p>© 2026 Desafio de Saúde • Versão 3.0</p>
+        </footer>
+    </div>
+
+</body>
+</html>
