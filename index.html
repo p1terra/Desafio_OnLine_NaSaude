@@ -115,9 +115,12 @@
                 </div>
             </div>
 
+            <div class="mt-12 max-w-4xl mx-auto">
+                 <img src="imagens/esquema.jfif" alt="Esquema do Desafio" class="w-full h-auto rounded-xl shadow-lg border border-gray-200">
+            </div>
 
              <div id="regras-container" class="mt-12">
-                <div class="max-w-4xl mx-auto">
+                 <div class="max-w-4xl mx-auto">
                     <header class="bg-gradient-header rounded-3xl p-8 mb-8 text-white shadow-xl text-center md:text-left">
                         <h1 class="text-3xl md:text-4xl font-extrabold mb-2 uppercase tracking-tight">Regras do Desafio</h1>
                         <p class="text-green-100 text-lg opacity-90">Saúde, Movimento e Disciplina • 2026</p>
@@ -335,15 +338,12 @@
                             </div>
                         </div>
                     </section>
-
-                <div class="mt-12 max-w-4xl mx-auto">
-                     <img src="imagens/esquema.png" alt="Esquema do Desafio" class="w-full h-auto rounded-xl shadow-lg border border-gray-200">
-                </div>
+            
                     <footer class="text-center text-gray-400 text-sm mt-12 mb-8">
                         <p>© 2026 Desafio de Saúde • Versão 3.0</p>
                     </footer>
                 </div>
-                </div>
+            </div>
         </div>
 
         <div id="main-app" class="hidden">
@@ -807,19 +807,19 @@
             }
 
             // 2. Pontuação SEMANAL (Metas)
-            // Lógica: Percorrer as semanas do ano. Se a semana (Seg-Dom) começa neste mês, calcula a meta e soma.
-            // Se o mês começa num Sábado, esses dias não formam uma semana completa iniciada no mês, logo não pontuam meta semanal neste mês (conforme regra solicitada).
-            
-            // Vamos iterar por todas as semanas possíveis dentro do mês.
-            // Encontrar a primeira Segunda-Feira do mês.
+            // Lógica: Percorrer as semanas que COMEÇAM neste mês (Segunda-feira dentro do mês)
             let d = new Date(targetYear, targetMonthIndex, 1);
             // Ajustar para a primeira segunda-feira (ou a atual se for segunda)
-            while (d.getDay() !== 1) { // 0=Dom, 1=Seg
+            // Se hoje é Domingo (0), soma 1. Se é Terça (2), soma 6...
+            // Fórmula para próxima segunda: (8 - dia_da_semana) % 7 se dia != 1
+            while (d.getDay() !== 1) { 
                 d.setDate(d.getDate() + 1);
             }
             
             // Agora d é a primeira segunda-feira do mês.
-            // Enquanto d ainda estiver dentro do mês (data de inicio da semana)
+            // Se o mês começou Sábado ou Domingo, a primeira segunda já será dia 2 ou 3.
+            // Isso ignora automaticamente a semana "quebrada" do início.
+            
             while (d.getMonth() === targetMonthIndex && d.getFullYear() === targetYear) {
                 // Calcular totais desta semana (d até d+6)
                 let weekAerobic = 0;
@@ -847,9 +847,6 @@
         };
 
         const calculateAllScores = (participantName) => {
-            // Totais para o Ranking Geral (Acumulado de tudo)
-            // Nota: Para simplificar e manter consistência com a regra mensal rigorosa, 
-            // o total geral pode ser a soma dos totais mensais de Jan a Dez.
             let totalScore = 0;
             const history = {};
             const today = new Date();
@@ -863,7 +860,6 @@
                 totalScore += mScore;
             }
             
-            // Pontuação do Mês Atual para o Ranking Mensal
             const currentMonthScore = calculateMonthlyScore(participantName, currentMonthIndex, currentYear);
 
             return { 
