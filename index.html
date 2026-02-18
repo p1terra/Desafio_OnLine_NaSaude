@@ -10,9 +10,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
         .hidden { display: none !important; }
         .loader {
             border: 4px solid #f3f3f3;
@@ -57,12 +57,12 @@
             transform: scale(1.05);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
-        /* Estilos importados das Regras */
         .glass-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
+        .table-container { overflow-x: auto; }
         .bg-gradient-header {
             background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
         }
@@ -85,7 +85,7 @@
                 <div id="day-counter" class="mt-2 text-2xl font-bold text-orange-600 bg-orange-100 py-2 px-4 rounded-full inline-block"></div>
             </header>
 
-            <div class="bg-white p-6 rounded-xl shadow-md max-w-md mx-auto space-y-4 relative">
+            <div class="bg-white p-6 rounded-xl shadow-md max-w-md mx-auto space-y-4 relative z-10">
                 <div>
                     <label for="setup-date" class="block text-sm font-medium text-gray-700 mb-1">Data do Check-in:</label>
                     <input type="date" id="setup-date" class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500">
@@ -102,21 +102,35 @@
                 <button id="confirm-setup-btn" disabled class="w-full bg-teal-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-teal-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200">Confirmar e Continuar</button>
             </div>
             
-            <div class="max-w-md mx-auto text-center mt-6 space-y-2">
+            <div class="max-w-md mx-auto text-center mt-6 space-y-2 relative z-10">
                 <button id="score-table-btn" class="w-full bg-gray-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-gray-700 transition-colors duration-200">Ver Regras e Pontuação</button>
                 <div class="flex gap-2">
                     <button id="ranking-btn" class="flex-1 bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200">Ranking dos Meses</button>
                     <button id="monthly-ranking-btn" class="flex-1 bg-amber-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-amber-600 transition-colors duration-200">Ranking Mensal</button>
                 </div>
                 <button id="monthly-report-btn" class="w-full bg-green-700 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 transition-colors duration-200">📂 Baixar Dados do Mês (Excel)</button>
-                
                 <div class="flex gap-2">
                     <button id="full-report-btn" class="w-full bg-sky-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-purple-700 transition-colors duration-200">📂 Baixar Dados do Desafio (Excel)</button>
                 </div>
             </div>
 
              <div id="regras-container" class="mt-12">
+                 <div class="max-w-4xl mx-auto">
+                    <header class="bg-gradient-header rounded-3xl p-8 mb-8 text-white shadow-xl text-center md:text-left">
+                        <h1 style="text-align:center" class="text-3xl md:text-4xl font-extrabold mb-2 uppercase tracking-tight">Regras do Desafio</h1>
+                        <p style="text-align:center" class="text-green-100 text-lg opacity-90">Saúde, Movimento e Disciplina • 2026</p>
+                    </header>
+                    <section class="glass-card rounded-2xl p-6 mb-8 shadow-sm border-l-8 border-green-500">
+                        <h2 class="text-xl font-bold flex items-center mb-4"><span class="mr-2">🎯</span> Objetivo</h2>
+                        <p class="leading-relaxed mb-4">Incentivar hábitos básicos e eficazes para melhorar a saúde, como alimentação equilibrada e movimento regular.</p>
+                        <div class="bg-green-50 p-4 rounded-xl border border-green-100">
+                            <p class="font-semibold text-align:center text-green-800">🏆 Premiação:</p>
+                             <p style="text-align:center" class="font-semibold text-green-800">O vencedor recebe um PIX de <span class="text-2xl font-bold">R$ 60,00</span></p>
+                            <p class="text-sm text-green-700 mt-1"> contribuição de R$ 10,00 dos demais.</p>
+                        </div>
+                    </section>
                 </div>
+            </div>
         </div>
 
         <div id="main-app" class="hidden">
@@ -239,10 +253,10 @@
         </div>
 
         <div id="ranking-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 p-4 z-50 overflow-y-auto flex items-center justify-center">
-            <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl">
-                <div class="p-6">
-                    <h2 class="text-2xl font-bold text-center text-teal-600 mb-4">Ranking dos Meses (Evolução)</h2>
-                    <div class="w-full h-96">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl h-[90vh] flex flex-col">
+                <div class="p-6 flex-1 flex flex-col">
+                    <h2 class="text-2xl font-bold text-center text-teal-600 mb-4">Ranking dos Meses (Pontuação Mensal)</h2>
+                    <div class="w-full flex-1 relative">
                         <canvas id="evolutionChart"></canvas>
                     </div>
                 </div>
@@ -292,30 +306,7 @@
                          <tbody>
                             <tr class="bg-gray-200"><td class="p-2 font-semibold" colspan="2">Meta Aeróbica (Semanal)</td></tr>
                             <tr class="border-b"><td class="p-2 pl-6 text-xs">150+ min</td><td class="p-2 text-right">175 pts</td></tr>
-                            <tr class="border-b"><td class="p-2 pl-6 text-xs">100 a 149 min</td><td class="p-2 text-right">122.5 pts</td></tr>
-                            <tr class="border-b"><td class="p-2 pl-6 text-xs">80 a 99 min</td><td class="p-2 text-right">105 pts</td></tr>
-                            <tr class="border-b"><td class="p-2 pl-6 text-xs">60 a 79 min</td><td class="p-2 text-right">87.5 pts</td></tr>
-                            <tr class="border-b"><td class="p-2 pl-6 text-xs">40 a 59 min</td><td class="p-2 text-right">70 pts</td></tr>
-                            <tr class="border-b"><td class="p-2 pl-6 text-xs">20 a 39 min</td><td class="p-2 text-right">35 pts</td></tr>
-                            <tr class="border-b"><td class="p-2 pl-6 text-xs">1 a 19 min</td><td class="p-2 text-right">17.5 pts</td></tr>
-                            
-                            <tr class="bg-gray-200"><td class="p-2 font-semibold" colspan="2">Meta de Força (Semanal)</td></tr>
-                            <tr class="border-b"><td class="p-2 pl-6 text-xs">2+ dias na semana</td><td class="p-2 text-right">105 pts</td></tr>
-                            <tr class="border-b"><td class="p-2 pl-6 text-xs">1 dia na semana</td><td class="p-2 text-right">40 pts</td></tr>
-
-                            <tr class="bg-gray-200"><td class="p-2 font-semibold" colspan="2">Frutas/Vegetais (Diário)</td></tr>
-                            <tr class="border-b"><td class="p-2 pl-6 text-xs">5+ porções</td><td class="p-2 text-right">20 pts</td></tr>
-                            <tr class="border-b"><td class="p-2 pl-6 text-xs">4 porções</td><td class="p-2 text-right">12 pts</td></tr>
-                            <tr class="border-b"><td class="p-2 pl-6 text-xs">3 porções</td><td class="p-2 text-right">6 pts</td></tr>
-                            <tr class="border-b"><td class="p-2 pl-6 text-xs">2 porções</td><td class="p-2 text-right">4 pts</td></tr>
-                            <tr class="border-b"><td class="p-2 pl-6 text-xs">1 porção</td><td class="p-2 text-right">2 pts</td></tr>
-
-                            <tr class="bg-gray-200"><td class="p-2 font-semibold" colspan="2">Outros (Diário)</td></tr>
-                            <tr class="border-b"><td class="p-2 pl-6 text-xs">2L+ Água</td><td class="p-2 text-right">15 pts</td></tr>
-                            <tr class="border-b"><td class="p-2 pl-6 text-xs">Cuidado Alimentar</td><td class="p-2 text-right">16 pts</td></tr>
-                            <tr class="border-b"><td class="p-2 pl-6 text-xs">7h+ Sono</td><td class="p-2 text-right">10 pts</td></tr>
-                            <tr><td class="p-2 pl-6 text-xs">Cuidado Pessoal</td><td class="p-2 text-right">0 pts</td></tr>
-                         </tbody>
+                            </tbody>
                       </table>
                 </div>
             </div>
@@ -347,61 +338,6 @@
 
     </div>
 
-    <template id="rules-template">
-        <div class="max-w-4xl mx-auto glass-card rounded-2xl p-6 shadow-sm border border-gray-200">
-            <header class="bg-gradient-header rounded-xl p-6 mb-8 text-white shadow-lg text-center">
-                <h1 class="text-2xl md:text-3xl font-extrabold mb-2 uppercase tracking-tight">Regras do Desafio</h1>
-                <p class="text-green-100 text-lg opacity-90">Saúde, Movimento e Disciplina • 2026</p>
-            </header>
-            
-            <section class="mb-8">
-                <h2 class="text-xl font-bold flex items-center mb-4 text-green-700">🎯 Objetivo</h2>
-                <p class="text-gray-700 mb-2">Incentivar hábitos básicos e eficazes para melhorar a saúde.</p>
-                <div class="bg-green-50 p-3 rounded-lg border border-green-100 text-sm">
-                    🏆 Premiação: Vencedor recebe <strong>R$ 60,00</strong>.
-                </div>
-            </section>
-
-            <section class="mb-8">
-                <h2 class="text-xl font-bold mb-4 text-green-700">👟 1. Exercício Físico</h2>
-                <div class="mb-4">
-                    <h3 class="font-bold text-green-600">1.1 Meta Aeróbica (Semanal)</h3>
-                    <p class="text-sm text-gray-600 mb-2">Segunda a Domingo (150 min).</p>
-                    <ul class="text-sm list-disc pl-5">
-                        <li>150+ min: 175 pts</li>
-                        <li>100-149: 122.5 pts</li>
-                        <li>80-99: 105 pts</li>
-                        <li>... (proporcional)</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="font-bold text-green-600">1.2 Meta de Força (Semanal)</h3>
-                    <p class="text-sm text-gray-600 mb-2">2 sessões semanais.</p>
-                    <ul class="text-sm list-disc pl-5">
-                        <li>2+ sessões: 105 pts</li>
-                        <li>1 sessão: 40 pts</li>
-                    </ul>
-                </div>
-            </section>
-
-            <section class="mb-8">
-                <h2 class="text-xl font-bold mb-4 text-orange-700">🍎 2. Alimentação</h2>
-                <h3 class="font-bold text-orange-600">2.1 Frutas e Vegetais (Diário)</h3>
-                <p class="text-sm text-gray-600 mb-2">5+ porções = 20 pts.</p>
-            </section>
-
-            <section>
-                <h2 class="text-xl font-bold mb-4 text-blue-700">💧 3. Hidratação e Bem-estar</h2>
-                <ul class="text-sm space-y-2">
-                    <li><strong>Água (2L+):</strong> 15 pts</li>
-                    <li><strong>Sono (7h+):</strong> 10 pts</li>
-                    <li><strong>Alimentação Limpa:</strong> 4 pts por item evitado (Doce, Refri, FastFood, Fritura).</li>
-                    <li><strong>Autocuidado:</strong> Apenas registro (0 pts).</li>
-                </ul>
-            </section>
-        </div>
-    </template>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -410,15 +346,14 @@
         // --- CONFIGURAÇÃO 3.0 ---
         const participants = ['Carol', 'Iagê', 'Juliana', 'Mariana', 'Radmila', 'Pedro', 'Lia'];
         
-        // Cores Okabe-Ito (Safe for Colorblindness) para o gráfico
         const participantColors = {
-            'Carol': '#E69F00',   // Orange
-            'Iagê': '#56B4E9',    // Sky Blue
-            'Juliana': '#009E73', // Bluish Green
-            'Mariana': '#F0E442', // Yellow
-            'Radmila': '#0072B2', // Blue
-            'Pedro': '#D55E00',   // Vermillion
-            'Lia': '#CC79A7'      // Reddish Purple
+            'Carol': '#E69F00',   // Laranja
+            'Iagê': '#56B4E9',    // Azul Céu
+            'Juliana': '#009E73', // Verde Azulado
+            'Mariana': '#F0E442', // Amarelo
+            'Radmila': '#0072B2', // Azul
+            'Pedro': '#D55E00',   // Vermelho
+            'Lia': '#CC79A7'      // Púrpura Avermelhado
         };
 
         const challengeStartDate = new Date('2026-01-12T00:00:00');
@@ -479,8 +414,6 @@
             return 0;
         };
         
-        // NOVA LÓGICA DE FORÇA (Baseado em dias realizados na semana)
-        // 2 dias = 105 pts, 1 dia = 40 pts.
         const getStrengthScore = (daysCount) => {
             if (daysCount >= 2) return 105;
             if (daysCount === 1) return 40; 
@@ -496,7 +429,6 @@
             return 0;
         };
         
-        // AUTOCUIDADO AGORA É 0 PONTOS
         const getSelfCareScore = (activities) => 0;
 
         const getFormattedDateKey = (d) => d.toISOString().split('T')[0];
@@ -504,11 +436,8 @@
         // Semana Challenge (Segunda a Domingo)
         const getChallengeWeekKey = (d) => {
             if (d < challengeStartDate) return null;
-            // Ajustar para contar a partir da start date.
-            // Precisamos garantir que a semana comece na segunda-feira do desafio.
             const diffTime = d.getTime() - challengeStartDate.getTime();
             const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-            // Considerando que 12/01/2026 é uma Segunda-feira.
             if (diffDays < 0) return null;
             return `challenge-week-${Math.floor(diffDays / 7)}`;
         };
@@ -538,11 +467,6 @@
         const populateChecklists = () => {
             const selfcareContainer = document.getElementById('selfcare-checklist');
             selfcareContainer.innerHTML = SELFCARE_ACTIVITIES.map(activity => `<div class="flex items-center"><input type="checkbox" id="selfcare-${activity.replace(/\s/g, '')}" name="selfcare-activity" value="${activity}" class="h-5 w-5 rounded border-gray-300 text-teal-600 focus:ring-teal-500"><label for="selfcare-${activity.replace(/\s/g, '')}" class="ml-2">${activity}</label></div>`).join('');
-            
-            // Inserir Regras no container
-            const rulesTemplate = document.getElementById('rules-template');
-            const rulesContainer = document.getElementById('regras-container');
-            rulesContainer.innerHTML = rulesTemplate.innerHTML;
         };
 
         const showMotivationalCard = () => {
@@ -586,7 +510,6 @@
 
         const prefillForm = (inputs) => {
             document.getElementById('aerobic-minutes').value = inputs.aerobicMinutes || 0;
-            // Strength agora é Checkbox
             document.getElementById('strength-session').checked = inputs.strengthSessionBoolean || false;
             
             document.getElementById('fruit-portions-input').value = inputs.fruitPortions;
@@ -618,95 +541,111 @@
              document.getElementById('fruit-portions-input').value = 0;
         }
 
-        // --- CORE LOGIC (PONTUAÇÃO) ---
-        const calculateAllScores = (participantName) => {
+        // --- CORE LOGIC (PONTUAÇÃO PROPORCIONAL CORRIGIDA - AQUI MUDOU TUDO) ---
+        const calculateMonthlyScore = (participantName, targetMonthIndex, targetYear) => {
             const participantData = state.allData[participantName] || { dailyLogs: {} };
+            let monthlyTotal = 0;
+
+            // Helper: Acha a segunda-feira da semana de uma data específica
+            const getMondayOfWeek = (d) => {
+                const date = new Date(d);
+                const day = date.getDay();
+                const diff = date.getDate() - day + (day === 0 ? -6 : 1); // Se domingo (-6), senão ajusta p/ seg
+                return new Date(date.setDate(diff));
+            };
+
+            // Determinar quantos dias tem no mês alvo
+            const daysInMonth = new Date(targetYear, targetMonthIndex + 1, 0).getDate();
+
+            // LÓGICA: ITERAR DIA A DIA DO MÊS
+            for (let day = 1; day <= daysInMonth; day++) {
+                // Data atual do loop (meio-dia para evitar problemas de fuso)
+                const currentDay = new Date(targetYear, targetMonthIndex, day, 12, 0, 0);
+                
+                // Se o dia estiver fora do período global do desafio, ignoramos
+                if (currentDay < challengeStartDate || currentDay > challengeEndDate) continue;
+
+                const dateKey = getFormattedDateKey(currentDay);
+
+                // --- 1. PONTUAÇÃO DIÁRIA (Simples: se fez no dia, ganha) ---
+                if (participantData.dailyLogs[dateKey]) {
+                    const inputs = participantData.dailyLogs[dateKey].inputs;
+                    
+                    let cleanEatingScore = 0;
+                    if (inputs.cleanEating) {
+                        cleanEatingScore += inputs.cleanEating.noSweets ? 4 : 0;
+                        cleanEatingScore += inputs.cleanEating.noSoda ? 4 : 0;
+                        cleanEatingScore += inputs.cleanEating.noFastFood ? 4 : 0;
+                        cleanEatingScore += inputs.cleanEating.noFried ? 4 : 0;
+                    }
+
+                    const dailyPoints = 
+                        getFruitScore(inputs.fruitPortions) + 
+                        (inputs.hydration ? 15 : 0) + 
+                        cleanEatingScore + 
+                        (inputs.sleep ? 10 : 0) +
+                        getSelfCareScore(inputs.selfCareActivities);
+                    
+                    monthlyTotal += dailyPoints;
+                }
+
+                // --- 2. PONTUAÇÃO SEMANAL (Lógica Proporcional: 1/7 por dia) ---
+                // Descobrimos a semana deste dia específico
+                const monday = getMondayOfWeek(currentDay);
+                
+                let weekAerobic = 0;
+                let weekStrengthDays = 0;
+
+                // Somamos o desempenho daquela semana inteira (Segunda a Domingo)
+                for (let i = 0; i < 7; i++) {
+                    const checkDate = new Date(monday);
+                    checkDate.setDate(monday.getDate() + i);
+                    const weekDayKey = getFormattedDateKey(checkDate);
+
+                    if (participantData.dailyLogs[weekDayKey]) {
+                        const wInputs = participantData.dailyLogs[weekDayKey].inputs;
+                        weekAerobic += (wInputs.aerobicMinutes || 0);
+                        weekStrengthDays += (wInputs.strengthSessionBoolean ? 1 : 0);
+                    }
+                }
+
+                // Calculamos quanto vale essa semana
+                const totalWeeklyAerobicPoints = getAerobicScore(weekAerobic);
+                const totalWeeklyStrengthPoints = getStrengthScore(weekStrengthDays);
+
+                // O "Pulo do Gato": Adicionamos apenas 1/7 da pontuação semanal para HOJE
+                monthlyTotal += (totalWeeklyAerobicPoints / 7);
+                monthlyTotal += (totalWeeklyStrengthPoints / 7);
+            }
+
+            return monthlyTotal;
+        };
+
+
+        const calculateAllScores = (participantName) => {
+            let totalScore = 0;
+            const history = {};
             const today = new Date();
-            const currentMonthKey = getMonthKey(today); // Ex: "2026-02"
+            const currentMonthIndex = today.getMonth();
+            const currentYear = today.getFullYear();
             
-            // Estruturas de dados
-            const weeklyAggregates = {};
-            const monthlyDailyPoints = {}; // Pontos diários puros somados por mês
-            
-            // Loop para processar pontuações DIÁRIAS e acumular dados para SEMANAIS
-            for (const dateKey in participantData.dailyLogs) {
-                const logDate = new Date(dateKey + 'T12:00:00');
-                const weekKey = getChallengeWeekKey(logDate);
-                const monthKey = getMonthKey(logDate);
-                
-                if (!weekKey) continue;
-                
-                if (!weeklyAggregates[weekKey]) {
-                    weeklyAggregates[weekKey] = { aerobicMinutes: 0, strengthDays: 0, monthKey: monthKey };
-                }
-                
-                if (!monthlyDailyPoints[monthKey]) monthlyDailyPoints[monthKey] = 0;
-
-                const inputs = participantData.dailyLogs[dateKey].inputs;
-                
-                // Agrega dados para cálculo semanal
-                weeklyAggregates[weekKey].aerobicMinutes += (inputs.aerobicMinutes || 0);
-                weeklyAggregates[weekKey].strengthDays += (inputs.strengthSessionBoolean ? 1 : 0); // Soma se fez força
-                
-                // Calcula pontos diários
-                let cleanEatingScore = 0;
-                if (inputs.cleanEating) {
-                    cleanEatingScore += inputs.cleanEating.noSweets ? 4 : 0;
-                    cleanEatingScore += inputs.cleanEating.noSoda ? 4 : 0;
-                    cleanEatingScore += inputs.cleanEating.noFastFood ? 4 : 0;
-                    cleanEatingScore += inputs.cleanEating.noFried ? 4 : 0;
-                }
-
-                const dailyPoints = 
-                    getFruitScore(inputs.fruitPortions) + 
-                    (inputs.hydration ? 15 : 0) + 
-                    cleanEatingScore + 
-                    (inputs.sleep ? 10 : 0) +
-                    getSelfCareScore(inputs.selfCareActivities); // Agora é 0
-                
-                // Adiciona ao acumulador do mês correspondente ao DIA
-                monthlyDailyPoints[monthKey] += dailyPoints;
-            }
-
-            // Agora processa as METAS SEMANAIS e distribui os pontos
-            let scoreTotal = 0;
-            const scoreByMonth = {};
-
-            // 1. Soma pontos diários aos totais mensais
-            for (const mKey in monthlyDailyPoints) {
-                if(!scoreByMonth[mKey]) scoreByMonth[mKey] = 0;
-                scoreByMonth[mKey] += monthlyDailyPoints[mKey];
-                scoreTotal += monthlyDailyPoints[mKey];
-            }
-
-            // 2. Calcula e soma pontos semanais (Aerobico e Força)
-            for (const weekKey in weeklyAggregates) {
-                const weekData = weeklyAggregates[weekKey];
-                const aerobicPts = getAerobicScore(weekData.aerobicMinutes);
-                const strengthPts = getStrengthScore(weekData.strengthDays);
-                const weekTotal = aerobicPts + strengthPts;
-                
-                scoreTotal += weekTotal;
-
-                // Para o gráfico e ranking mensal: atribui pontos da semana ao mês onde a semana "cai" (baseado no logDate iterado ou lógica simplificada)
-                // Usamos weekData.monthKey que é o mês do último log processado daquela semana, ou majoritário. 
-                // Simplificação: Atribui ao mês da chave.
-                if(!scoreByMonth[weekData.monthKey]) scoreByMonth[weekData.monthKey] = 0;
-                scoreByMonth[weekData.monthKey] += weekTotal;
+            for (let m = 0; m < 12; m++) {
+                const mScore = calculateMonthlyScore(participantName, m, 2026);
+                const mKey = `2026-${String(m + 1).padStart(2, '0')}`;
+                history[mKey] = mScore;
+                totalScore += mScore;
             }
             
-            // Para o "Ranking Mensal" da tela inicial (Current Month Only):
-            // Bug Fix Item 8: Considerar estritamente o mês atual.
-            // A lógica acima (scoreByMonth) já separa por mês. Basta pegar o mês atual.
-            const currentMonthScore = scoreByMonth[currentMonthKey] || 0;
+            const currentMonthScore = calculateMonthlyScore(participantName, currentMonthIndex, currentYear);
 
             return { 
                 name: participantName, 
-                total: scoreTotal, 
+                total: totalScore, 
                 monthly: currentMonthScore,
-                history: scoreByMonth // Para o gráfico
+                history: history 
             };
         };
+
 
         const updateLeaderboardUI = () => {
             const allScores = participants.map(calculateAllScores).sort((a, b) => b.total - a.total);
@@ -716,27 +655,22 @@
             }).join('');
         };
         
-        // GRÁFICO DE EVOLUÇÃO
+        // GRÁFICO VERTICAL (RANKING DOS MESES)
         const updateEvolutionChart = () => {
             const ctx = document.getElementById('evolutionChart').getContext('2d');
             
-            // Meses de Jan a Dez
-            const labels = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+            // Meses de Jan a Dez (Eixo Y)
+            const labels = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+            
             const datasets = participants.map(pName => {
                 const pData = calculateAllScores(pName);
                 const history = pData.history;
                 let dataPoints = [];
-                let cumulative = 0;
                 
-                // Constrói array acumulativo
+                // Pega os pontos de cada mês (NÃO acumulado)
                 for(let i=1; i<=12; i++) {
                     const mKey = `2026-${String(i).padStart(2, '0')}`;
-                    const pts = history[mKey] || 0;
-                    cumulative += pts;
-                    // Se não tiver pontos e o mês já passou, mantém a linha reta (acumulado anterior)
-                    // Se o mês for futuro (ex: Dezembro), talvez parar? 
-                    // Vamos mostrar acumulado até hoje.
-                    dataPoints.push(cumulative);
+                    dataPoints.push(history[mKey] || 0);
                 }
 
                 return {
@@ -745,7 +679,8 @@
                     borderColor: participantColors[pName] || '#999',
                     backgroundColor: participantColors[pName] || '#999',
                     tension: 0.1,
-                    fill: false
+                    fill: false,
+                    borderWidth: 2
                 };
             });
 
@@ -756,19 +691,22 @@
             state.chartInstance = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: labels,
+                    labels: labels, // Eixo Y
                     datasets: datasets
                 },
                 options: {
+                    indexAxis: 'y', // ORIENTAÇÃO VERTICAL
                     responsive: true,
                     maintainAspectRatio: false,
                     scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: { display: true, text: 'Pontuação Acumulada' }
-                        },
                         x: {
-                            title: { display: true, text: 'Mês' }
+                            position: 'top', // Eixo X no topo
+                            title: { display: true, text: 'Pontuação Mensal (Não Acumulada)' },
+                            beginAtZero: true
+                        },
+                        y: {
+                            title: { display: true, text: 'Mês' },
+                            reverse: true // Janeiro no topo
                         }
                     },
                     plugins: {
@@ -788,7 +726,6 @@
             const allScores = participants.map(calculateAllScores).sort((a, b) => b.monthly - a.monthly);
             const rankingList = document.getElementById('monthly-ranking-list');
             
-            // Atualiza título com mês corrente
             const today = new Date();
             const monthName = today.toLocaleDateString('pt-BR', { month: 'long' });
             document.getElementById('monthly-ranking-title').textContent = `Pontos acumulados em ${monthName} (Mês Atual)`;
