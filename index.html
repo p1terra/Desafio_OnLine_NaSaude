@@ -798,12 +798,92 @@
              document.getElementById('fruit-portions-input').value = 0;
         }
 
-        // --- CORE LOGIC (PONTUAÇÃO CORRIGIDA) ---
+        // --- CORE LOGIC (PONTUAÇÃO ANTIGA) 
         // Calcula a pontuação isolada de um Mês (ex: 1 para Janeiro, 2 Fev...)
+        //      const calculateMonthlyScore = (participantName, targetMonthIndex, targetYear) => {
+        //    const participantData = state.allData[participantName] || { dailyLogs: {} };
+        //    let monthlyTotal = 0;
+
+        // --- PONTUAÇÃO NOVA ---
+        //// --- CORE LOGIC (PONTUAÇÃO PROPORCIONAL DIÁRIA) ---
         const calculateMonthlyScore = (participantName, targetMonthIndex, targetYear) => {
             const participantData = state.allData[participantName] || { dailyLogs: {} };
             let monthlyTotal = 0;
-            
+
+            // Helper: Acha a segunda-feira da semana de uma data específica
+            const getMondayOfWeek = (d) => {
+                const date = new Date(d);
+                const day = date.getDay();
+                const diff = date.getDate() - day + (day === 0 ? -6 : 1); // Ajuste para segunda-feira
+                return new Date(date.setDate(diff));
+            };
+
+            // Determina quantos dias tem no mês alvo
+            const daysInMonth = new Date(targetYear, targetMonthIndex + 1, 0).getDate();
+
+            // LÓGICA: PERCORRER CADA DIA DO MÊS
+            for (let day = 1; day <= daysInMonth; day++) {
+                // Define a data do dia atual (meio-dia para evitar problemas de fuso)
+                const currentDay = new Date(targetYear, targetMonthIndex, day, 12, 0, 0);
+                
+                // Se o dia estiver fora do período do desafio, ignora
+                if (currentDay < challengeStartDate || currentDay > challengeEndDate) continue;
+
+                const dateKey = getFormattedDateKey(currentDay);
+
+                // --- 1. SOMA PONTUAÇÃO DIÁRIA (Alimentação, Água, etc) ---
+                if (participantData.dailyLogs[dateKey]) {
+                    const inputs = participantData.dailyLogs[dateKey].inputs;
+                    
+                    let cleanEatingScore = 0;
+                    if (inputs.cleanEating) {
+                        cleanEatingScore += inputs.cleanEating.noSweets ? 4 : 0;
+                        cleanEatingScore += inputs.cleanEating.noSoda ? 4 : 0;
+                        cleanEatingScore += inputs.cleanEating.noFastFood ? 4 : 0;
+                        cleanEatingScore += inputs.cleanEating.noFried ? 4 : 0;
+                    }
+
+                    const dailyPoints = 
+                        getFruitScore(inputs.fruitPortions) + 
+                        (inputs.hydration ? 15 : 0) + 
+                        cleanEatingScore + 
+                        (inputs.sleep ? 10 : 0) +
+                        getSelfCareScore(inputs.selfCareActivities);
+                    
+                    monthlyTotal += dailyPoints;
+                }
+
+                // --- 2. SOMA FRAÇÃO DA PONTUAÇÃO SEMANAL (1/7 por dia) ---
+                const monday = getMondayOfWeek(currentDay);
+                
+                let weekAerobic = 0;
+                let weekStrengthDays = 0;
+
+                // Verifica a semana inteira (Seg a Dom) relativa a este dia
+                for (let i = 0; i < 7; i++) {
+                    const checkDate = new Date(monday);
+                    checkDate.setDate(monday.getDate() + i);
+                    const weekDayKey = getFormattedDateKey(checkDate);
+
+                    if (participantData.dailyLogs[weekDayKey]) {
+                        const wInputs = participantData.dailyLogs[weekDayKey].inputs;
+                        weekAerobic += (wInputs.aerobicMinutes || 0);
+                        weekStrengthDays += (wInputs.strengthSessionBoolean ? 1 : 0);
+                    }
+                }
+
+                // Calcula o total da semana e divide por 7
+                const totalWeeklyAerobicPoints = getAerobicScore(weekAerobic);
+                const totalWeeklyStrengthPoints = getStrengthScore(weekStrengthDays);
+
+                monthlyTotal += (totalWeeklyAerobicPoints / 7);
+                monthlyTotal += (totalWeeklyStrengthPoints / 7);
+            }
+
+            return monthlyTotal;
+        };
+
+        
             // 1. Pontuação DIÁRIA (Soma simples de todos os dias que caem neste mês)
             for (const dateKey in participantData.dailyLogs) {
                 const logDate = new Date(dateKey + 'T12:00:00');
