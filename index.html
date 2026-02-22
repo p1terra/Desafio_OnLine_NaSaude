@@ -692,7 +692,21 @@
             return 0; // 0 sessões
         };
         
-        // --- META DIÁRIA DE CUIDADOS PESSOAIS ---
+        // --- META DIÁRIA DE FRUTAS/VEGETAIS ---
+        const getFruitScore = (portions) => {
+            // Garante que o valor seja um número válido (evita erros se vier vazio ou como texto)
+            const validPortions = Number(portions) || 0;
+
+            if (validPortions >= 5) return 20;
+            if (validPortions === 4) return 12;
+            if (validPortions === 3) return 6;
+            if (validPortions === 2) return 4;
+            if (validPortions === 1) return 2;
+            
+            return 0; // 0 porções
+        };
+        
+            // --- META DIÁRIA DE CUIDADOS PESSOAIS ---
         const getSelfCareScore = (activities) => {
             // Se o usuário não preencheu nada, retorna 0
             if (!activities) return 0;
@@ -718,21 +732,6 @@
             }
 
             return 0;
-        };
-        
-        const getSelfCareScore = (activities) => {
-            if (!activities || !Array.isArray(activities)) return 0;
-            let score = 0;
-            const scoringActivities = [
-                'Meditação ou Mindfulness', 
-                'Alongamento ou Mobilidade', 
-                'Contato com a Natureza', 
-                'Leitura por Prazer'
-            ];
-            activities.forEach(act => {
-            if (scoringActivities.includes(act)) score += 2;
-            });
-            return score;
         };
 
         const getFormattedDateKey = (d) => d.toISOString().split('T')[0];
