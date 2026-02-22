@@ -462,7 +462,7 @@
                                 <label for="sleep" class="ml-3 font-medium text-purple-900">3.1 Dormi 7h+ de sono (10pts)</label>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium">3.2 Atividades de Autocuidado (0 pts - apenas registro):</label>
+                                <label class="block text-sm font-medium">3.2 Atividades de Autocuidado:</label>
                                 <div id="selfcare-checklist" class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm"></div>
                             </div>
                         </div>
@@ -527,7 +527,7 @@
         <div id="thank-you-screen" class="hidden fixed inset-0 text-center flex flex-col items-center justify-start bg-cover bg-center z-40 p-4 pt-8 pb-8 overflow-y-auto">
              <div id="motivational-card" class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 w-full max-w-md mx-auto mb-6">
                  <p id="motivational-quote" class="text-center text-lg italic text-gray-700 mb-4"></p>
-                 <h3 class="font-bold text-center text-teal-600 mb-2 border-t pt-4">Tabela de Pontos 2.0</h3>
+                 <h3 class="font-bold text-center text-teal-600 mb-2 border-t pt-4">Tabela de Pontos 3.0</h3>
                  <div>
                      <table class="w-full text-sm text-left text-gray-600">
                          <thead class="bg-gray-100 sticky top-0">
@@ -561,7 +561,7 @@
                             <tr class="border-b"><td class="p-2 pl-6 text-xs">2L+ Água</td><td class="p-2 text-right">15 pts</td></tr>
                             <tr class="border-b"><td class="p-2 pl-6 text-xs">Cuidado Alimentar</td><td class="p-2 text-right">16 pts</td></tr>
                             <tr class="border-b"><td class="p-2 pl-6 text-xs">7h+ Sono</td><td class="p-2 text-right">10 pts</td></tr>
-                            <tr><td class="p-2 pl-6 text-xs">Cuidado Pessoal</td><td class="p-2 text-right">0 pts</td></tr>
+                            <tr><td class="p-2 pl-6 text-xs">Cuidado Pessoal</td><td class="p-2 text-right">8 pts</td></tr>
                          </tbody>
                       </table>
                 </div>
@@ -616,7 +616,7 @@
         const challengeStartDate = new Date('2026-01-12T00:00:00');
         const challengeEndDate = new Date('2026-12-20T23:59:59');
 
-        const SELFCARE_ACTIVITIES = ['Meditação ou Mindfulness', 'Alongamento ou Mobilidade', 'Contato com a Natureza', 'Leitura por Prazer', 'Autocuidado Essencial'];
+        const SELFCARE_ACTIVITIES = ['Meditação ou Mindfulness', 'Alongamento ou Mobilidade', 'Contato com a Natureza', 'Leitura por Prazer', 'Autocuidado Essencial (0 pts)'];
         const MOTIVATIONAL_QUOTES = [
             "Cada passo conta. Continue em frente!",
             "O seu corpo de amanhã agradece o seu esforço de hoje.",
