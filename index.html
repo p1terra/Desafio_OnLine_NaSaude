@@ -660,7 +660,7 @@
         const monthlyRankingModal = document.getElementById('monthly-ranking-modal');
 
         // --- HELPER FUNCTIONS ---
-        
+
         // --- META AERÓBICA ---
         // Avalia o total de minutos na semana e retorna a pontuação correspondente
         const getAerobicScore = (minutes) => {
@@ -692,12 +692,31 @@
             return 0; // 0 sessões
         };
         
-        const getFruitScore = (portions) => {
-            if (portions >= 5) return 20;
-            if (portions === 4) return 12;
-            if (portions === 3) return 6;
-            if (portions === 2) return 4;
-            if (portions === 1) return 2;
+        // --- META DIÁRIA DE CUIDADOS PESSOAIS ---
+        const getSelfCareScore = (activities) => {
+            // Se o usuário não preencheu nada, retorna 0
+            if (!activities) return 0;
+
+            // CENÁRIO A: Se os dados vêm como um Array (Ex: ['Leitura por prazer', 'Meditação'])
+            if (Array.isArray(activities)) {
+                // Multiplica a quantidade de atividades marcadas por 2 (máximo de 4 atividades = 8 pts)
+                // O Math.min garante que mesmo que ocorra um bug e venham 5 itens, a pontuação não passe de 8
+                return Math.min(activities.length, 4) * 2;
+            }
+
+            // CENÁRIO B: Se os dados vêm como um Objeto de Booleanos (Ex: { leitura: true, meditacao: false })
+            if (typeof activities === 'object') {
+                let score = 0;
+                // Conta quantas opções estão marcadas como "true"
+                for (const key in activities) {
+                    if (activities[key] === true) {
+                        score += 2;
+                    }
+                }
+                // Aplica o teto máximo de 8 pontos
+                return Math.min(score, 8);
+            }
+
             return 0;
         };
         
@@ -826,20 +845,19 @@
              document.getElementById('fruit-portions-input').value = 0;
         }
 
-        // --- CORE LOGIC (PONTUAÇÃO IDÊNTICA À PLANILHA) ---
+            // --- CORE LOGIC (PARIDADE EXATA COM O EXCEL) ---
         const calculateMonthlyScore = (participantName, targetMonthIndex, targetYear) => {
             const participantData = state.allData[participantName] || { dailyLogs: {} };
             let monthlyTotal = 0;
 
-            // Função utilitária para pegar a segunda-feira da semana e servir como chave
-            const getMonday = (dateString) => {
+            // Função utilitária segura para encontrar a Segunda-feira daquela semana
+            const getMondayKey = (dateString) => {
                 const d = new Date(dateString + 'T12:00:00');
                 const day = d.getDay();
                 const diff = d.getDate() - day + (day === 0 ? -6 : 1);
-                const monday = new Date(d.setDate(diff));
-                // Se você tiver a função getFormattedDateKey() no seu escopo, pode usá-la. 
-                // Caso contrário, toISOString garante o formato YYYY-MM-DD
-                return monday.toISOString().split('T')[0]; 
+                const monday = new Date(d.getTime());
+                monday.setDate(diff);
+                return monday.toISOString().split('T')[0];
             };
 
             const dailyPointsByDate = {};
@@ -848,7 +866,7 @@
             for (const dateKey in participantData.dailyLogs) {
                 const inputs = participantData.dailyLogs[dateKey].inputs;
                 
-                // --- LÓGICA DE ALIMENTAÇÃO LIMPA (4 pts cada, totalizando 16 pts conforme tabela) ---
+                // --- LÓGICA DE ALIMENTAÇÃO LIMPA (16 pts máx) ---
                 let cleanEatingScore = 0;
                 if (inputs.cleanEating) {
                     cleanEatingScore += inputs.cleanEating.noSweets ? 4 : 0;
@@ -867,18 +885,24 @@
                 
                 dailyPointsByDate[dateKey] = dailyPts;
 
-                // --- AGREGAÇÃO SEMANAL (Metas Aeróbica e Força) ---
-                const mondayKey = getMonday(dateKey);
+                // --- AGREGAÇÃO SEMANAL ---
+                const mondayKey = getMondayKey(dateKey);
                 if (!weeklyStatsByMonday[mondayKey]) {
                     weeklyStatsByMonday[mondayKey] = { aerobicMins: 0, strengthSessions: 0 };
                 }
                 
-                // Atualizado com a lógica do 1º código: soma de valores numéricos diretos (inputs.strengthSessions)
+                // Soma dos minutos aeróbicos
                 weeklyStatsByMonday[mondayKey].aerobicMins += (inputs.aerobicMinutes || 0);
-                weeklyStatsByMonday[mondayKey].strengthSessions += (inputs.strengthSessions || 0);
+                
+                // Compatibilidade: Lê tanto o formato numérico novo quanto o booleano antigo
+                const strengthVal = inputs.strengthSessions !== undefined 
+                    ? Number(inputs.strengthSessions) 
+                    : (inputs.strengthSessionBoolean ? 1 : 0);
+                
+                weeklyStatsByMonday[mondayKey].strengthSessions += strengthVal;
             }
 
-            // Soma dos pontos DIÁRIOS estritamente dentro do mês e ano alvo
+            // PASSO 1: Somar Pontos Diários (Estritamente os dias do mês alvo)
             for (const dateKey in dailyPointsByDate) {
                 const d = new Date(dateKey + 'T12:00:00');
                 if (d.getMonth() === targetMonthIndex && d.getFullYear() === targetYear) {
@@ -886,19 +910,20 @@
                 }
             }
 
-            // Soma dos pontos SEMANAIS para as semanas cuja segunda-feira cai no mês alvo
+            // PASSO 2: Somar Pontos Semanais (A semana inteira vai para o mês de sua Segunda-feira)
             for (const mondayKey in weeklyStatsByMonday) {
                 const d = new Date(mondayKey + 'T12:00:00');
+                // Se a segunda-feira desta semana pertence a fevereiro, TODA a pontuação semanal cai aqui
                 if (d.getMonth() === targetMonthIndex && d.getFullYear() === targetYear) {
                     const stats = weeklyStatsByMonday[mondayKey];
                     monthlyTotal += getAerobicScore(stats.aerobicMins);
-                    monthlyTotal += getStrengthScore(stats.strengthSessions); 
+                    monthlyTotal += getStrengthScore(stats.strengthSessions);
                 }
             }
 
             return monthlyTotal;
         };
-        
+
         const calculateAllScores = (participantName) => {
             let totalScore = 0;
             const history = {};
