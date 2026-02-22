@@ -686,7 +686,20 @@
             return 0;
         };
         
-        const getSelfCareScore = (activities) => 0;
+        const getSelfCareScore = (activities) => {
+            if (!activities || !Array.isArray(activities)) return 0;
+            let score = 0;
+            const scoringActivities = [
+                'Meditação ou Mindfulness', 
+                'Alongamento ou Mobilidade', 
+                'Contato com a Natureza', 
+                'Leitura por Prazer'
+            ];
+            activities.forEach(act => {
+            if (scoringActivities.includes(act)) score += 2;
+            });
+            return score;
+        };
 
         const getFormattedDateKey = (d) => d.toISOString().split('T')[0];
         
@@ -798,74 +811,79 @@
              document.getElementById('fruit-portions-input').value = 0;
         }
 
-        // --- CORE LOGIC (PONTUAÇÃO CORRIGIDA) ---
-        // Calcula a pontuação isolada de um Mês (ex: 1 para Janeiro, 2 Fev...)
+        // --- CORE LOGIC (PONTUAÇÃO IDÊNTICA À PLANILHA) ---
         const calculateMonthlyScore = (participantName, targetMonthIndex, targetYear) => {
             const participantData = state.allData[participantName] || { dailyLogs: {} };
             let monthlyTotal = 0;
-            
-            // 1. Pontuação DIÁRIA (Soma simples de todos os dias que caem neste mês)
+
+            // Função utilitária para pegar a segunda-feira da semana e servir como chave
+            const getMonday = (dateString) => {
+                const d = new Date(dateString + 'T12:00:00');
+                const day = d.getDay();
+                const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+                const monday = new Date(d.setDate(diff));
+                // Se você tiver a função getFormattedDateKey() no seu escopo, pode usá-la. 
+                // Caso contrário, toISOString garante o formato YYYY-MM-DD
+                return monday.toISOString().split('T')[0]; 
+            };
+
+            const dailyPointsByDate = {};
+            const weeklyStatsByMonday = {};
+
             for (const dateKey in participantData.dailyLogs) {
-                const logDate = new Date(dateKey + 'T12:00:00');
-                if (logDate.getMonth() === targetMonthIndex && logDate.getFullYear() === targetYear) {
-                    const inputs = participantData.dailyLogs[dateKey].inputs;
-                    let cleanEatingScore = 0;
-                    if (inputs.cleanEating) {
-                        cleanEatingScore += inputs.cleanEating.noSweets ? 4 : 0;
-                        cleanEatingScore += inputs.cleanEating.noSoda ? 4 : 0;
-                        cleanEatingScore += inputs.cleanEating.noFastFood ? 4 : 0;
-                        cleanEatingScore += inputs.cleanEating.noFried ? 4 : 0;
-                    }
-                    const dailyPoints = 
-                        getFruitScore(inputs.fruitPortions) + 
-                        (inputs.hydration ? 15 : 0) + 
-                        cleanEatingScore + 
-                        (inputs.sleep ? 10 : 0) +
-                        getSelfCareScore(inputs.selfCareActivities);
-                    monthlyTotal += dailyPoints;
+                const inputs = participantData.dailyLogs[dateKey].inputs;
+                
+                // --- LÓGICA DE ALIMENTAÇÃO LIMPA (4 pts cada, totalizando 16 pts conforme tabela) ---
+                let cleanEatingScore = 0;
+                if (inputs.cleanEating) {
+                    cleanEatingScore += inputs.cleanEating.noSweets ? 4 : 0;
+                    cleanEatingScore += inputs.cleanEating.noSoda ? 4 : 0;
+                    cleanEatingScore += inputs.cleanEating.noFastFood ? 4 : 0;
+                    cleanEatingScore += inputs.cleanEating.noFried ? 4 : 0;
+                }
+
+                // --- CÁLCULO DOS PONTOS DIÁRIOS ---
+                const dailyPts = 
+                    getFruitScore(inputs.fruitPortions) + 
+                    (inputs.hydration ? 15 : 0) + 
+                    cleanEatingScore + 
+                    (inputs.sleep ? 10 : 0) +
+                    getSelfCareScore(inputs.selfCareActivities);
+                
+                dailyPointsByDate[dateKey] = dailyPts;
+
+                // --- AGREGAÇÃO SEMANAL (Metas Aeróbica e Força) ---
+                const mondayKey = getMonday(dateKey);
+                if (!weeklyStatsByMonday[mondayKey]) {
+                    weeklyStatsByMonday[mondayKey] = { aerobicMins: 0, strengthSessions: 0 };
+                }
+                
+                // Atualizado com a lógica do 1º código: soma de valores numéricos diretos (inputs.strengthSessions)
+                weeklyStatsByMonday[mondayKey].aerobicMins += (inputs.aerobicMinutes || 0);
+                weeklyStatsByMonday[mondayKey].strengthSessions += (inputs.strengthSessions || 0);
+            }
+
+            // Soma dos pontos DIÁRIOS estritamente dentro do mês e ano alvo
+            for (const dateKey in dailyPointsByDate) {
+                const d = new Date(dateKey + 'T12:00:00');
+                if (d.getMonth() === targetMonthIndex && d.getFullYear() === targetYear) {
+                    monthlyTotal += dailyPointsByDate[dateKey];
                 }
             }
 
-            // 2. Pontuação SEMANAL (Metas)
-            // Lógica: Percorrer as semanas que COMEÇAM neste mês (Segunda-feira dentro do mês)
-            let d = new Date(targetYear, targetMonthIndex, 1);
-            // Ajustar para a primeira segunda-feira (ou a atual se for segunda)
-            // Se hoje é Domingo (0), soma 1. Se é Terça (2), soma 6...
-            // Fórmula para próxima segunda: (8 - dia_da_semana) % 7 se dia != 1
-            while (d.getDay() !== 1) { 
-                d.setDate(d.getDate() + 1);
-            }
-            
-            // Agora d é a primeira segunda-feira do mês.
-            // Se o mês começou Sábado ou Domingo, a primeira segunda já será dia 2 ou 3.
-            // Isso ignora automaticamente a semana "quebrada" do início.
-            
-            while (d.getMonth() === targetMonthIndex && d.getFullYear() === targetYear) {
-                // Calcular totais desta semana (d até d+6)
-                let weekAerobic = 0;
-                let weekStrengthDays = 0;
-                
-                for (let i = 0; i < 7; i++) {
-                    let currentDay = new Date(d);
-                    currentDay.setDate(d.getDate() + i);
-                    const dateKey = getFormattedDateKey(currentDay);
-                    
-                    if (participantData.dailyLogs[dateKey]) {
-                        const inputs = participantData.dailyLogs[dateKey].inputs;
-                        weekAerobic += (inputs.aerobicMinutes || 0);
-                        weekStrengthDays += (inputs.strengthSessionBoolean ? 1 : 0);
-                    }
+            // Soma dos pontos SEMANAIS para as semanas cuja segunda-feira cai no mês alvo
+            for (const mondayKey in weeklyStatsByMonday) {
+                const d = new Date(mondayKey + 'T12:00:00');
+                if (d.getMonth() === targetMonthIndex && d.getFullYear() === targetYear) {
+                    const stats = weeklyStatsByMonday[mondayKey];
+                    monthlyTotal += getAerobicScore(stats.aerobicMins);
+                    monthlyTotal += getStrengthScore(stats.strengthSessions); 
                 }
-                
-                monthlyTotal += getAerobicScore(weekAerobic) + getStrengthScore(weekStrengthDays);
-                
-                // Avança para a próxima semana
-                d.setDate(d.getDate() + 7);
             }
 
             return monthlyTotal;
         };
-
+        
         const calculateAllScores = (participantName) => {
             let totalScore = 0;
             const history = {};
@@ -1152,63 +1170,60 @@
             return `<div><div class="flex justify-between mb-1"><span class="font-semibold text-gray-700">${label}</span><span class="text-gray-600">${value} / ${max}</span></div><div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-${color}-500 h-2.5 rounded-full" style="width: ${percentage}%"></div></div></div>`;
         };
 
-        const showSummary = () => {
-             const { selectedParticipant, selectedDate } = state;
-            const dateKey = getFormattedDateKey(selectedDate);
-            const weekKey = getChallengeWeekKey(selectedDate);
-            const allScores = calculateAllScores(selectedParticipant);
-            const dailyInputs = state.allData[selectedParticipant].dailyLogs[dateKey].inputs;
+       const showSummary = () => {
+    const { selectedParticipant, selectedDate } = state;
+    const dateKey = getFormattedDateKey(selectedDate);
+    const weekKey = getChallengeWeekKey(selectedDate);
+    const allScores = calculateAllScores(selectedParticipant);
+    const dailyInputs = state.allData[selectedParticipant].dailyLogs[dateKey].inputs;
 
-            const dailyFruitPts = getFruitScore(dailyInputs.fruitPortions);
-            const dailyHydrationPts = dailyInputs.hydration ? 15 : 0;
-            
-            let cleanEatingPts = 0;
-            if (dailyInputs.cleanEating) {
-                cleanEatingPts += dailyInputs.cleanEating.noSweets ? 4 : 0;
-                cleanEatingPts += dailyInputs.cleanEating.noSoda ? 4 : 0;
-                cleanEatingPts += dailyInputs.cleanEating.noFastFood ? 4 : 0;
-                cleanEatingPts += dailyInputs.cleanEating.noFried ? 4 : 0;
-            }
+    const dailyFruitPts = getFruitScore(dailyInputs.fruitPortions);
+    const dailyHydrationPts = dailyInputs.hydration ? 15 : 0;
+    
+    let cleanEatingPts = 0;
+    if (dailyInputs.cleanEating) {
+        cleanEatingPts += dailyInputs.cleanEating.noSweets ? 4 : 0;
+        cleanEatingPts += dailyInputs.cleanEating.noSoda ? 4 : 0;
+        cleanEatingPts += dailyInputs.cleanEating.noFastFood ? 4 : 0;
+        cleanEatingPts += dailyInputs.cleanEating.noFried ? 4 : 0;
+    }
 
-            const dailySleepPts = dailyInputs.sleep ? 10 : 0;
-            const dailySelfCarePts = getSelfCareScore(dailyInputs.selfCareActivities); // 0
-            const dailyTotal = dailyFruitPts + dailyHydrationPts + cleanEatingPts + dailySleepPts + dailySelfCarePts;
+    const dailySleepPts = dailyInputs.sleep ? 10 : 0;
+    const dailySelfCarePts = getSelfCareScore(dailyInputs.selfCareActivities);
+    const dailyTotal = dailyFruitPts + dailyHydrationPts + cleanEatingPts + dailySleepPts + dailySelfCarePts;
 
-            // Busca dados da semana para o progresso
-            let weekAerobicMinutes = 0, weekStrengthDays = 0;
-            for (const dKey in state.allData[selectedParticipant].dailyLogs) {
-                if (getChallengeWeekKey(new Date(dKey + 'T12:00:00')) === weekKey) {
-                    const log = state.allData[selectedParticipant].dailyLogs[dKey].inputs;
-                    weekAerobicMinutes += (log.aerobicMinutes || 0);
-                    weekStrengthDays += (log.strengthSessionBoolean ? 1 : 0);
-                }
-            }
-            
-            document.getElementById('summary-name').textContent = selectedParticipant;
-            document.getElementById('summary-date').textContent = selectedDate.toLocaleDateString('pt-BR');
-            document.getElementById('summary-daily-total').textContent = Math.round(dailyTotal);
-            
-            document.getElementById('summary-weekly-total').textContent = "-"; 
-            document.getElementById('summary-monthly-total').textContent = Math.round(allScores.monthly);
-            document.getElementById('summary-general-total').textContent = Math.round(allScores.total);
+    let weekAerobicMinutes = 0, weekStrengthDays = 0;
+    for (const dKey in state.allData[selectedParticipant].dailyLogs) {
+        if (getChallengeWeekKey(new Date(dKey + 'T12:00:00')) === weekKey) {
+            const log = state.allData[selectedParticipant].dailyLogs[dKey].inputs;
+            weekAerobicMinutes += (log.aerobicMinutes || 0);
+            weekStrengthDays += (log.strengthSessionBoolean ? 1 : 0);
+        }
+    }
+    
+    document.getElementById('summary-name').textContent = selectedParticipant;
+    document.getElementById('summary-date').textContent = selectedDate.toLocaleDateString('pt-BR');
+    document.getElementById('summary-daily-total').textContent = Math.round(dailyTotal);
+    document.getElementById('summary-monthly-total').textContent = Math.round(allScores.monthly);
+    document.getElementById('summary-general-total').textContent = Math.round(allScores.total);
 
-            document.getElementById('summary-details').innerHTML = `
-                <h3 class="font-bold mb-2 text-gray-700">Pontos do dia (${Math.round(dailyTotal)} pts):</h3>
-                ${createProgressBar('Frutas/Vegetais', dailyFruitPts, 20, 'green')}
-                ${createProgressBar('Hidratação', dailyHydrationPts, 15, 'sky')}
-                ${createProgressBar('Cuidado Alimentar', cleanEatingPts, 16, 'red')}
-                ${createProgressBar('Sono', dailySleepPts, 10, 'indigo')}
-                <div class="text-xs text-gray-500 mt-2">Autocuidado registrado (0 pts).</div>
-            `;
-            
-            document.getElementById('summary-progress').innerHTML = `
-                <h3 class="font-bold mb-2 text-gray-700">Progresso Semanal (Metas):</h3>
-                ${createProgressBar('Aeróbico (min)', Math.min(weekAerobicMinutes, 150), 150, 'orange')}
-                ${createProgressBar('Força (dias)', Math.min(weekStrengthDays, 2), 2, 'rose')}
-            `;
+    document.getElementById('summary-details').innerHTML = `
+        <h3 class="font-bold mb-2 text-gray-700">Pontos do dia (${Math.round(dailyTotal)} pts):</h3>
+        ${createProgressBar('Frutas/Vegetais', dailyFruitPts, 20, 'green')}
+        ${createProgressBar('Hidratação', dailyHydrationPts, 15, 'sky')}
+        ${createProgressBar('Cuidado Alimentar', cleanEatingPts, 16, 'red')}
+        ${createProgressBar('Sono', dailySleepPts, 10, 'indigo')}
+        ${createProgressBar('Autocuidado', dailySelfCarePts, 8, 'teal')}
+    `;
+    
+    document.getElementById('summary-progress').innerHTML = `
+        <h3 class="font-bold mb-2 text-gray-700">Progresso Meta Semanal:</h3>
+        ${createProgressBar('Aeróbico (min)', Math.min(weekAerobicMinutes, 150), 150, 'orange')}
+        ${createProgressBar('Força (sessões)', Math.min(weekStrengthDays, 2), 2, 'rose')}
+    `;
 
-            summaryModal.classList.remove('hidden');
-        };
+    summaryModal.classList.remove('hidden');
+};
 
         // --- EXPORT & NAVIGATION LOGIC ---
         document.getElementById('export-png-btn')?.addEventListener('click', () => {
