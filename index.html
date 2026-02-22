@@ -660,21 +660,36 @@
         const monthlyRankingModal = document.getElementById('monthly-ranking-modal');
 
         // --- HELPER FUNCTIONS ---
+        
+        // --- META AERÓBICA ---
+        // Avalia o total de minutos na semana e retorna a pontuação correspondente
         const getAerobicScore = (minutes) => {
-            if (minutes >= 150) return 175;
-            if (minutes >= 100) return 122.5;
-            if (minutes >= 80) return 105;
-            if (minutes >= 60) return 87.5;
-            if (minutes >= 40) return 70;
-            if (minutes >= 20) return 35;
-            if (minutes > 0) return 17.5;
-            return 0;
+            // Garante que o valor seja um número válido
+            const validMinutes = Number(minutes) || 0;
+
+            if (validMinutes >= 150) return 175;
+            if (validMinutes >= 100) return 122.5;
+            if (validMinutes >= 80) return 105;
+            if (validMinutes >= 60) return 87.5;
+            if (validMinutes >= 40) return 70;
+            if (validMinutes >= 20) return 35;
+            if (validMinutes >= 1) return 17.5;
+            
+            return 0; // 0 minutos
         };
         
-        const getStrengthScore = (daysCount) => {
-            if (daysCount >= 2) return 105;
-            if (daysCount === 1) return 40; 
-            return 0;
+        // --- META DE FORÇA ---
+        // Avalia a quantidade de sessões na semana e aplica o teto de 105 pontos
+        const getStrengthScore = (sessions) => {
+            // Garante que o valor seja um número válido
+            const validSessions = Number(sessions) || 0;
+
+            // Considera 2 ou mais sessões como o teto da meta (105 pontos)
+            if (validSessions >= 2) return 105; 
+            
+            if (validSessions === 1) return 40;
+            
+            return 0; // 0 sessões
         };
         
         const getFruitScore = (portions) => {
