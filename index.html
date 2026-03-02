@@ -854,37 +854,68 @@
 	        };
 	
 	        const prefillForm = (inputs) => {
-    	        document.getElementById('aerobic-minutes').value = inputs.aerobicMinutes || 0;
-	            document.getElementById('strength-session').checked = inputs.strengthSessionBoolean || false;
+            const aerobicMins = inputs.aerobicMinutes || 0;
+            document.getElementById('aerobic-minutes-val').value = aerobicMins;
+            document.getElementById('display-val').innerText = aerobicMins;
             
-        	    document.getElementById('fruit-portions-input').value = inputs.fruitPortions;
-    	        setSelectorValue(fruitOptions, inputs.fruitPortions);
-	            document.getElementById('hydration').checked = inputs.hydration;
-            	document.getElementById('sleep').checked = inputs.sleep;
+            const roller = document.getElementById('vertical-roller');
+            if (roller) {
+                // Limpa visualmente e aplica um atraso mínimo para garantir que a tela não está 'hidden'
+                document.querySelectorAll('.num-item').forEach(el => el.classList.remove('active'));
+                const targetItem = document.querySelector(`.num-item[data-val="${aerobicMins}"]`);
+                if (targetItem) targetItem.classList.add('active');
+                setTimeout(() => { roller.scrollTop = aerobicMins * 48; }, 50);
+            }
 
-        	    if (inputs.cleanEating) {
-    	            document.getElementById('clean-no-sweets').checked = inputs.cleanEating.noSweets;
-	                document.getElementById('clean-no-soda').checked = inputs.cleanEating.noSoda;
-                	document.getElementById('clean-no-fastfood').checked = inputs.cleanEating.noFastFood;
-                	document.getElementById('clean-no-fried').checked = inputs.cleanEating.noFried;
-            	} else {
-            	    ['clean-no-sweets', 'clean-no-soda', 'clean-no-fastfood', 'clean-no-fried'].forEach(id => document.getElementById(id).checked = false);
-        	    }
+            document.getElementById('strength-session').checked = inputs.strengthSessionBoolean || false;
+            
+            document.getElementById('fruit-portions-input').value = inputs.fruitPortions;
+            setSelectorValue(fruitOptions, inputs.fruitPortions);
+            document.getElementById('hydration').checked = inputs.hydration;
+            document.getElementById('sleep').checked = inputs.sleep;
 
-    	        document.querySelectorAll('input[name="selfcare-activity"]').forEach(cb => cb.checked = false);
-	            if(inputs.selfCareActivities){
-        	        inputs.selfCareActivities.forEach(activity => {
-    	                const cb = document.getElementById(`selfcare-${activity.replace(/\s/g, '')}`);
-	                    if (cb) cb.checked = true;
-                	});
-            	}
-        	};
+            if (inputs.cleanEating) {
+                document.getElementById('clean-no-sweets').checked = inputs.cleanEating.noSweets;
+                document.getElementById('clean-no-soda').checked = inputs.cleanEating.noSoda;
+                document.getElementById('clean-no-fastfood').checked = inputs.cleanEating.noFastFood;
+                document.getElementById('clean-no-fried').checked = inputs.cleanEating.noFried;
+            } else {
+                ['clean-no-sweets', 'clean-no-soda', 'clean-no-fastfood', 'clean-no-fried'].forEach(id => document.getElementById(id).checked = false);
+            }
+
+            document.querySelectorAll('input[name="selfcare-activity"]').forEach(cb => cb.checked = false);
+            if (inputs.selfCareActivities) {
+                // Suporte seguro tanto para dados CSV (Array) quanto App antigo (Objeto)
+                if (Array.isArray(inputs.selfCareActivities)) {
+                    inputs.selfCareActivities.forEach(activity => {
+                        const cb = document.getElementById(`selfcare-${activity.replace(/\s/g, '')}`);
+                        if (cb) cb.checked = true;
+                    });
+                } else if (typeof inputs.selfCareActivities === 'object') {
+                    for (const key in inputs.selfCareActivities) {
+                        if (inputs.selfCareActivities[key] === true) {
+                            const cb = document.getElementById(`selfcare-${key.replace(/\s/g, '')}`);
+                            if (cb) cb.checked = true;
+                        }
+                    }
+                }
+            }
+        };
         
-        	const resetFormVisuals = () => {
-             	checkinForm.reset();
-             	setSelectorValue(fruitOptions, 0);
-            	 document.getElementById('fruit-portions-input').value = 0;
-        	}
+        const resetFormVisuals = () => {
+             checkinForm.reset();
+             setSelectorValue(fruitOptions, 0);
+             document.getElementById('fruit-portions-input').value = 0;
+             document.getElementById('aerobic-minutes-val').value = 0;
+             document.getElementById('display-val').innerText = '0';
+             const roller = document.getElementById('vertical-roller');
+             if (roller) {
+                 document.querySelectorAll('.num-item').forEach(el => el.classList.remove('active'));
+                 const firstItem = document.querySelector('.num-item[data-val="0"]');
+                 if (firstItem) firstItem.classList.add('active');
+                 setTimeout(() => { roller.scrollTop = 0; }, 50);
+             }
+        }
 	
 	            // --- CORE LOGIC (PARIDADE EXATA COM O EXCEL) ---
 	        const calculateMonthlyScore = (participantName, targetMonthIndex, targetYear) => {
@@ -1172,23 +1203,28 @@
 	        setupDate?.addEventListener('change', checkSetupValidity);
 	        setupParticipant?.addEventListener('change', checkSetupValidity);
 	
-	        confirmBtn?.addEventListener('click', () => {
-	            setupScreen.classList.add('hidden');
-	            mainApp.classList.remove('hidden');
-	            document.getElementById('current-participant-name').textContent = state.selectedParticipant;
-	            document.getElementById('current-checkin-date').textContent = state.selectedDate.toLocaleDateString('pt-BR');
-	            
-	            const dateKey = getFormattedDateKey(state.selectedDate);
-	            const participantLogs = state.allData[state.selectedParticipant]?.dailyLogs || {};
-	            
-	            resetFormVisuals();
-	
-	            if (participantLogs[dateKey]) {
-	                showMessage('Editando registro existente.', 'info');
-	                prefillForm(participantLogs[dateKey].inputs);
-	            }
-	            updateLeaderboardUI();
-	        });
+	       confirmBtn?.addEventListener('click', () => {
+            setupScreen.classList.add('hidden');
+            mainApp.classList.remove('hidden');
+            document.getElementById('current-participant-name').textContent = state.selectedParticipant;
+            document.getElementById('current-checkin-date').textContent = state.selectedDate.toLocaleDateString('pt-BR');
+            
+            const dateKey = getFormattedDateKey(state.selectedDate);
+            // Backup caso o CSV tenha salvo a data sem o zero inicial (ex: "2026-2-11")
+            const alternateDateKey = `${state.selectedDate.getFullYear()}-${state.selectedDate.getMonth() + 1}-${state.selectedDate.getDate()}`;
+            
+            const participantLogs = state.allData[state.selectedParticipant]?.dailyLogs || {};
+            
+            resetFormVisuals();
+
+            const existingLog = participantLogs[dateKey] || participantLogs[alternateDateKey];
+
+            if (existingLog) {
+                showMessage('Editando registro existente.', 'info');
+                prefillForm(existingLog.inputs);
+            }
+            updateLeaderboardUI();
+        });
 	
 	        // --- NAV LOGIC ---
 	        const goBackToHome = () => {
@@ -1205,7 +1241,8 @@
 	
 	
 		// --- SUBMIT LOGIC ---
-       	checkinForm.addEventListener('submit', async (e) => {
+       	
+        checkinForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const submitButton = document.getElementById('submit-checkin-btn');
             submitButton.disabled = true;
@@ -1214,8 +1251,7 @@
             const dateKey = getFormattedDateKey(state.selectedDate);
             
             const inputs = {
-                aerobicMinutes: Number(document.getElementById('aerobic-minutes').value) || 0,
-                // Strength Boolean
+                aerobicMinutes: Number(document.getElementById('aerobic-minutes-val').value) || 0,
                 strengthSessionBoolean: document.getElementById('strength-session').checked,
                 fruitPortions: Number(document.getElementById('fruit-portions-input').value) || 0,
                 hydration: document.getElementById('hydration').checked,
@@ -1232,7 +1268,11 @@
             try {
                 const participantRef = doc(state.db, `artifacts/${state.appId}/public/data/healthChallenge`, state.selectedParticipant);
                 const currentData = state.allData[state.selectedParticipant] || { dailyLogs: {} };
+                if (!currentData.dailyLogs) currentData.dailyLogs = {};
+                
                 currentData.dailyLogs[dateKey] = { inputs };
+                state.allData[state.selectedParticipant] = currentData; // Garante a consistência para a tela de Resumo
+                
                 await setDoc(participantRef, currentData);
                 showMessage('Check-in salvo com sucesso!', 'success');
                 showSummary(); 
