@@ -982,14 +982,23 @@
 	                }
 	            }
 	
-	            // PASSO 2: Somar Pontos Semanais (A semana inteira vai para o mês de sua Segunda-feira)
+				// PASSO 2: Distribuir Pontos Semanais (Divididos por 7 para cada dia da semana)
 	            for (const mondayKey in weeklyStatsByMonday) {
-	                const d = new Date(mondayKey + 'T12:00:00');
-	                // Se a segunda-feira desta semana pertence a fevereiro, TODA a pontuação semanal cai aqui
-	                if (d.getMonth() === targetMonthIndex && d.getFullYear() === targetYear) {
-	                    const stats = weeklyStatsByMonday[mondayKey];
-	                    monthlyTotal += getAerobicScore(stats.aerobicMins);
-	                    monthlyTotal += getStrengthScore(stats.strengthSessions);
+	                const stats = weeklyStatsByMonday[mondayKey];
+	                const totalWeeklyScore = getAerobicScore(stats.aerobicMins) + getStrengthScore(stats.strengthSessions);
+	                const dailyFraction = totalWeeklyScore / 7;
+	                
+	                const mondayDate = new Date(mondayKey + 'T12:00:00');
+	                
+	                // Iterar sobre os 7 dias dessa semana (Segunda a Domingo)
+	                for (let i = 0; i < 7; i++) {
+	                    const currentDay = new Date(mondayDate.getTime());
+	                    currentDay.setDate(mondayDate.getDate() + i);
+	                    
+	                    // Adicionar a fração apenas se o dia específico pertencer ao mês alvo
+	                    if (currentDay.getMonth() === targetMonthIndex && currentDay.getFullYear() === targetYear) {
+	                        monthlyTotal += dailyFraction;
+	                    }
 	                }
 	            }
 	
@@ -1322,9 +1331,12 @@
 	        }
 	    }
 	    
+	   const weeklyTotalPts = getAerobicScore(weekAerobicMinutes) + getStrengthScore(weekStrengthDays);
+	    
 	    document.getElementById('summary-name').textContent = selectedParticipant;
 	    document.getElementById('summary-date').textContent = selectedDate.toLocaleDateString('pt-BR');
 	    document.getElementById('summary-daily-total').textContent = Math.round(dailyTotal);
+	    document.getElementById('summary-weekly-total').textContent = Math.round(weeklyTotalPts);
 	    document.getElementById('summary-monthly-total').textContent = Math.round(allScores.monthly);
 	    document.getElementById('summary-general-total').textContent = Math.round(allScores.total);
 	
