@@ -378,16 +378,25 @@
                 <form id="checkin-form" class="space-y-6">
                     <div class="bg-white p-6 rounded-xl shadow-md">
                         <h2 class="text-xl font-bold mb-4 border-b pb-2">1. Atividade Física</h2>
+                        <div class="text-xs text-gray-500 mt-2 flex justify-between px-1">
+                            <span>(Pontuação semanal)</span>
+                        </div>
                         <div class="space-y-6">
                             <div>
                                 <label for="aerobic-minutes" class="block text-sm font-medium mb-1">1.1 Minutos de atividade aeróbica hoje (0 a 300):</label>
+                                <div class="text-xs text-gray-500 mt-2 flex justify-between px-1">
+                                    <span>(0 a 175 pts)</span>
+                                </div>
                                 <input type="number" id="aerobic-minutes" min="0" max="300" placeholder="0" class="mt-1 w-full p-3 border border-gray-300 rounded-lg text-lg">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium mb-2">1.2 Sessões de força hoje:</label>
+                                <div class="text-xs text-gray-500 mt-2 flex justify-between px-1">
+                                    <span>(0 a 105 pts)</span>
+                                </div>
                                 <div class="flex items-center p-3 bg-red-50 rounded-lg border border-red-100">
                                     <input id="strength-session" type="checkbox" class="h-6 w-6 rounded border-gray-300 text-teal-600 focus:ring-teal-500">
-                                    <label for="strength-session" class="ml-3 font-medium text-red-900">Realizei treino de Força hoje</label>
+                                    <label for="strength-session" class="ml-3 font-medium text-red-900">Realizei treino de Força hoje?</label>
                                 </div>
                             </div>
                         </div>
@@ -432,6 +441,9 @@
 
                             <div>
                                 <label class="block text-sm font-medium mb-2 text-teal-800">2.3 Cuidado alimentar (4 pts cada item):</label>
+                                 <div class="text-xs text-gray-500 mt-2 flex justify-between px-1">
+                                    <span>(4 pts cada item)</span>
+                                </div>
                                 <div class="grid grid-cols-1 gap-2 text-sm bg-teal-50 p-3 rounded-lg border border-teal-100">
                                     <div class="flex items-center p-1">
                                         <input id="clean-no-sweets" type="checkbox" class="h-5 w-5 rounded border-gray-300 text-teal-600 focus:ring-teal-500">
@@ -463,6 +475,9 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-medium">3.2 Atividades de Autocuidado:</label>
+                                <div class="text-xs text-gray-500 mt-2 flex justify-between px-1">
+                                    <span>(2 pts cada item)</span>
+                                </div>
                                 <div id="selfcare-checklist" class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm"></div>
                             </div>
                         </div>
@@ -478,10 +493,6 @@
                     </div>
                 </form>
 
-                <div class="bg-white p-6 rounded-xl shadow-md h-fit">
-                    <h2 class="text-xl font-bold mb-4">Ranking Atual (Acumulado)</h2>
-                    <div class="space-y-3" id="monthly-ranking-list"></div>
-                </div>
             </main>
         </div>
 
