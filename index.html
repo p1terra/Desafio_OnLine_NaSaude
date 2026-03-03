@@ -621,37 +621,37 @@
 	        const challengeEndDate = new Date('2026-12-20T23:59:59');
 	
 	        const SELFCARE_ACTIVITIES = ['Meditação ou Mindfulness', 'Alongamento ou Mobilidade', 'Contato com a Natureza', 'Leitura por Prazer'];
-	        const MOTIVATIONAL_QUOTES = [
+			const MOTIVATIONAL_QUOTES = [
 	            "Cada passo conta. Continue em frente!",
 	            "O seu corpo de amanhã agradece o seu esforço de hoje.",
 	            "Consistência é a chave. Vamos lá!",
 	            "Foco no progresso, não na perfeição.",
-	            "Cuide do seu corpo, é o único lugar que você tem para viver."
-				"A disciplina leva você onde a motivação não consegue alcançar.",
-				"O melhor treino é aquele que você não deixou de fazer.",
-				"Não pare até se orgulhar de você mesmo.",
-				"Pequenas vitórias diárias constroem grandes resultados.",
-				"Seu único limite é a sua mente.",
-				"Respeite o seu tempo, mas não aceite o seu comodismo.",
-				"A dor é temporária, o orgulho de ter conseguido é para sempre.",
-				"Acredite: você é muito mais forte do que imagina.",
-				"Transforme o seu 'eu não consigo' em 'eu vou tentar'.",
-				"A saúde é a maior riqueza que você pode acumular.",
-				"O movimento é o melhor remédio para a mente.",
-				"A constância transforma o esforço em hábito.",
-				"Seja a sua própria inspiração todos os dias.",
-				"Um treino de 20 minutos é melhor do que nenhum treino.",
-				"Foque no seu objetivo e não nas distrações do caminho.",
-				"O segredo do sucesso é começar antes de estar pronto.",
-				"Sua saúde mental agradece quando você cuida do seu corpo.",
-				"Não compare o seu capítulo um com o capítulo dez de outra pessoa.",
-				"Cada escolha saudável é um investimento no seu futuro.",
-				"Dê o seu melhor hoje, mesmo que o seu melhor mude a cada dia.",
-				"Vencer a si mesmo é a maior das vitórias.",
-				"A motivação faz você começar, o hábito faz você continuar.",
-				"Não espere pelas condições perfeitas para agir.",
-				"Sinta o prazer de superar os seus próprios recordes.",
-				"Você está a apenas um treino de distância de um bom humor."
+	            "Cuide do seu corpo, é o único lugar que você tem para viver.",
+	            "A disciplina é a ponte entre os seus objetivos e as suas realizações.",
+	            "Não pare quando estiver cansado. Pare quando tiver terminado.",
+	            "Pequenos hábitos diários constroem grandes resultados.",
+	            "Sua saúde é um investimento, não uma despesa.",
+	            "O suor de hoje é a força de amanhã.",
+	            "Você é mais forte do que a sua melhor desculpa.",
+	            "Transforme a motivação em hábito e o hábito em estilo de vida.",
+	            "Celebre as pequenas vitórias, elas te levam ao topo.",
+	            "Respeite o seu tempo, mas não desperdice as suas oportunidades.",
+	            "A jornada é longa, mas a recompensa dura para sempre.",
+	            "Não espere o momento perfeito, faça o agora valer a pena.",
+	            "Hidrate-se, movimente-se e seja grato pelo seu corpo.",
+	            "Um dia ruim no treino ainda é melhor do que não treinar.",
+	            "A sua mente desiste antes do seu corpo. Prove que ela está errada!",
+	            "Nenhum esforço em prol da sua saúde é em vão.",
+	            "Você não precisa ser extremo, apenas ser consistente.",
+	            "Faça por você, para você e por mais ninguém.",
+	            "Descanse se precisar, mas nunca desista.",
+	            "A única competição verdadeira é você contra você mesmo.",
+	            "Alimente-se com o que te dá energia e saúde.",
+	            "O difícil hoje será o seu aquecimento de amanhã.",
+	            "Acorde com determinação e vá dormir com satisfação.",
+	            "Você está construindo a sua melhor versão, tijolo por tijolo.",
+	            "O processo pode ser lento, mas o tempo vai passar de qualquer forma.",
+	            "Seja a sua maior inspiração todos os dias."
 	        ];
 	
 	        let state = {
@@ -1378,7 +1378,7 @@
 	        document.getElementById('monthly-ranking-btn')?.addEventListener('click', () => { updateMonthlyRankingUI(); monthlyRankingModal.classList.remove('hidden'); });
 	        document.getElementById('monthly-report-btn')?.addEventListener('click', exportMonthlyReport);
 	        document.getElementById('full-report-btn')?.addEventListener('click', exportFullReport);
-	        document.getElementById('score-table-btn')?.addEventListener('click', () => { 
+			document.getElementById('score-table-btn')?.addEventListener('click', () => { 
 	            const imgEsquema = document.getElementById('esquema-img');
 	            if(imgEsquema) imgEsquema.scrollIntoView({ behavior: 'smooth', block: 'center' }); 
 	        });
