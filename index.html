@@ -122,7 +122,7 @@
 	            </div>
 	            
 	            <div class="max-w-md mx-auto text-center mt-6 space-y-2 relative z-10">
-	                <button id="score-table-btn" class="w-full bg-gray-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-gray-700 transition-colors duration-200">Ver Regras e Pontuação</button>
+	                <button id="score-table-btn" class="w-full bg-gray-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-gray-700 transition-colors duration-200">Guia Rápido do Desafio</button>
 	                <div class="flex gap-2">
 	                    <button id="ranking-btn" class="flex-1 bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200">Ranking dos Meses</button>
 	                    <button id="monthly-ranking-btn" class="flex-1 bg-amber-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-amber-600 transition-colors duration-200">Ranking Mensal</button>
@@ -373,7 +373,7 @@
 	                    </section>
 	                
 	                 <div class="mt-12 max-w-4xl mx-auto">
-	                     <img src="imagens/esquema.png" alt="Esquema do Desafio" class="w-full h-auto rounded-xl shadow-lg border border-gray-200">
+						 <img id="esquema-img" src="imagens/esquema.png" alt="Esquema do Desafio" class="w-full h-auto rounded-xl shadow-lg border border-gray-200 cursor-pointer transition-all duration-300 hover:opacity-90" onclick="const isZoomed = this.classList.contains('fixed'); if(isZoomed){ this.className = 'w-full h-auto rounded-xl shadow-lg border border-gray-200 cursor-pointer transition-all duration-300 hover:opacity-90'; } else { this.className = 'fixed inset-0 z-[9999] w-full h-full object-contain bg-black/95 p-4 cursor-pointer transition-all duration-300'; }">
 	                </div>
 	                 
 	                 
@@ -551,9 +551,9 @@
 	                            <div id="summary-details" class="bg-gray-50 p-4 rounded-lg space-y-2"></div>
 									<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
 	                                	<div class="bg-teal-100 p-2 rounded"><div class="font-bold text-lg text-teal-800" id="summary-daily-total"></div><div class="text-xs text-teal-700">Pts do Dia</div></div>
-	                                	<div class="bg-purple-100 p-2 rounded"><div class="font-bold text-lg text-purple-800" id="summary-weekly-fraction"></div><div class="text-xs text-purple-700">Fração Semanal</div></div>
-	                                	<div class="bg-blue-100 p-2 rounded"><div class="font-bold text-lg text-blue-800" id="summary-weekly-total"></div><div class="text-xs text-blue-700">Semana (Total)</div></div>
-	                                	<div class="bg-indigo-100 p-2 rounded"><div class="font-bold text-lg text-indigo-800" id="summary-monthly-total"></div><div class="text-xs text-indigo-700">Total Mês</div></div>
+	                                	<div class="bg-purple-100 p-2 rounded"><div class="font-bold text-lg text-purple-800" id="summary-weekly-fraction"></div><div class="text-xs text-purple-700">Pts Semanal (Fração)</div></div>
+	                                	<div class="bg-blue-100 p-2 rounded"><div class="font-bold text-lg text-blue-800" id="summary-weekly-total"></div><div class="text-xs text-blue-700">Pts Semana (Total)</div></div>
+	                                	<div class="bg-indigo-100 p-2 rounded"><div class="font-bold text-lg text-indigo-800" id="summary-monthly-total"></div><div class="text-xs text-indigo-700">Pts Mês (Total)</div></div>
 	                            	</div>
 	                            <div id="summary-progress" class="bg-gray-50 p-4 rounded-lg space-y-2"></div>
 	                        </div>
@@ -569,44 +569,6 @@
 	        <div id="thank-you-screen" class="hidden fixed inset-0 text-center flex flex-col items-center justify-start bg-cover bg-center z-40 p-4 pt-8 pb-8 overflow-y-auto">
 	             <div id="motivational-card" class="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 w-full max-w-md mx-auto mb-6">
 	                 <p id="motivational-quote" class="text-center text-lg italic text-gray-700 mb-4"></p>
-	                 <h3 class="font-bold text-center text-teal-600 mb-2 border-t pt-4">Tabela de Pontos 3.0</h3>
-	                 <div>
-	                     <table class="w-full text-sm text-left text-gray-600">
-	                         <thead class="bg-gray-100 sticky top-0">
-	                             <tr>
-	                                 <th class="p-2 rounded-tl-lg">Categoria</th>
-	                                 <th class="p-2 rounded-tr-lg text-right">Pontos</th>
-	                             </tr>
-	                         </thead>
-	                         <tbody>
-	                            <tr class="bg-gray-200"><td class="p-2 font-semibold" colspan="2">Meta Aeróbica (Semanal)</td></tr>
-	                            <tr class="border-b"><td class="p-2 pl-6 text-xs">150+ min</td><td class="p-2 text-right">175 pts</td></tr>
-	                            <tr class="border-b"><td class="p-2 pl-6 text-xs">100 a 149 min</td><td class="p-2 text-right">122.5 pts</td></tr>
-	                            <tr class="border-b"><td class="p-2 pl-6 text-xs">80 a 99 min</td><td class="p-2 text-right">105 pts</td></tr>
-	                            <tr class="border-b"><td class="p-2 pl-6 text-xs">60 a 79 min</td><td class="p-2 text-right">87.5 pts</td></tr>
-	                            <tr class="border-b"><td class="p-2 pl-6 text-xs">40 a 59 min</td><td class="p-2 text-right">70 pts</td></tr>
-	                            <tr class="border-b"><td class="p-2 pl-6 text-xs">20 a 39 min</td><td class="p-2 text-right">35 pts</td></tr>
-	                            <tr class="border-b"><td class="p-2 pl-6 text-xs">1 a 19 min</td><td class="p-2 text-right">17.5 pts</td></tr>
-	                            
-	                            <tr class="bg-gray-200"><td class="p-2 font-semibold" colspan="2">Meta de Força (Semanal)</td></tr>
-	                            <tr class="border-b"><td class="p-2 pl-6 text-xs">2+ dias na semana</td><td class="p-2 text-right">105 pts</td></tr>
-	                            <tr class="border-b"><td class="p-2 pl-6 text-xs">1 dia na semana</td><td class="p-2 text-right">40 pts</td></tr>
-	
-	                            <tr class="bg-gray-200"><td class="p-2 font-semibold" colspan="2">Frutas/Vegetais (Diário)</td></tr>
-	                            <tr class="border-b"><td class="p-2 pl-6 text-xs">5+ porções</td><td class="p-2 text-right">20 pts</td></tr>
-	                            <tr class="border-b"><td class="p-2 pl-6 text-xs">4 porções</td><td class="p-2 text-right">12 pts</td></tr>
-	                            <tr class="border-b"><td class="p-2 pl-6 text-xs">3 porções</td><td class="p-2 text-right">6 pts</td></tr>
-	                            <tr class="border-b"><td class="p-2 pl-6 text-xs">2 porções</td><td class="p-2 text-right">4 pts</td></tr>
-	                            <tr class="border-b"><td class="p-2 pl-6 text-xs">1 porção</td><td class="p-2 text-right">2 pts</td></tr>
-	
-	                            <tr class="bg-gray-200"><td class="p-2 font-semibold" colspan="2">Outros (Diário)</td></tr>
-	                            <tr class="border-b"><td class="p-2 pl-6 text-xs">2L+ Água</td><td class="p-2 text-right">15 pts</td></tr>
-	                            <tr class="border-b"><td class="p-2 pl-6 text-xs">Cuidado Alimentar</td><td class="p-2 text-right">16 pts</td></tr>
-	                            <tr class="border-b"><td class="p-2 pl-6 text-xs">7h+ Sono</td><td class="p-2 text-right">10 pts</td></tr>
-	                            <tr><td class="p-2 pl-6 text-xs">Cuidado Pessoal</td><td class="p-2 text-right">8 pts</td></tr>
-	                         </tbody>
-	                      </table>
-	                </div>
 	            </div>
 	            <div class="bg-black bg-opacity-50 p-8 rounded-xl">
 	                <button id="add-another-checkin-btn" class="bg-teal-600 text-white font-bold text-xl py-4 px-8 rounded-lg hover:bg-teal-700 transition-colors duration-200 shadow-lg">Adicionar mais um check-in?</button>
@@ -665,6 +627,31 @@
 	            "Consistência é a chave. Vamos lá!",
 	            "Foco no progresso, não na perfeição.",
 	            "Cuide do seu corpo, é o único lugar que você tem para viver."
+				"A disciplina leva você onde a motivação não consegue alcançar.",
+				"O melhor treino é aquele que você não deixou de fazer.",
+				"Não pare até se orgulhar de você mesmo.",
+				"Pequenas vitórias diárias constroem grandes resultados.",
+				"Seu único limite é a sua mente.",
+				"Respeite o seu tempo, mas não aceite o seu comodismo.",
+				"A dor é temporária, o orgulho de ter conseguido é para sempre.",
+				"Acredite: você é muito mais forte do que imagina.",
+				"Transforme o seu 'eu não consigo' em 'eu vou tentar'.",
+				"A saúde é a maior riqueza que você pode acumular.",
+				"O movimento é o melhor remédio para a mente.",
+				"A constância transforma o esforço em hábito.",
+				"Seja a sua própria inspiração todos os dias.",
+				"Um treino de 20 minutos é melhor do que nenhum treino.",
+				"Foque no seu objetivo e não nas distrações do caminho.",
+				"O segredo do sucesso é começar antes de estar pronto.",
+				"Sua saúde mental agradece quando você cuida do seu corpo.",
+				"Não compare o seu capítulo um com o capítulo dez de outra pessoa.",
+				"Cada escolha saudável é um investimento no seu futuro.",
+				"Dê o seu melhor hoje, mesmo que o seu melhor mude a cada dia.",
+				"Vencer a si mesmo é a maior das vitórias.",
+				"A motivação faz você começar, o hábito faz você continuar.",
+				"Não espere pelas condições perfeitas para agir.",
+				"Sinta o prazer de superar os seus próprios recordes.",
+				"Você está a apenas um treino de distância de um bom humor."
 	        ];
 	
 	        let state = {
@@ -821,9 +808,7 @@
 	        };
 	        
 	        const populateScoreTableModal = () => {
-	            const scoreTableContainer = document.getElementById('score-table-content');
-	            const scoreTableHTML = document.querySelector('#thank-you-screen table').outerHTML;
-	            scoreTableContainer.innerHTML = scoreTableHTML;
+				// A tabela foi removida da tela de "Thank You". Função inativada para evitar erro.
 	        };
 	        
 	        // --- SELECTOR LOGIC ---
@@ -1393,7 +1378,10 @@
 	        document.getElementById('monthly-ranking-btn')?.addEventListener('click', () => { updateMonthlyRankingUI(); monthlyRankingModal.classList.remove('hidden'); });
 	        document.getElementById('monthly-report-btn')?.addEventListener('click', exportMonthlyReport);
 	        document.getElementById('full-report-btn')?.addEventListener('click', exportFullReport);
-	        document.getElementById('score-table-btn')?.addEventListener('click', () => { scoreTableModal.classList.remove('hidden'); });
+	        document.getElementById('score-table-btn')?.addEventListener('click', () => { 
+	            const imgEsquema = document.getElementById('esquema-img');
+	            if(imgEsquema) imgEsquema.scrollIntoView({ behavior: 'smooth', block: 'center' }); 
+	        });
 	        
 	        document.getElementById('close-ranking-btn')?.addEventListener('click', () => { rankingModal.classList.add('hidden'); });
 	        document.getElementById('close-score-table-btn')?.addEventListener('click', () => { scoreTableModal.classList.add('hidden'); });
