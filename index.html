@@ -549,12 +549,12 @@
 	                        </p>
 	                        <div class="space-y-3 text-sm">
 	                            <div id="summary-details" class="bg-gray-50 p-4 rounded-lg space-y-2"></div>
-	                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
-	                                <div class="bg-teal-100 p-2 rounded"><div class="font-bold text-lg text-teal-800" id="summary-daily-total"></div><div class="text-xs text-teal-700">Pontos do Dia</div></div>
-	                                <div class="bg-blue-100 p-2 rounded"><div class="font-bold text-lg text-blue-800" id="summary-weekly-total"></div><div class="text-xs text-blue-700">Semana (pts)</div></div>
-	                                <div class="bg-indigo-100 p-2 rounded"><div class="font-bold text-lg text-indigo-800" id="summary-monthly-total"></div><div class="text-xs text-indigo-700">Total Mês</div></div>
-	                                <div class="bg-purple-100 p-2 rounded"><div class="font-bold text-lg text-purple-800" id="summary-general-total"></div><div class="text-xs text-purple-700">Total Geral</div></div>
-	                            </div>
+									<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+	                                	<div class="bg-teal-100 p-2 rounded"><div class="font-bold text-lg text-teal-800" id="summary-daily-total"></div><div class="text-xs text-teal-700">Pts do Dia</div></div>
+	                                	<div class="bg-purple-100 p-2 rounded"><div class="font-bold text-lg text-purple-800" id="summary-weekly-fraction"></div><div class="text-xs text-purple-700">Fração Semanal</div></div>
+	                                	<div class="bg-blue-100 p-2 rounded"><div class="font-bold text-lg text-blue-800" id="summary-weekly-total"></div><div class="text-xs text-blue-700">Semana (Total)</div></div>
+	                                	<div class="bg-indigo-100 p-2 rounded"><div class="font-bold text-lg text-indigo-800" id="summary-monthly-total"></div><div class="text-xs text-indigo-700">Total Mês</div></div>
+	                            	</div>
 	                            <div id="summary-progress" class="bg-gray-50 p-4 rounded-lg space-y-2"></div>
 	                        </div>
 	                    </div>
@@ -1331,14 +1331,15 @@
 	        }
 	    }
 	    
-	   const weeklyTotalPts = getAerobicScore(weekAerobicMinutes) + getStrengthScore(weekStrengthDays);
+	  	const weeklyTotalPts = getAerobicScore(weekAerobicMinutes) + getStrengthScore(weekStrengthDays);
+	    const weeklyFraction = weeklyTotalPts / 7;
 	    
 	    document.getElementById('summary-name').textContent = selectedParticipant;
 	    document.getElementById('summary-date').textContent = selectedDate.toLocaleDateString('pt-BR');
 	    document.getElementById('summary-daily-total').textContent = Math.round(dailyTotal);
+	    document.getElementById('summary-weekly-fraction').textContent = parseFloat(weeklyFraction.toFixed(1));
 	    document.getElementById('summary-weekly-total').textContent = Math.round(weeklyTotalPts);
 	    document.getElementById('summary-monthly-total').textContent = Math.round(allScores.monthly);
-	    document.getElementById('summary-general-total').textContent = Math.round(allScores.total);
 	
 	    document.getElementById('summary-details').innerHTML = `
 	        <h3 class="font-bold mb-2 text-gray-700">Pontos do dia (${Math.round(dailyTotal)} pts):</h3>
